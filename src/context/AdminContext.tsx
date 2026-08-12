@@ -926,6 +926,96 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           }));
           setLocations(mappedLocs);
         }
+
+        // 11. Sync House Categories (Pricing & Specifications)
+        const { data: dbHouseCats } = await supabase.from('house_categories').select('*');
+        if (dbHouseCats && dbHouseCats.length > 0) {
+          const mappedHouseCats: HouseCategoryData[] = dbHouseCats.map((hc: any) => ({
+            id: hc.id,
+            label: hc.label,
+            description: hc.description || hc.label,
+            sqftRange: hc.sqft_range || hc.sqftRange || '',
+            standard: hc.standard || {},
+            premium: hc.premium || {},
+            customPlans: hc.custom_plans || hc.customPlans || [],
+            availableLocations: hc.available_locations || hc.availableLocations || []
+          }));
+          setHouseCategories(mappedHouseCats);
+        } else {
+          // Seed default house categories to Supabase
+          for (const hc of HOUSE_CATEGORIES) {
+            await supabase.from('house_categories').upsert({
+              id: hc.id,
+              label: hc.label,
+              description: hc.description,
+              sqft_range: hc.sqftRange,
+              standard: hc.standard,
+              premium: hc.premium,
+              custom_plans: hc.customPlans || [],
+              available_locations: hc.availableLocations || []
+            });
+          }
+        }
+
+        // 12. Sync Vehicle Categories (Car Wash Packages & Pricing)
+        const { data: dbVehCats } = await supabase.from('vehicle_categories').select('*');
+        if (dbVehCats && dbVehCats.length > 0) {
+          const mappedVehCats: VehicleCategoryData[] = dbVehCats.map((vc: any) => ({
+            id: vc.id,
+            label: vc.label,
+            description: vc.description || vc.label,
+            examples: vc.examples || '',
+            packages: vc.packages || {},
+            availableLocations: vc.available_locations || vc.availableLocations || []
+          }));
+          setVehicleCategories(mappedVehCats);
+        } else {
+          // Seed default vehicle categories to Supabase
+          for (const vc of VEHICLE_CATEGORIES) {
+            await supabase.from('vehicle_categories').upsert({
+              id: vc.id,
+              label: vc.label,
+              description: vc.description,
+              examples: vc.examples,
+              packages: vc.packages,
+              available_locations: vc.availableLocations || []
+            });
+          }
+        }
+
+        // 13. Sync Laundry Config
+        const { data: dbLaundry } = await supabase.from('laundry_config').select('*');
+        if (dbLaundry && dbLaundry.length > 0) {
+          const lc = dbLaundry[0];
+          const mappedLaundry: LaundryConfig = {
+            packages: lc.packages || DEFAULT_LAUNDRY_CONFIG.packages,
+            expressSurcharge: Number(lc.express_surcharge ?? lc.expressSurcharge) || DEFAULT_LAUNDRY_CONFIG.expressSurcharge,
+            premiumCareSurchargePerKg: Number(lc.premium_care_surcharge_per_kg ?? lc.premiumCareSurchargePerKg) || DEFAULT_LAUNDRY_CONFIG.premiumCareSurchargePerKg,
+            pickupFee: Number(lc.pickup_fee ?? lc.pickupFee) || DEFAULT_LAUNDRY_CONFIG.pickupFee,
+            freePickupMinWeight: Number(lc.free_pickup_min_weight ?? lc.freePickupMinWeight) || DEFAULT_LAUNDRY_CONFIG.freePickupMinWeight,
+            standardSpeedLabel: lc.standard_speed_label || lc.standardSpeedLabel,
+            standardSpeedDesc: lc.standard_speed_desc || lc.standardSpeedDesc,
+            expressSpeedLabel: lc.express_speed_label || lc.expressSpeedLabel,
+            expressSpeedDesc: lc.express_speed_desc || lc.expressSpeedDesc,
+            standardCareDesc: lc.standard_care_desc || lc.standardCareDesc,
+            premiumCareDesc: lc.premium_care_desc || lc.premiumCareDesc,
+            included: lc.included || [],
+            excluded: lc.excluded || [],
+            availableLocations: lc.available_locations || lc.availableLocations || []
+          };
+          setLaundryConfigState(mappedLaundry);
+        } else {
+          // Seed default laundry config to Supabase
+          await supabase.from('laundry_config').upsert({
+            id: 'default_laundry_config',
+            packages: DEFAULT_LAUNDRY_CONFIG.packages,
+            express_surcharge: DEFAULT_LAUNDRY_CONFIG.expressSurcharge,
+            premium_care_surcharge_per_kg: DEFAULT_LAUNDRY_CONFIG.premiumCareSurchargePerKg,
+            pickup_fee: DEFAULT_LAUNDRY_CONFIG.pickupFee,
+            free_pickup_min_weight: DEFAULT_LAUNDRY_CONFIG.freePickupMinWeight,
+            available_locations: DEFAULT_LAUNDRY_CONFIG.availableLocations || []
+          });
+        }
       } catch (err) {
         console.warn('Supabase sync warning:', err);
       }
@@ -1422,117 +1512,241 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     showToast('Service deleted', 'error');
   };
 
-  // Category & Tier CRUD handlers
+  // Category & Tier CRUD handlers with live Supabase cloud sync
   const updateHousePlan = (categoryKey: HouseCategoryKey, planType: string, updatedPlan: HousePlanDetails) => {
+    let targetCat: HouseCategoryData | undefined;
     setHouseCategories((prev) =>
       prev.map((cat) => {
         if (cat.id === categoryKey) {
-          if (planType === 'standard') return { ...cat, standard: updatedPlan };
-          if (planType === 'premium') return { ...cat, premium: updatedPlan };
-          
-          // Custom Plan edit
-          const updatedCustoms = (cat.customPlans || []).map((cp) =>
-            (cp.id === planType || cp.name === planType) ? updatedPlan : cp
-          );
-          return { ...cat, customPlans: updatedCustoms };
+          let nextCat = { ...cat };
+          if (planType === 'standard') nextCat.standard = updatedPlan;
+          else if (planType === 'premium') nextCat.premium = updatedPlan;
+          else {
+            const updatedCustoms = (cat.customPlans || []).map((cp) =>
+              (cp.id === planType || cp.name === planType) ? updatedPlan : cp
+            );
+            nextCat.customPlans = updatedCustoms;
+          }
+          targetCat = nextCat;
+          return nextCat;
         }
         return cat;
       })
     );
+
+    if (targetCat) {
+      const hc = targetCat;
+      (async () => {
+        try {
+          await supabase.from('house_categories').upsert({
+            id: hc.id,
+            label: hc.label,
+            sqft_range: hc.sqftRange,
+            standard: hc.standard,
+            premium: hc.premium,
+            custom_plans: hc.customPlans || [],
+            available_locations: hc.availableLocations || []
+          });
+        } catch (e) {
+          console.error('Supabase house plan update notice:', e);
+        }
+      })();
+    }
+
     showToast(`Updated ${categoryKey.toUpperCase()} plan details`, 'success');
   };
 
   const addHouseCategoryPlan = (categoryKey: HouseCategoryKey, plan: HousePlanDetails) => {
     const planWithId = { ...plan, id: plan.id || ('plan-' + Date.now()) };
+    let targetCat: HouseCategoryData | undefined;
+
     setHouseCategories((prev) =>
       prev.map((cat) => {
         if (cat.id === categoryKey) {
-          return {
+          const nextCat = {
             ...cat,
             customPlans: [...(cat.customPlans || []), planWithId]
           };
+          targetCat = nextCat;
+          return nextCat;
         }
         return cat;
       })
     );
+
+    if (targetCat) {
+      const hc = targetCat;
+      (async () => {
+        try {
+          await supabase.from('house_categories').upsert({
+            id: hc.id,
+            label: hc.label,
+            sqft_range: hc.sqftRange,
+            standard: hc.standard,
+            premium: hc.premium,
+            custom_plans: hc.customPlans || [],
+            available_locations: hc.availableLocations || []
+          });
+        } catch (e) {
+          console.error('Supabase house add plan notice:', e);
+        }
+      })();
+    }
+
     showToast(`Added new plan "${plan.name}" to ${categoryKey.toUpperCase()}`, 'success');
   };
 
   const deleteHouseCategoryPlan = (categoryKey: HouseCategoryKey, planIdOrType: string) => {
+    let targetCat: HouseCategoryData | undefined;
+
     setHouseCategories((prev) =>
       prev.map((cat) => {
         if (cat.id === categoryKey) {
+          let nextCat = { ...cat };
           if (planIdOrType === 'standard') {
-            return {
-              ...cat,
-              standard: {
-                ...cat.standard,
-                name: 'Standard Clean (Inactive)',
-                priceDisplay: 'Unavailable',
-                priceNumeric: null
-              }
+            nextCat.standard = {
+              ...cat.standard,
+              name: 'Standard Clean (Inactive)',
+              priceDisplay: 'Unavailable',
+              priceNumeric: null
             };
-          }
-          if (planIdOrType === 'premium') {
-            return {
-              ...cat,
-              premium: {
-                ...cat.premium,
-                name: 'Premium Ultra (Inactive)',
-                priceDisplay: 'Unavailable',
-                priceNumeric: null
-              }
+          } else if (planIdOrType === 'premium') {
+            nextCat.premium = {
+              ...cat.premium,
+              name: 'Premium Ultra (Inactive)',
+              priceDisplay: 'Unavailable',
+              priceNumeric: null
             };
+          } else {
+            nextCat.customPlans = (cat.customPlans || []).filter((cp) => cp.id !== planIdOrType && cp.name !== planIdOrType);
           }
-          // Remove from customPlans
-          return {
-            ...cat,
-            customPlans: (cat.customPlans || []).filter((cp) => cp.id !== planIdOrType && cp.name !== planIdOrType)
-          };
+          targetCat = nextCat;
+          return nextCat;
         }
         return cat;
       })
     );
+
+    if (targetCat) {
+      const hc = targetCat;
+      (async () => {
+        try {
+          await supabase.from('house_categories').upsert({
+            id: hc.id,
+            label: hc.label,
+            sqft_range: hc.sqftRange,
+            standard: hc.standard,
+            premium: hc.premium,
+            custom_plans: hc.customPlans || [],
+            available_locations: hc.availableLocations || []
+          });
+        } catch (e) {
+          console.error('Supabase house delete plan notice:', e);
+        }
+      })();
+    }
+
     showToast(`Deleted plan from ${categoryKey.toUpperCase()}`, 'info');
   };
 
   const updateCarPackage = (vehicleKey: VehicleCategoryKey, packageKey: string, updatedPkg: CarPackageItem) => {
+    let targetVeh: VehicleCategoryData | undefined;
+
     setVehicleCategories((prev) =>
       prev.map((veh) => {
         if (veh.id === vehicleKey) {
-          return {
+          const nextVeh = {
             ...veh,
             packages: {
               ...veh.packages,
               [packageKey]: updatedPkg
             }
           };
+          targetVeh = nextVeh;
+          return nextVeh;
         }
         return veh;
       })
     );
+
+    if (targetVeh) {
+      const vc = targetVeh;
+      (async () => {
+        try {
+          await supabase.from('vehicle_categories').upsert({
+            id: vc.id,
+            label: vc.label,
+            examples: vc.examples,
+            packages: vc.packages,
+            available_locations: vc.availableLocations || []
+          });
+        } catch (e) {
+          console.error('Supabase car package update notice:', e);
+        }
+      })();
+    }
+
     showToast(`Updated ${vehicleKey.toUpperCase()} ${updatedPkg.name} Package`, 'success');
   };
 
   const deleteCarPackage = (vehicleKey: VehicleCategoryKey, packageKey: string) => {
+    let targetVeh: VehicleCategoryData | undefined;
+
     setVehicleCategories((prev) =>
       prev.map((veh) => {
         if (veh.id === vehicleKey) {
           const newPackages = { ...veh.packages };
           delete newPackages[packageKey as keyof typeof newPackages];
-          return {
+          const nextVeh = {
             ...veh,
             packages: newPackages
           };
+          targetVeh = nextVeh;
+          return nextVeh;
         }
         return veh;
       })
     );
+
+    if (targetVeh) {
+      const vc = targetVeh;
+      (async () => {
+        try {
+          await supabase.from('vehicle_categories').upsert({
+            id: vc.id,
+            label: vc.label,
+            examples: vc.examples,
+            packages: vc.packages,
+            available_locations: vc.availableLocations || []
+          });
+        } catch (e) {
+          console.error('Supabase car package delete notice:', e);
+        }
+      })();
+    }
+
     showToast(`Deleted package from ${vehicleKey.toUpperCase()}`, 'info');
   };
 
   const updateLaundryConfig = (updatedConfig: LaundryConfig) => {
     setLaundryConfigState(updatedConfig);
+
+    (async () => {
+      try {
+        await supabase.from('laundry_config').upsert({
+          id: 'default_laundry_config',
+          packages: updatedConfig.packages,
+          express_surcharge: updatedConfig.expressSurcharge,
+          premium_care_surcharge_per_kg: updatedConfig.premiumCareSurchargePerKg,
+          pickup_fee: updatedConfig.pickupFee,
+          free_pickup_min_weight: updatedConfig.freePickupMinWeight,
+          available_locations: updatedConfig.availableLocations || []
+        });
+      } catch (e) {
+        console.error('Supabase laundry config update notice:', e);
+      }
+    })();
+
     showToast('Laundry pricing & care tiers updated!', 'success');
   };
 
@@ -1540,29 +1754,117 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setHouseCategories(HOUSE_CATEGORIES);
     setVehicleCategories(VEHICLE_CATEGORIES);
     setLaundryConfigState(DEFAULT_LAUNDRY_CONFIG);
-    localStorage.removeItem('nexdoor_admin_house_categories');
-    localStorage.removeItem('nexdoor_admin_vehicle_categories');
-    localStorage.removeItem('nexdoor_admin_laundry_config');
-    showToast('Reset all pricing categories to system defaults', 'info');
+
+    (async () => {
+      try {
+        for (const hc of HOUSE_CATEGORIES) {
+          await supabase.from('house_categories').upsert({
+            id: hc.id,
+            label: hc.label,
+            description: hc.description,
+            sqft_range: hc.sqftRange,
+            standard: hc.standard,
+            premium: hc.premium,
+            custom_plans: hc.customPlans || [],
+            available_locations: hc.availableLocations || []
+          });
+        }
+
+        for (const vc of VEHICLE_CATEGORIES) {
+          await supabase.from('vehicle_categories').upsert({
+            id: vc.id,
+            label: vc.label,
+            description: vc.description,
+            examples: vc.examples,
+            packages: vc.packages,
+            available_locations: vc.availableLocations || []
+          });
+        }
+
+        await supabase.from('laundry_config').upsert({
+          id: 'default_laundry_config',
+          packages: DEFAULT_LAUNDRY_CONFIG.packages,
+          express_surcharge: DEFAULT_LAUNDRY_CONFIG.expressSurcharge,
+          premium_care_surcharge_per_kg: DEFAULT_LAUNDRY_CONFIG.premiumCareSurchargePerKg,
+          pickup_fee: DEFAULT_LAUNDRY_CONFIG.pickupFee,
+          free_pickup_min_weight: DEFAULT_LAUNDRY_CONFIG.freePickupMinWeight,
+          available_locations: DEFAULT_LAUNDRY_CONFIG.availableLocations || []
+        });
+      } catch (e) {
+        console.error('Supabase reset pricing notice:', e);
+      }
+    })();
+
+    showToast('Reset all pricing categories to system defaults in Cloud Database', 'info');
   };
 
   const addHouseCategory = (newCat: HouseCategoryData) => {
     setHouseCategories((prev) => [...prev, newCat]);
+
+    (async () => {
+      try {
+        await supabase.from('house_categories').upsert({
+          id: newCat.id,
+          label: newCat.label,
+          sqft_range: newCat.sqftRange,
+          standard: newCat.standard,
+          premium: newCat.premium,
+          custom_plans: newCat.customPlans || [],
+          available_locations: newCat.availableLocations || []
+        });
+      } catch (e) {
+        console.error('Supabase house category add notice:', e);
+      }
+    })();
+
     showToast(`Added new variation: ${newCat.label}`, 'success');
   };
 
   const deleteHouseCategory = (categoryId: string) => {
     setHouseCategories((prev) => prev.filter((c) => c.id !== categoryId));
+
+    (async () => {
+      try {
+        await supabase.from('house_categories').delete().eq('id', categoryId);
+      } catch (e) {
+        console.error('Supabase house category delete notice:', e);
+      }
+    })();
+
     showToast(`Deleted variation category`, 'info');
   };
 
   const addVehicleCategory = (newVeh: VehicleCategoryData) => {
     setVehicleCategories((prev) => [...prev, newVeh]);
+
+    (async () => {
+      try {
+        await supabase.from('vehicle_categories').upsert({
+          id: newVeh.id,
+          label: newVeh.label,
+          examples: newVeh.examples,
+          packages: newVeh.packages,
+          available_locations: newVeh.availableLocations || []
+        });
+      } catch (e) {
+        console.error('Supabase vehicle category add notice:', e);
+      }
+    })();
+
     showToast(`Added new vehicle variation: ${newVeh.label}`, 'success');
   };
 
   const deleteVehicleCategory = (vehicleId: string) => {
     setVehicleCategories((prev) => prev.filter((v) => v.id !== vehicleId));
+
+    (async () => {
+      try {
+        await supabase.from('vehicle_categories').delete().eq('id', vehicleId);
+      } catch (e) {
+        console.error('Supabase vehicle category delete notice:', e);
+      }
+    })();
+
     showToast(`Deleted vehicle variation`, 'info');
   };
 
@@ -2237,6 +2539,15 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setHouseCategories((prev) =>
       prev.map((c) => (c.id === catId ? { ...c, availableLocations: locs } : c))
     );
+
+    (async () => {
+      try {
+        await supabase.from('house_categories').update({ available_locations: locs }).eq('id', catId);
+      } catch (e) {
+        console.error('Supabase house location coverage notice:', e);
+      }
+    })();
+
     showToast(`Updated location coverage for House Cleaning (${catId})`, 'success');
   };
 
@@ -2244,11 +2555,29 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setVehicleCategories((prev) =>
       prev.map((v) => (v.id === catId ? { ...v, availableLocations: locs } : v))
     );
+
+    (async () => {
+      try {
+        await supabase.from('vehicle_categories').update({ available_locations: locs }).eq('id', catId);
+      } catch (e) {
+        console.error('Supabase vehicle location coverage notice:', e);
+      }
+    })();
+
     showToast(`Updated location coverage for Car Wash (${catId})`, 'success');
   };
 
   const updateLaundryLocations = (locs: string[]) => {
     setLaundryConfigState((prev) => ({ ...prev, availableLocations: locs }));
+
+    (async () => {
+      try {
+        await supabase.from('laundry_config').update({ available_locations: locs }).eq('id', 'default_laundry_config');
+      } catch (e) {
+        console.error('Supabase laundry location coverage notice:', e);
+      }
+    })();
+
     showToast('Updated location coverage for Laundry Services', 'success');
   };
 
