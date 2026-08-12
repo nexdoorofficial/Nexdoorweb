@@ -110,6 +110,42 @@ export const BookingWizard: React.FC = () => {
   const [addressLine, setAddressLine] = useState('');
   const [customRequirements, setCustomRequirements] = useState('');
 
+  // Validation state for Step 5
+  const [errors, setErrors] = useState<{
+    fullName?: string;
+    phone?: string;
+    addressLine?: string;
+    pincode?: string;
+  }>({});
+
+  const validateStep5 = () => {
+    const newErrors: { fullName?: string; phone?: string; addressLine?: string; pincode?: string } = {};
+
+    if (!fullName || !fullName.trim()) {
+      newErrors.fullName = 'Full Name is required';
+    }
+
+    if (!phone || !phone.trim()) {
+      newErrors.phone = 'Phone number is required';
+    } else {
+      const digitsOnly = phone.replace(/\D/g, '');
+      if (digitsOnly.length < 10) {
+        newErrors.phone = 'Please enter a valid 10-digit phone number';
+      }
+    }
+
+    if (!addressLine || !addressLine.trim()) {
+      newErrors.addressLine = 'House / Flat / Building Address is required';
+    }
+
+    if (!pincode || !pincode.trim()) {
+      newErrors.pincode = 'Pincode is required';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   // Coupon Code & Discount state
   const [couponInput, setCouponInput] = useState('');
   const [appliedCoupon, setAppliedCoupon] = useState<any>(null);
@@ -1183,36 +1219,93 @@ export const BookingWizard: React.FC = () => {
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                   <div>
-                    <label style={{ fontSize: '0.85rem', fontWeight: 700, display: 'block', marginBottom: '6px' }}>Full Name *</label>
+                    <label style={{ fontSize: '0.85rem', fontWeight: 700, display: 'block', marginBottom: '6px', color: errors.fullName ? '#EF4444' : '#1E293B' }}>
+                      Full Name *
+                    </label>
                     <input
                       type="text"
                       placeholder="e.g. Anand Ramachandran"
                       value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid #E2E8F0' }}
+                      onChange={(e) => {
+                        setFullName(e.target.value);
+                        if (errors.fullName) setErrors((prev) => ({ ...prev, fullName: undefined }));
+                      }}
+                      style={{
+                        width: '100%',
+                        padding: '12px',
+                        borderRadius: '12px',
+                        border: errors.fullName ? '1.5px solid #EF4444' : '1px solid #CBD5E1',
+                        background: errors.fullName ? '#FEF2F2' : '#FFFFFF',
+                        fontSize: '0.9rem',
+                        outline: 'none',
+                        transition: 'all 0.2s ease'
+                      }}
                     />
+                    {errors.fullName && (
+                      <span style={{ fontSize: '0.78rem', color: '#EF4444', fontWeight: 700, marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <AlertCircle size={13} /> {errors.fullName}
+                      </span>
+                    )}
                   </div>
 
                   <div>
-                    <label style={{ fontSize: '0.85rem', fontWeight: 700, display: 'block', marginBottom: '6px' }}>Phone Number *</label>
+                    <label style={{ fontSize: '0.85rem', fontWeight: 700, display: 'block', marginBottom: '6px', color: errors.phone ? '#EF4444' : '#1E293B' }}>
+                      Phone Number *
+                    </label>
                     <input
                       type="tel"
                       placeholder="e.g. +91 98765 43210"
                       value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid #E2E8F0' }}
+                      onChange={(e) => {
+                        setPhone(e.target.value);
+                        if (errors.phone) setErrors((prev) => ({ ...prev, phone: undefined }));
+                      }}
+                      style={{
+                        width: '100%',
+                        padding: '12px',
+                        borderRadius: '12px',
+                        border: errors.phone ? '1.5px solid #EF4444' : '1px solid #CBD5E1',
+                        background: errors.phone ? '#FEF2F2' : '#FFFFFF',
+                        fontSize: '0.9rem',
+                        outline: 'none',
+                        transition: 'all 0.2s ease'
+                      }}
                     />
+                    {errors.phone && (
+                      <span style={{ fontSize: '0.78rem', color: '#EF4444', fontWeight: 700, marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <AlertCircle size={13} /> {errors.phone}
+                      </span>
+                    )}
                   </div>
 
                   <div style={{ gridColumn: 'span 2' }}>
-                    <label style={{ fontSize: '0.85rem', fontWeight: 700, display: 'block', marginBottom: '6px' }}>House / Flat / Building Address *</label>
+                    <label style={{ fontSize: '0.85rem', fontWeight: 700, display: 'block', marginBottom: '6px', color: errors.addressLine ? '#EF4444' : '#1E293B' }}>
+                      House / Flat / Building Address *
+                    </label>
                     <input
                       type="text"
                       placeholder="Flat 4B, Prestige Cyber Towers, Seaport Airport Rd"
                       value={addressLine}
-                      onChange={(e) => setAddressLine(e.target.value)}
-                      style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid #E2E8F0' }}
+                      onChange={(e) => {
+                        setAddressLine(e.target.value);
+                        if (errors.addressLine) setErrors((prev) => ({ ...prev, addressLine: undefined }));
+                      }}
+                      style={{
+                        width: '100%',
+                        padding: '12px',
+                        borderRadius: '12px',
+                        border: errors.addressLine ? '1.5px solid #EF4444' : '1px solid #CBD5E1',
+                        background: errors.addressLine ? '#FEF2F2' : '#FFFFFF',
+                        fontSize: '0.9rem',
+                        outline: 'none',
+                        transition: 'all 0.2s ease'
+                      }}
                     />
+                    {errors.addressLine && (
+                      <span style={{ fontSize: '0.78rem', color: '#EF4444', fontWeight: 700, marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <AlertCircle size={13} /> {errors.addressLine}
+                      </span>
+                    )}
                   </div>
 
                   <div>
@@ -1255,13 +1348,32 @@ export const BookingWizard: React.FC = () => {
                   </div>
 
                   <div>
-                    <label style={{ fontSize: '0.85rem', fontWeight: 700, display: 'block', marginBottom: '6px' }}>Pincode</label>
+                    <label style={{ fontSize: '0.85rem', fontWeight: 700, display: 'block', marginBottom: '6px', color: errors.pincode ? '#EF4444' : '#1E293B' }}>
+                      Pincode *
+                    </label>
                     <input
                       type="text"
                       value={pincode}
-                      onChange={(e) => setPincode(e.target.value)}
-                      style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid #E2E8F0' }}
+                      onChange={(e) => {
+                        setPincode(e.target.value);
+                        if (errors.pincode) setErrors((prev) => ({ ...prev, pincode: undefined }));
+                      }}
+                      style={{
+                        width: '100%',
+                        padding: '12px',
+                        borderRadius: '12px',
+                        border: errors.pincode ? '1.5px solid #EF4444' : '1px solid #CBD5E1',
+                        background: errors.pincode ? '#FEF2F2' : '#FFFFFF',
+                        fontSize: '0.9rem',
+                        outline: 'none',
+                        transition: 'all 0.2s ease'
+                      }}
                     />
+                    {errors.pincode && (
+                      <span style={{ fontSize: '0.78rem', color: '#EF4444', fontWeight: 700, marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <AlertCircle size={13} /> {errors.pincode}
+                      </span>
+                    )}
                   </div>
 
                   {/* CUSTOM REQUIREMENTS TEXT AREA */}
@@ -1561,6 +1673,12 @@ export const BookingWizard: React.FC = () => {
                   const activeSubKey = serviceId === 'house-cleaning' ? houseCategory : serviceId === 'car-wash' ? vehicleCategory : undefined;
                   if (activeSubKey && !adminData.isServiceAvailableInLocation(serviceId, area, activeSubKey)) {
                     alert(`⚠️ ${activeSubKey.toUpperCase()} plan is currently not available in ${area}. Please choose an available plan tier or location to proceed.`);
+                    return;
+                  }
+                }
+                // Step 5: Validate Mandatory Address & Contact Info
+                if (step === 5) {
+                  if (!validateStep5()) {
                     return;
                   }
                 }
