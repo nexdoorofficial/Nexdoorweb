@@ -2328,8 +2328,14 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         if (cleanSlotLoc !== cleanInputLoc) return false;
       }
 
-      // 4. If slot has no specific timeSlot, it blocks the full day
-      if (!slot.timeSlot || slot.timeSlot === 'all') return true;
+      // 4. If slot has no specific timeSlot or is a Full Day block, it blocks the full day
+      if (
+        !slot.timeSlot ||
+        slot.timeSlot === 'all' ||
+        slot.timeSlot === '' ||
+        slot.timeSlot.toLowerCase().includes('full day') ||
+        slot.timeSlot.toLowerCase() === 'full-day'
+      ) return true;
 
       // 5. If checking a specific timeSlot
       if (timeSlot) {

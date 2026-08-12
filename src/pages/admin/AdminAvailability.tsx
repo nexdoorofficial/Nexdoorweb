@@ -275,7 +275,14 @@ export const AdminAvailability: React.FC = () => {
                 return slot.date === dateStr && isTabMatch;
               });
 
-              const isFullDayBlocked = dayBlockages.some((s) => !s.timeSlot || s.timeSlot === 'all');
+              const isFullDayBlocked = dayBlockages.some(
+                (s) =>
+                  !s.timeSlot ||
+                  s.timeSlot === 'all' ||
+                  s.timeSlot === '' ||
+                  s.timeSlot.toLowerCase().includes('full day') ||
+                  s.timeSlot.toLowerCase() === 'full-day'
+              );
               const hasSlotBlock = dayBlockages.length > 0;
 
               return (
