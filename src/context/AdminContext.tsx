@@ -798,7 +798,7 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           }));
         }
 
-        // 2. Sync Bookings
+        // 2. Sync Bookings (Merge DB bookings with local/state bookings)
         const { data: dbBookings } = await supabase.from('bookings').select('*').order('created_at', { ascending: false });
         if (dbBookings && dbBookings.length > 0) {
           const mappedBookings: BookingRecord[] = dbBookings.map((b: any) => ({
@@ -818,11 +818,24 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             estimatedTotal: Number(b.estimated_total || b.estimatedTotal) || 0,
             depositPaid: Number(b.deposit_paid || b.depositPaid) || 0,
             status: b.status || 'pending',
-            assignedStaff: b.assigned_staff || b.assignedStaff || '',
+            assignedStaff: b.assigned_staff || b.assigned_technician || b.assignedStaff || 'Unassigned',
             notes: b.notes || '',
             createdAt: b.created_at || b.createdAt || new Date().toISOString()
           }));
-          setBookings(mappedBookings);
+
+          setBookings((prev) => {
+            const mergedMap = new Map<string, BookingRecord>();
+            // Add DB bookings first
+            mappedBookings.forEach((b) => mergedMap.set(b.referenceId || b.id, b));
+            // Add any local state bookings that might not be in DB yet
+            prev.forEach((b) => {
+              const key = b.referenceId || b.id;
+              if (!mergedMap.has(key)) {
+                mergedMap.set(key, b);
+              }
+            });
+            return Array.from(mergedMap.values());
+          });
         }
 
         // 3. Sync Inquiries
@@ -1211,7 +1224,8 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           estimated_total: newBooking.estimatedTotal,
           deposit_paid: newBooking.depositPaid,
           status: newBooking.status,
-          assigned_technician: newBooking.assignedStaff,
+          assigned_staff: newBooking.assignedStaff || 'Unassigned',
+          assigned_technician: newBooking.assignedStaff || 'Unassigned',
           notes: newBooking.notes
         });
       } catch (e) {
