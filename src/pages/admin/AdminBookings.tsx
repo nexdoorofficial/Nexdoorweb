@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   Search,
   Plus,
@@ -13,12 +14,21 @@ import type { BookingRecord, BookingStatus } from '../../types/admin';
 
 export const AdminBookings: React.FC = () => {
   const { bookings, updateBookingStatus, assignTechnician, technicians } = useAdminData();
+  const [searchParams] = useSearchParams();
+  const initialStatus = searchParams.get('status') || 'all';
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedStatusFilter, setSelectedStatusFilter] = useState<string>('all');
+  const [selectedStatusFilter, setSelectedStatusFilter] = useState<string>(initialStatus);
   const [selectedBooking, setSelectedBooking] = useState<BookingRecord | null>(null);
   const [isNewBookingOpen, setIsNewBookingOpen] = useState(false);
   const [tableWhatsAppPrompt, setTableWhatsAppPrompt] = useState<{ booking: BookingRecord; newStatus: BookingStatus } | null>(null);
+
+  useEffect(() => {
+    const statusFromUrl = searchParams.get('status');
+    if (statusFromUrl) {
+      setSelectedStatusFilter(statusFromUrl);
+    }
+  }, [searchParams]);
 
   const handleTableStatusChange = (booking: BookingRecord, newStatus: BookingStatus) => {
     updateBookingStatus(booking.id, newStatus);

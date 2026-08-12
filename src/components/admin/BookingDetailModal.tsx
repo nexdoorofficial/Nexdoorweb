@@ -119,6 +119,7 @@ export const BookingDetailModal: React.FC<Props> = ({ booking, isOpen, onClose }
       }}
     >
       <div
+        className="booking-print-area"
         data-lenis-prevent
         onWheel={(e) => e.stopPropagation()}
         style={{
@@ -146,7 +147,7 @@ export const BookingDetailModal: React.FC<Props> = ({ booking, isOpen, onClose }
               Created on {new Date(booking.createdAt).toLocaleString()}
             </p>
           </div>
-          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <div className="no-print" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
             <a
               href={generateWhatsAppUrl(booking, currentStatus)}
               target="_blank"
@@ -182,7 +183,7 @@ export const BookingDetailModal: React.FC<Props> = ({ booking, isOpen, onClose }
 
         {/* Skippable WhatsApp Notification Prompt Banner */}
         {showWhatsAppPrompt && (
-          <div style={{
+          <div className="no-print" style={{
             background: 'linear-gradient(135deg, #064E3B, #047857)',
             color: '#FFFFFF',
             borderRadius: '16px',
@@ -245,7 +246,7 @@ export const BookingDetailModal: React.FC<Props> = ({ booking, isOpen, onClose }
         )}
 
         {/* Quick Status Control Bar */}
-        <div style={{ background: '#F8FAFC', padding: '16px 20px', borderRadius: '16px', marginBottom: '24px', border: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+        <div className="no-print" style={{ background: '#F8FAFC', padding: '16px 20px', borderRadius: '16px', marginBottom: '24px', border: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
           <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#334155' }}>Update Status:</span>
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             {(['pending', 'confirmed', 'in-progress', 'completed', 'cancelled'] as BookingStatus[]).map((st) => (
@@ -383,7 +384,7 @@ export const BookingDetailModal: React.FC<Props> = ({ booking, isOpen, onClose }
         </div>
 
         {/* Notes */}
-        <div style={{ marginBottom: '24px' }}>
+        <div className="no-print" style={{ marginBottom: '24px' }}>
           <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
             Admin Notes & Customer Special Instructions
           </label>
@@ -405,7 +406,7 @@ export const BookingDetailModal: React.FC<Props> = ({ booking, isOpen, onClose }
         </div>
 
         {/* Footer */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <div className="no-print" style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <button onClick={onClose} style={{ padding: '10px 24px', borderRadius: '12px', background: '#1E293B', color: '#FFF', border: 'none', fontWeight: 700, cursor: 'pointer' }}>
             Close
           </button>

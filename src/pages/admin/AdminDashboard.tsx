@@ -79,7 +79,10 @@ export const AdminDashboard: React.FC = () => {
         </div>
 
         {/* Metric 3: Pending Action */}
-        <div style={{ background: '#FFFFFF', padding: '24px', borderRadius: '20px', border: '1px solid #E2E8F0', boxShadow: '0 4px 12px rgba(0,0,0,0.03)' }}>
+        <div
+          onClick={() => navigate('/admin/bookings?status=pending')}
+          style={{ background: '#FFFFFF', padding: '24px', borderRadius: '20px', border: '1px solid #E2E8F0', boxShadow: '0 4px 12px rgba(0,0,0,0.03)', cursor: 'pointer' }}
+        >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
             <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#64748B' }}>Pending Approvals</span>
             <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'linear-gradient(135deg, #F59E0B, #D97706)', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

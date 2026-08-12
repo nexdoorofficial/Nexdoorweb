@@ -317,22 +317,23 @@ export const AdminLayout: React.FC<Props> = ({ children }) => {
             {/* Pending Alert Badge */}
             {pendingBookingsCount > 0 && (
               <div
-                onClick={() => navigate('/admin/bookings')}
+                onClick={() => navigate('/admin/bookings?status=pending')}
                 style={{
                   background: '#FEF3C7',
-                  color: '#D97706',
-                  padding: '8px 14px',
-                  borderRadius: '20px',
-                  fontSize: '0.8rem',
+                  border: '1px solid #F59E0B',
+                  color: '#92400E',
+                  padding: '8px 16px',
+                  borderRadius: '30px',
+                  fontSize: '0.82rem',
                   fontWeight: 700,
                   display: 'flex',
                   alignItems: 'center',
                   gap: '8px',
                   cursor: 'pointer',
-                  border: '1px solid #FDE68A'
+                  boxShadow: '0 2px 8px rgba(245, 158, 11, 0.2)'
                 }}
               >
-                <Bell size={16} />
+                <Bell size={16} color="#D97706" />
                 <span>{pendingBookingsCount} Pending Bookings Need Confirmation</span>
               </div>
             )}
