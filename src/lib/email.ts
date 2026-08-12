@@ -9,15 +9,27 @@ const RESEND_API_KEY = import.meta.env.VITE_RESEND_API_KEY || import.meta.env.RE
  */
 export async function sendNewOrderNotification(booking: Partial<BookingRecord>): Promise<{ success: boolean; id?: string; error?: string }> {
   try {
-    const apiKey = RESEND_API_KEY;
-
-    if (!apiKey) {
-      console.info('ℹ️ [Resend Email Notification]: VITE_RESEND_API_KEY is not set yet. Email notification payload generated below:');
-      console.info('Order Notification Payload:', {
-        to: ADMIN_NOTIFICATION_EMAIL,
-        subject: `🚨 New Order Received! [${booking.referenceId || 'NEX-BOOKING'}] - ${booking.serviceName}`,
-        booking
+    // 1. Try calling the Vercel serverless API endpoint (/api/send-order-email)
+    try {
+      const serverlessRes = await fetch('/api/send-order-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ booking })
       });
+      if (serverlessRes.ok) {
+        const serverlessData = await serverlessRes.json();
+        if (serverlessData.success) {
+          console.log('✅ Instant Email Notification dispatched via Vercel serverless API:', serverlessData);
+          return { success: true, id: serverlessData.data?.id };
+        }
+      }
+    } catch (e) {
+      console.warn('Vercel serverless API notice, falling back to direct API dispatch...', e);
+    }
+
+    const apiKey = RESEND_API_KEY;
+    if (!apiKey) {
+      console.info('ℹ️ [Resend Email Notification]: VITE_RESEND_API_KEY is not set yet.');
       return { success: false, error: 'Resend API key missing (set VITE_RESEND_API_KEY in Vercel)' };
     }
 
