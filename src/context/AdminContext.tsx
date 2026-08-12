@@ -521,124 +521,25 @@ const SEED_BLOGS: BlogPost[] = BLOG_POSTS.map((b) => ({
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
 export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Load state from localStorage or seed
-  const [bookings, setBookings] = useState<BookingRecord[]>(() => {
-    try {
-      const saved = localStorage.getItem('nexdoor_admin_bookings');
-      return saved ? JSON.parse(saved) : SEED_BOOKINGS;
-    } catch (e) {
-      return SEED_BOOKINGS;
-    }
-  });
-
-  const [services, setServices] = useState<AdminService[]>(() => {
-    try {
-      const saved = localStorage.getItem('nexdoor_admin_services');
-      return saved ? JSON.parse(saved) : SEED_SERVICES;
-    } catch (e) {
-      return SEED_SERVICES;
-    }
-  });
-
-  const [houseCategories, setHouseCategories] = useState<HouseCategoryData[]>(() => {
-    try {
-      const saved = localStorage.getItem('nexdoor_admin_house_categories');
-      return saved ? JSON.parse(saved) : HOUSE_CATEGORIES;
-    } catch (e) {
-      return HOUSE_CATEGORIES;
-    }
-  });
-
-  const [vehicleCategories, setVehicleCategories] = useState<VehicleCategoryData[]>(() => {
-    try {
-      const saved = localStorage.getItem('nexdoor_admin_vehicle_categories');
-      return saved ? JSON.parse(saved) : VEHICLE_CATEGORIES;
-    } catch (e) {
-      return VEHICLE_CATEGORIES;
-    }
-  });
-
-  const [laundryConfig, setLaundryConfigState] = useState<LaundryConfig>(() => {
-    try {
-      const saved = localStorage.getItem('nexdoor_admin_laundry_config');
-      return saved ? JSON.parse(saved) : DEFAULT_LAUNDRY_CONFIG;
-    } catch (e) {
-      return DEFAULT_LAUNDRY_CONFIG;
-    }
-  });
-
-  const [technicians, setTechnicians] = useState<Technician[]>(() => {
-    try {
-      const saved = localStorage.getItem('nexdoor_admin_technicians');
-      return saved ? JSON.parse(saved) : SEED_TECHNICIANS;
-    } catch (e) {
-      return SEED_TECHNICIANS;
-    }
-  });
+  // Pure State initialized from default seeds, synchronized live via Supabase Cloud
+  const [bookings, setBookings] = useState<BookingRecord[]>(SEED_BOOKINGS);
+  const [services, setServices] = useState<AdminService[]>(SEED_SERVICES);
+  const [houseCategories, setHouseCategories] = useState<HouseCategoryData[]>(HOUSE_CATEGORIES);
+  const [vehicleCategories, setVehicleCategories] = useState<VehicleCategoryData[]>(VEHICLE_CATEGORIES);
+  const [laundryConfig, setLaundryConfigState] = useState<LaundryConfig>(DEFAULT_LAUNDRY_CONFIG);
+  const [technicians, setTechnicians] = useState<Technician[]>(SEED_TECHNICIANS);
   const [locations, setLocations] = useState<ServiceAreaAdmin[]>(SEED_LOCATIONS);
-  const [blockedSlots, setBlockedSlots] = useState<BlockedSlot[]>(() => {
-    try {
-      const saved = localStorage.getItem('nexdoor_admin_blocked_slots');
-      return saved ? JSON.parse(saved) : SEED_BLOCKED_SLOTS;
-    } catch (e) {
-      return SEED_BLOCKED_SLOTS;
-    }
-  });
+  const [blockedSlots, setBlockedSlots] = useState<BlockedSlot[]>(SEED_BLOCKED_SLOTS);
+  const [coupons, setCoupons] = useState<Coupon[]>(SEED_COUPONS);
+  const [inquiries, setInquiries] = useState<InquiryRecord[]>(SEED_INQUIRIES);
+  const [blogs, setBlogs] = useState<BlogPost[]>(SEED_BLOGS);
+  const [siteSettings, setSiteSettings] = useState<SiteSettings>(DEFAULT_SITE_SETTINGS);
+  const [careerPositions, setCareerPositions] = useState<CareerPosition[]>(
+    CAREER_POSITIONS.map((p) => ({ ...p, status: 'active' as const }))
+  );
+  const [jobApplications, setJobApplications] = useState<JobApplication[]>(SEED_JOB_APPLICATIONS);
 
-  const [coupons, setCoupons] = useState<Coupon[]>(() => {
-    try {
-      const saved = localStorage.getItem('nexdoor_admin_coupons');
-      return saved ? JSON.parse(saved) : SEED_COUPONS;
-    } catch (e) {
-      return SEED_COUPONS;
-    }
-  });
-
-  const [inquiries, setInquiries] = useState<InquiryRecord[]>(() => {
-    try {
-      const saved = localStorage.getItem('nexdoor_admin_inquiries');
-      return saved ? JSON.parse(saved) : SEED_INQUIRIES;
-    } catch (e) {
-      return SEED_INQUIRIES;
-    }
-  });
-
-  const [blogs, setBlogs] = useState<BlogPost[]>(() => {
-    try {
-      const saved = localStorage.getItem('nexdoor_admin_blogs');
-      return saved ? JSON.parse(saved) : SEED_BLOGS;
-    } catch (e) {
-      return SEED_BLOGS;
-    }
-  });
-
-  const [siteSettings, setSiteSettings] = useState<SiteSettings>(() => {
-    try {
-      const saved = localStorage.getItem('nexdoor_admin_site_settings');
-      return saved ? { ...DEFAULT_SITE_SETTINGS, ...JSON.parse(saved) } : DEFAULT_SITE_SETTINGS;
-    } catch (e) {
-      return DEFAULT_SITE_SETTINGS;
-    }
-  });
-
-  const [careerPositions, setCareerPositions] = useState<CareerPosition[]>(() => {
-    try {
-      const saved = localStorage.getItem('nexdoor_admin_career_positions');
-      return saved ? JSON.parse(saved) : CAREER_POSITIONS.map((p) => ({ ...p, status: 'active' as const }));
-    } catch (e) {
-      return CAREER_POSITIONS.map((p) => ({ ...p, status: 'active' as const }));
-    }
-  });
-
-  const [jobApplications, setJobApplications] = useState<JobApplication[]>(() => {
-    try {
-      const saved = localStorage.getItem('nexdoor_admin_job_applications');
-      return saved ? JSON.parse(saved) : SEED_JOB_APPLICATIONS;
-    } catch (e) {
-      return SEED_JOB_APPLICATIONS;
-    }
-  });
-
+  // Admin Session State (Kept in Local Browser Storage as requested)
   const [adminEmail, setAdminEmail] = useState<string>(() => {
     return localStorage.getItem('nexdoor_admin_email') || 'nexdoorofficial@gmail.com';
   });
@@ -736,30 +637,6 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   useEffect(() => {
-    try {
-      localStorage.setItem('nexdoor_admin_blogs', JSON.stringify(blogs));
-    } catch (err) {
-      console.error('Failed to save blogs', err);
-    }
-  }, [blogs]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('nexdoor_admin_career_positions', JSON.stringify(careerPositions));
-    } catch (e) {}
-  }, [careerPositions]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('nexdoor_admin_job_applications', JSON.stringify(jobApplications));
-    } catch (e) {}
-  }, [jobApplications]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('nexdoor_admin_site_settings', JSON.stringify(siteSettings));
-    } catch (e) {}
-
     // Dynamic Favicon Update
     if (siteSettings?.faviconUrl) {
       let link: HTMLLinkElement | null = document.querySelector("link[rel*='icon']");
@@ -980,6 +857,74 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             metaDescription: b.excerpt
           }));
           setBlogs(mappedBlogs);
+        }
+
+        // 7. Sync Coupons
+        const { data: dbCoupons } = await supabase.from('coupons').select('*').order('created_at', { ascending: false });
+        if (dbCoupons && dbCoupons.length > 0) {
+          const mappedCoupons: Coupon[] = dbCoupons.map((c: any) => ({
+            id: c.id,
+            code: c.code,
+            title: c.title || c.code,
+            description: c.description || '',
+            discountType: c.discount_type || c.discountType || 'fixed',
+            discountValue: Number(c.discount_value || c.discountValue) || 0,
+            maxDiscountAmount: c.max_discount_amount || c.maxDiscountAmount,
+            minOrderAmount: Number(c.min_order_amount || c.minOrderAmount) || 0,
+            applicableServices: c.applicable_services || c.applicableServices || 'all',
+            expiryDate: c.expiry_date || c.expiryDate || '',
+            oncePerCustomerPhone: Boolean(c.once_per_customer_phone || c.oncePerCustomerPhone),
+            status: c.status || 'active',
+            usageCount: Number(c.usage_count || c.usageCount) || 0,
+            createdAt: c.created_at || new Date().toISOString()
+          }));
+          setCoupons(mappedCoupons);
+        }
+
+        // 8. Sync Technicians / Staff
+        const { data: dbTechs } = await supabase.from('technicians').select('*');
+        if (dbTechs && dbTechs.length > 0) {
+          const mappedTechs: Technician[] = dbTechs.map((t: any) => ({
+            id: t.id,
+            name: t.name,
+            phone: t.phone,
+            email: t.email || '',
+            role: t.role,
+            specializations: t.specializations || [],
+            serviceArea: t.service_area || t.serviceArea || 'Kakkanad',
+            rating: Number(t.rating) || 5.0,
+            status: t.status || 'available'
+          }));
+          setTechnicians(mappedTechs);
+        }
+
+        // 9. Sync Blocked Slots
+        const { data: dbBlocked } = await supabase.from('blocked_slots').select('*');
+        if (dbBlocked && dbBlocked.length > 0) {
+          const mappedBlocked: BlockedSlot[] = dbBlocked.map((bs: any) => ({
+            id: bs.id,
+            serviceCategory: bs.service_category || bs.serviceCategory || 'all',
+            date: bs.date,
+            timeSlot: bs.time_slot || bs.timeSlot,
+            location: bs.location,
+            reason: bs.reason,
+            createdAt: bs.created_at || new Date().toISOString()
+          }));
+          setBlockedSlots(mappedBlocked);
+        }
+
+        // 10. Sync Locations
+        const { data: dbLocs } = await supabase.from('locations').select('*');
+        if (dbLocs && dbLocs.length > 0) {
+          const mappedLocs: ServiceAreaAdmin[] = dbLocs.map((l: any) => ({
+            id: l.id,
+            name: l.name,
+            zone: l.zone || 'Ernakulam Central',
+            pincode: l.pincode || '682030',
+            status: l.status || 'active',
+            activeBookingsCount: Number(l.active_bookings_count || l.activeBookingsCount) || 0
+          }));
+          setLocations(mappedLocs);
         }
       } catch (err) {
         console.warn('Supabase sync warning:', err);
@@ -1628,6 +1573,22 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       activeBookingsCount: 0
     };
     setLocations((prev) => [newLoc, ...prev]);
+
+    (async () => {
+      try {
+        await supabase.from('locations').insert({
+          id: newLoc.id,
+          name: newLoc.name,
+          zone: newLoc.zone,
+          pincode: newLoc.pincode,
+          status: newLoc.status,
+          active_bookings_count: 0
+        });
+      } catch (e) {
+        console.error('Supabase location insert notice:', e);
+      }
+    })();
+
     showToast(`Added service location: ${newLoc.name}`, 'success');
   };
 
@@ -1635,22 +1596,52 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setLocations((prev) =>
       prev.map((l) => (l.id === id ? { ...l, ...updatedLoc } : l))
     );
+
+    (async () => {
+      try {
+        await supabase.from('locations').update(updatedLoc).eq('id', id);
+      } catch (e) {
+        console.error('Supabase location update notice:', e);
+      }
+    })();
+
     showToast('Updated location details', 'success');
   };
 
   const deleteServiceLocation = (id: string) => {
     setLocations((prev) => prev.filter((l) => l.id !== id));
+
+    (async () => {
+      try {
+        await supabase.from('locations').delete().eq('id', id);
+      } catch (e) {
+        console.error('Supabase location delete notice:', e);
+      }
+    })();
+
     showToast('Service location deleted', 'info');
   };
 
   const toggleLocationStatus = (id: string) => {
+    let nextStatus: 'active' | 'coming_soon' = 'active';
     setLocations((prev) =>
-      prev.map((l) =>
-        l.id === id
-          ? { ...l, status: l.status === 'active' ? 'coming_soon' : 'active' }
-          : l
-      )
+      prev.map((l) => {
+        if (l.id === id) {
+          nextStatus = l.status === 'active' ? 'coming_soon' : 'active';
+          return { ...l, status: nextStatus };
+        }
+        return l;
+      })
     );
+
+    (async () => {
+      try {
+        await supabase.from('locations').update({ status: nextStatus }).eq('id', id);
+      } catch (e) {
+        console.error('Supabase location toggle notice:', e);
+      }
+    })();
+
     showToast('Location status toggled', 'info');
   };
 
@@ -1754,6 +1745,22 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       createdAt: new Date().toISOString()
     };
     setBlockedSlots((prev) => [newSlot, ...prev]);
+
+    (async () => {
+      try {
+        await supabase.from('blocked_slots').insert({
+          id: newSlot.id,
+          service_category: newSlot.serviceCategory,
+          date: newSlot.date,
+          time_slot: newSlot.timeSlot,
+          location: newSlot.location,
+          reason: newSlot.reason
+        });
+      } catch (e) {
+        console.error('Supabase blocked slot insert notice:', e);
+      }
+    })();
+
     const scope = newSlot.serviceCategory === 'all' ? 'All Services' : newSlot.serviceCategory.replace('-', ' ').toUpperCase();
     const locText = newSlot.location && newSlot.location !== 'all' ? ` in ${newSlot.location}` : ' in All Locations';
     const slotText = newSlot.timeSlot ? `at ${newSlot.timeSlot}` : 'All Day';
@@ -1763,6 +1770,15 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const deleteBlockedSlot = (id: string) => {
     setBlockedSlots((prev) => prev.filter((s) => s.id !== id));
+
+    (async () => {
+      try {
+        await supabase.from('blocked_slots').delete().eq('id', id);
+      } catch (e) {
+        console.error('Supabase blocked slot delete notice:', e);
+      }
+    })();
+
     showToast('Unblocked date/time slot', 'success');
   };
 
@@ -1810,6 +1826,29 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       createdAt: new Date().toISOString()
     };
     setCoupons((prev) => [newCoupon, ...prev]);
+
+    (async () => {
+      try {
+        await supabase.from('coupons').insert({
+          id: newCoupon.id,
+          code: newCoupon.code,
+          title: newCoupon.title,
+          description: newCoupon.description,
+          discount_type: newCoupon.discountType,
+          discount_value: newCoupon.discountValue,
+          max_discount_amount: newCoupon.maxDiscountAmount,
+          min_order_amount: newCoupon.minOrderAmount,
+          applicable_services: newCoupon.applicableServices,
+          expiry_date: newCoupon.expiryDate,
+          once_per_customer_phone: newCoupon.oncePerCustomerPhone,
+          status: newCoupon.status,
+          usage_count: 0
+        });
+      } catch (e) {
+        console.error('Supabase coupon insert notice:', e);
+      }
+    })();
+
     showToast(`Coupon ${newCoupon.code} created successfully!`, 'success');
     return newCoupon;
   };
@@ -1818,18 +1857,65 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setCoupons((prev) =>
       prev.map((c) => (c.id === id ? { ...c, ...updates, code: updates.code ? updates.code.trim().toUpperCase() : c.code } : c))
     );
+
+    (async () => {
+      try {
+        const payload: Record<string, any> = {};
+        if (updates.code !== undefined) payload.code = updates.code.trim().toUpperCase();
+        if (updates.title !== undefined) payload.title = updates.title;
+        if (updates.description !== undefined) payload.description = updates.description;
+        if (updates.discountType !== undefined) payload.discount_type = updates.discountType;
+        if (updates.discountValue !== undefined) payload.discount_value = updates.discountValue;
+        if (updates.maxDiscountAmount !== undefined) payload.max_discount_amount = updates.maxDiscountAmount;
+        if (updates.minOrderAmount !== undefined) payload.min_order_amount = updates.minOrderAmount;
+        if (updates.applicableServices !== undefined) payload.applicable_services = updates.applicableServices;
+        if (updates.expiryDate !== undefined) payload.expiry_date = updates.expiryDate;
+        if (updates.oncePerCustomerPhone !== undefined) payload.once_per_customer_phone = updates.oncePerCustomerPhone;
+        if (updates.status !== undefined) payload.status = updates.status;
+
+        await supabase.from('coupons').update(payload).eq('id', id);
+      } catch (e) {
+        console.error('Supabase coupon update notice:', e);
+      }
+    })();
+
     showToast('Coupon updated successfully!', 'success');
   };
 
   const deleteCoupon = (id: string) => {
     setCoupons((prev) => prev.filter((c) => c.id !== id));
+
+    (async () => {
+      try {
+        await supabase.from('coupons').delete().eq('id', id);
+      } catch (e) {
+        console.error('Supabase coupon delete notice:', e);
+      }
+    })();
+
     showToast('Coupon deleted.', 'info');
   };
 
   const toggleCouponStatus = (id: string) => {
+    let nextStatus: 'active' | 'inactive' = 'active';
     setCoupons((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, status: c.status === 'active' ? 'inactive' : 'active' } : c))
+      prev.map((c) => {
+        if (c.id === id) {
+          nextStatus = c.status === 'active' ? 'inactive' : 'active';
+          return { ...c, status: nextStatus };
+        }
+        return c;
+      })
     );
+
+    (async () => {
+      try {
+        await supabase.from('coupons').update({ status: nextStatus }).eq('id', id);
+      } catch (e) {
+        console.error('Supabase coupon toggle notice:', e);
+      }
+    })();
+
     showToast('Coupon status updated.', 'info');
   };
 
