@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import {
   Search,
   Plus,
-  Eye
+  Eye,
+  MessageSquare,
+  ExternalLink
 } from 'lucide-react';
 import { useAdminData } from '../../context/AdminContext';
-import { BookingDetailModal } from '../../components/admin/BookingDetailModal';
+import { BookingDetailModal, generateWhatsAppUrl } from '../../components/admin/BookingDetailModal';
 import { NewBookingModal } from '../../components/admin/NewBookingModal';
 import type { BookingRecord, BookingStatus } from '../../types/admin';
 
@@ -16,6 +18,12 @@ export const AdminBookings: React.FC = () => {
   const [selectedStatusFilter, setSelectedStatusFilter] = useState<string>('all');
   const [selectedBooking, setSelectedBooking] = useState<BookingRecord | null>(null);
   const [isNewBookingOpen, setIsNewBookingOpen] = useState(false);
+  const [tableWhatsAppPrompt, setTableWhatsAppPrompt] = useState<{ booking: BookingRecord; newStatus: BookingStatus } | null>(null);
+
+  const handleTableStatusChange = (booking: BookingRecord, newStatus: BookingStatus) => {
+    updateBookingStatus(booking.id, newStatus);
+    setTableWhatsAppPrompt({ booking, newStatus });
+  };
 
   // Filtering logic
   const filteredBookings = bookings.filter((b) => {
@@ -88,6 +96,70 @@ export const AdminBookings: React.FC = () => {
           <Plus size={18} /> Create New Booking
         </button>
       </div>
+
+      {/* Skippable WhatsApp Notification Banner */}
+      {tableWhatsAppPrompt && (
+        <div style={{
+          background: 'linear-gradient(135deg, #064E3B, #047857)',
+          color: '#FFFFFF',
+          borderRadius: '16px',
+          padding: '16px 20px',
+          marginBottom: '24px',
+          boxShadow: '0 10px 25px rgba(5, 150, 105, 0.3)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '12px'
+        }}>
+          <div>
+            <strong style={{ fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <MessageSquare size={18} color="#25D366" /> Send WhatsApp Status Update to {tableWhatsAppPrompt.booking.customerName}?
+            </strong>
+            <span style={{ fontSize: '0.82rem', opacity: 0.9, marginTop: '2px', display: 'block' }}>
+              Status was changed to <strong style={{ textTransform: 'uppercase', color: '#34D399' }}>{tableWhatsAppPrompt.newStatus}</strong> for Ref [{tableWhatsAppPrompt.booking.referenceId}].
+            </span>
+          </div>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+            <a
+              href={generateWhatsAppUrl(tableWhatsAppPrompt.booking, tableWhatsAppPrompt.newStatus)}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setTableWhatsAppPrompt(null)}
+              style={{
+                background: '#25D366',
+                color: '#FFFFFF',
+                padding: '9px 18px',
+                borderRadius: '10px',
+                fontWeight: 800,
+                fontSize: '0.85rem',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                boxShadow: '0 4px 12px rgba(37, 211, 102, 0.4)'
+              }}
+            >
+              Send WhatsApp <ExternalLink size={14} />
+            </a>
+            <button
+              onClick={() => setTableWhatsAppPrompt(null)}
+              style={{
+                background: 'rgba(255, 255, 255, 0.18)',
+                color: '#FFFFFF',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                padding: '9px 16px',
+                borderRadius: '10px',
+                fontWeight: 700,
+                fontSize: '0.85rem',
+                cursor: 'pointer'
+              }}
+            >
+              Skip
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Filter Tabs & Search Bar */}
       <div style={{ background: '#FFFFFF', padding: '20px', borderRadius: '20px', border: '1px solid #E2E8F0', marginBottom: '24px', boxShadow: '0 4px 12px rgba(0,0,0,0.03)' }}>
@@ -200,7 +272,7 @@ export const AdminBookings: React.FC = () => {
                     <td style={{ padding: '16px' }}>
                       <select
                         value={b.status}
-                        onChange={(e) => updateBookingStatus(b.id, e.target.value as BookingStatus)}
+                        onChange={(e) => handleTableStatusChange(b, e.target.value as BookingStatus)}
                         style={{
                           padding: '6px 10px',
                           borderRadius: '10px',
@@ -244,24 +316,47 @@ export const AdminBookings: React.FC = () => {
                     </td>
 
                     <td style={{ padding: '16px', textAlign: 'right' }}>
-                      <button
-                        onClick={() => setSelectedBooking(b)}
-                        style={{
-                          padding: '8px 14px',
-                          borderRadius: '8px',
-                          border: '1px solid #CBD5E1',
-                          background: '#FFFFFF',
-                          color: '#1C2677',
-                          fontWeight: 700,
-                          fontSize: '0.8rem',
-                          cursor: 'pointer',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '4px'
-                        }}
-                      >
-                        <Eye size={14} /> View
-                      </button>
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end', alignItems: 'center' }}>
+                        <a
+                          href={generateWhatsAppUrl(b)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title="Send WhatsApp Status to Customer"
+                          style={{
+                            padding: '8px 12px',
+                            borderRadius: '8px',
+                            background: '#25D366',
+                            color: '#FFFFFF',
+                            fontWeight: 800,
+                            fontSize: '0.78rem',
+                            textDecoration: 'none',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            boxShadow: '0 2px 8px rgba(37, 211, 102, 0.3)'
+                          }}
+                        >
+                          <MessageSquare size={14} /> WhatsApp
+                        </a>
+                        <button
+                          onClick={() => setSelectedBooking(b)}
+                          style={{
+                            padding: '8px 14px',
+                            borderRadius: '8px',
+                            border: '1px solid #CBD5E1',
+                            background: '#FFFFFF',
+                            color: '#1C2677',
+                            fontWeight: 700,
+                            fontSize: '0.8rem',
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px'
+                          }}
+                        >
+                          <Eye size={14} /> View
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );

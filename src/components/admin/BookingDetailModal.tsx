@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Calendar, User, Printer, Trash2 } from 'lucide-react';
+import { X, Calendar, User, Printer, Trash2, MessageSquare, ExternalLink } from 'lucide-react';
 import { useAdminData } from '../../context/AdminContext';
 import type { BookingRecord, BookingStatus } from '../../types/admin';
 
@@ -9,18 +9,50 @@ interface Props {
   onClose: () => void;
 }
 
+export const formatWhatsAppPhone = (phoneStr: string) => {
+  let clean = (phoneStr || '').replace(/\D/g, '');
+  if (clean.length === 10) {
+    clean = '91' + clean;
+  }
+  return clean;
+};
+
+export const generateWhatsAppUrl = (bookingRecord: BookingRecord, targetStatus?: BookingStatus) => {
+  const phone = formatWhatsAppPhone(bookingRecord.customerPhone);
+  const statusLabel = (targetStatus || bookingRecord.status).toUpperCase();
+
+  const text = `Hi ${bookingRecord.customerName || 'Valued Customer'},
+
+Greetings from NEXDOOR Cleaning Solutions! 🧹✨
+
+Your booking status has been updated:
+📌 Ref ID: ${bookingRecord.referenceId}
+📊 Current Status: ${statusLabel}
+🛠️ Service: ${bookingRecord.serviceName}
+📅 Schedule: ${bookingRecord.scheduledDate} at ${bookingRecord.scheduledTime}
+📍 Location: ${bookingRecord.address || 'Doorstep Address'}, ${bookingRecord.area} (${bookingRecord.pincode})
+💰 Total Amount: ₹${bookingRecord.estimatedTotal} (Deposit Paid: ₹${bookingRecord.depositPaid})
+
+For any queries, reply to this message or call us at +91 98765 43210.
+Thank you for choosing NEXDOOR!`.trim();
+
+  return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+};
+
 export const BookingDetailModal: React.FC<Props> = ({ booking, isOpen, onClose }) => {
   const { updateBookingStatus, assignTechnician, updateBookingNotes, deleteBooking, technicians } = useAdminData();
 
   const [currentStatus, setCurrentStatus] = useState<BookingStatus>('confirmed');
   const [selectedStaff, setSelectedStaff] = useState('');
   const [notes, setNotes] = useState('');
+  const [showWhatsAppPrompt, setShowWhatsAppPrompt] = useState<BookingStatus | null>(null);
 
   useEffect(() => {
     if (booking) {
       setCurrentStatus(booking.status);
       setSelectedStaff(booking.assignedStaff || 'Unassigned');
       setNotes(booking.notes || '');
+      setShowWhatsAppPrompt(null);
     }
   }, [booking]);
 
@@ -29,6 +61,7 @@ export const BookingDetailModal: React.FC<Props> = ({ booking, isOpen, onClose }
   const handleStatusChange = (newStatus: BookingStatus) => {
     setCurrentStatus(newStatus);
     updateBookingStatus(booking.id, newStatus);
+    setShowWhatsAppPrompt(newStatus);
   };
 
   const handleStaffAssign = (staff: string) => {
@@ -113,7 +146,28 @@ export const BookingDetailModal: React.FC<Props> = ({ booking, isOpen, onClose }
               Created on {new Date(booking.createdAt).toLocaleString()}
             </p>
           </div>
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <a
+              href={generateWhatsAppUrl(booking, currentStatus)}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Send WhatsApp Status to Customer"
+              style={{
+                background: '#25D366',
+                color: '#FFFFFF',
+                padding: '8px 14px',
+                borderRadius: '10px',
+                fontSize: '0.82rem',
+                fontWeight: 800,
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                boxShadow: '0 4px 12px rgba(37, 211, 102, 0.3)'
+              }}
+            >
+              <MessageSquare size={16} /> WhatsApp Status
+            </a>
             <button onClick={handlePrint} title="Print Invoice" style={{ background: '#F1F5F9', border: 'none', width: '38px', height: '38px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
               <Printer size={18} color="#475569" />
             </button>
@@ -125,6 +179,70 @@ export const BookingDetailModal: React.FC<Props> = ({ booking, isOpen, onClose }
             </button>
           </div>
         </div>
+
+        {/* Skippable WhatsApp Notification Prompt Banner */}
+        {showWhatsAppPrompt && (
+          <div style={{
+            background: 'linear-gradient(135deg, #064E3B, #047857)',
+            color: '#FFFFFF',
+            borderRadius: '16px',
+            padding: '16px 20px',
+            marginBottom: '24px',
+            boxShadow: '0 10px 25px rgba(5, 150, 105, 0.3)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '12px'
+          }}>
+            <div>
+              <strong style={{ fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <MessageSquare size={18} color="#25D366" /> Send WhatsApp Status Update to {booking.customerName}?
+              </strong>
+              <span style={{ fontSize: '0.82rem', opacity: 0.9, marginTop: '2px', display: 'block' }}>
+                Status was updated to <strong style={{ textTransform: 'uppercase', color: '#34D399' }}>{showWhatsAppPrompt}</strong>. Click below to launch WhatsApp with pre-filled status receipt.
+              </span>
+            </div>
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+              <a
+                href={generateWhatsAppUrl(booking, showWhatsAppPrompt)}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setShowWhatsAppPrompt(null)}
+                style={{
+                  background: '#25D366',
+                  color: '#FFFFFF',
+                  padding: '9px 18px',
+                  borderRadius: '10px',
+                  fontWeight: 800,
+                  fontSize: '0.85rem',
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  boxShadow: '0 4px 12px rgba(37, 211, 102, 0.4)'
+                }}
+              >
+                Send WhatsApp <ExternalLink size={14} />
+              </a>
+              <button
+                onClick={() => setShowWhatsAppPrompt(null)}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.18)',
+                  color: '#FFFFFF',
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                  padding: '9px 16px',
+                  borderRadius: '10px',
+                  fontWeight: 700,
+                  fontSize: '0.85rem',
+                  cursor: 'pointer'
+                }}
+              >
+                Skip
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Quick Status Control Bar */}
         <div style={{ background: '#F8FAFC', padding: '16px 20px', borderRadius: '16px', marginBottom: '24px', border: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
