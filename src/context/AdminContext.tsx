@@ -1668,188 +1668,189 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Category & Tier CRUD handlers with live Supabase cloud sync
   const updateHousePlan = (categoryKey: HouseCategoryKey, planType: string, updatedPlan: HousePlanDetails) => {
-    const currentCat = houseCategories.find((c) => c.id === categoryKey);
-    if (!currentCat) return;
+    setHouseCategories((prev) => {
+      const currentCat = prev.find((c) => c.id === categoryKey) || HOUSE_CATEGORIES.find((c) => c.id === categoryKey);
+      if (!currentCat) return prev;
 
-    let nextCat = { ...currentCat };
-    if (planType === 'standard') nextCat.standard = updatedPlan;
-    else if (planType === 'premium') nextCat.premium = updatedPlan;
-    else {
-      const updatedCustoms = (currentCat.customPlans || []).map((cp) =>
-        (cp.id === planType || cp.name === planType) ? updatedPlan : cp
-      );
-      nextCat.customPlans = updatedCustoms;
-    }
-
-    setHouseCategories((prev) =>
-      prev.map((cat) => (cat.id === categoryKey ? nextCat : cat))
-    );
-
-    (async () => {
-      try {
-        await supabase.from('house_categories').upsert({
-          id: nextCat.id,
-          label: nextCat.label,
-          description: nextCat.description,
-          sqft_range: nextCat.sqftRange,
-          standard: nextCat.standard,
-          premium: nextCat.premium,
-          custom_plans: nextCat.customPlans || [],
-          available_locations: nextCat.availableLocations || []
-        });
-      } catch (e) {
-        console.error('Supabase house plan update notice:', e);
+      let nextCat = { ...currentCat };
+      if (planType === 'standard') nextCat.standard = updatedPlan;
+      else if (planType === 'premium') nextCat.premium = updatedPlan;
+      else {
+        const updatedCustoms = (currentCat.customPlans || []).map((cp) =>
+          (cp.id === planType || cp.name === planType) ? updatedPlan : cp
+        );
+        nextCat.customPlans = updatedCustoms;
       }
-    })();
+
+      (async () => {
+        try {
+          await supabase.from('house_categories').upsert({
+            id: nextCat.id,
+            label: nextCat.label,
+            description: nextCat.description,
+            sqft_range: nextCat.sqftRange,
+            standard: nextCat.standard,
+            premium: nextCat.premium,
+            custom_plans: nextCat.customPlans || [],
+            available_locations: nextCat.availableLocations || []
+          });
+        } catch (e) {
+          console.error('Supabase house plan update notice:', e);
+        }
+      })();
+
+      return prev.map((cat) => (cat.id === categoryKey ? nextCat : cat));
+    });
 
     showToast(`Updated ${categoryKey.toUpperCase()} plan details`, 'success');
   };
 
   const addHouseCategoryPlan = (categoryKey: HouseCategoryKey, plan: HousePlanDetails) => {
-    const currentCat = houseCategories.find((c) => c.id === categoryKey);
-    if (!currentCat) return;
-
     const planWithId = { ...plan, id: plan.id || ('plan-' + Date.now()) };
-    const nextCat = {
-      ...currentCat,
-      customPlans: [...(currentCat.customPlans || []), planWithId]
-    };
 
-    setHouseCategories((prev) =>
-      prev.map((cat) => (cat.id === categoryKey ? nextCat : cat))
-    );
+    setHouseCategories((prev) => {
+      const currentCat = prev.find((c) => c.id === categoryKey) || HOUSE_CATEGORIES.find((c) => c.id === categoryKey);
+      if (!currentCat) return prev;
 
-    (async () => {
-      try {
-        await supabase.from('house_categories').upsert({
-          id: nextCat.id,
-          label: nextCat.label,
-          description: nextCat.description,
-          sqft_range: nextCat.sqftRange,
-          standard: nextCat.standard,
-          premium: nextCat.premium,
-          custom_plans: nextCat.customPlans || [],
-          available_locations: nextCat.availableLocations || []
-        });
-      } catch (e) {
-        console.error('Supabase house add plan notice:', e);
-      }
-    })();
+      const nextCat = {
+        ...currentCat,
+        customPlans: [...(currentCat.customPlans || []), planWithId]
+      };
+
+      (async () => {
+        try {
+          await supabase.from('house_categories').upsert({
+            id: nextCat.id,
+            label: nextCat.label,
+            description: nextCat.description,
+            sqft_range: nextCat.sqftRange,
+            standard: nextCat.standard,
+            premium: nextCat.premium,
+            custom_plans: nextCat.customPlans || [],
+            available_locations: nextCat.availableLocations || []
+          });
+        } catch (e) {
+          console.error('Supabase house add plan notice:', e);
+        }
+      })();
+
+      return prev.map((cat) => (cat.id === categoryKey ? nextCat : cat));
+    });
 
     showToast(`Added new plan "${plan.name}" to ${categoryKey.toUpperCase()}`, 'success');
   };
 
   const deleteHouseCategoryPlan = (categoryKey: HouseCategoryKey, planIdOrType: string) => {
-    const currentCat = houseCategories.find((c) => c.id === categoryKey);
-    if (!currentCat) return;
+    setHouseCategories((prev) => {
+      const currentCat = prev.find((c) => c.id === categoryKey) || HOUSE_CATEGORIES.find((c) => c.id === categoryKey);
+      if (!currentCat) return prev;
 
-    let nextCat = { ...currentCat };
-    if (planIdOrType === 'standard') {
-      nextCat.standard = {
-        ...currentCat.standard,
-        name: 'Standard Clean (Inactive)',
-        priceDisplay: 'Unavailable',
-        priceNumeric: null
-      };
-    } else if (planIdOrType === 'premium') {
-      nextCat.premium = {
-        ...currentCat.premium,
-        name: 'Premium Ultra (Inactive)',
-        priceDisplay: 'Unavailable',
-        priceNumeric: null
-      };
-    } else {
-      nextCat.customPlans = (currentCat.customPlans || []).filter((cp) => cp.id !== planIdOrType && cp.name !== planIdOrType);
-    }
-
-    setHouseCategories((prev) =>
-      prev.map((cat) => (cat.id === categoryKey ? nextCat : cat))
-    );
-
-    (async () => {
-      try {
-        await supabase.from('house_categories').upsert({
-          id: nextCat.id,
-          label: nextCat.label,
-          description: nextCat.description,
-          sqft_range: nextCat.sqftRange,
-          standard: nextCat.standard,
-          premium: nextCat.premium,
-          custom_plans: nextCat.customPlans || [],
-          available_locations: nextCat.availableLocations || []
-        });
-      } catch (e) {
-        console.error('Supabase house delete plan notice:', e);
+      let nextCat = { ...currentCat };
+      if (planIdOrType === 'standard') {
+        nextCat.standard = {
+          ...currentCat.standard,
+          name: 'Standard Clean (Inactive)',
+          priceDisplay: 'Unavailable',
+          priceNumeric: null
+        };
+      } else if (planIdOrType === 'premium') {
+        nextCat.premium = {
+          ...currentCat.premium,
+          name: 'Premium Ultra (Inactive)',
+          priceDisplay: 'Unavailable',
+          priceNumeric: null
+        };
+      } else {
+        nextCat.customPlans = (currentCat.customPlans || []).filter((cp) => cp.id !== planIdOrType && cp.name !== planIdOrType);
       }
-    })();
+
+      (async () => {
+        try {
+          await supabase.from('house_categories').upsert({
+            id: nextCat.id,
+            label: nextCat.label,
+            description: nextCat.description,
+            sqft_range: nextCat.sqftRange,
+            standard: nextCat.standard,
+            premium: nextCat.premium,
+            custom_plans: nextCat.customPlans || [],
+            available_locations: nextCat.availableLocations || []
+          });
+        } catch (e) {
+          console.error('Supabase house delete plan notice:', e);
+        }
+      })();
+
+      return prev.map((cat) => (cat.id === categoryKey ? nextCat : cat));
+    });
 
     showToast(`Deleted plan from ${categoryKey.toUpperCase()}`, 'info');
   };
 
   const updateCarPackage = (vehicleKey: VehicleCategoryKey, packageKey: string, updatedPkg: CarPackageItem) => {
-    const currentVeh = vehicleCategories.find((v) => v.id === vehicleKey);
-    if (!currentVeh) return;
+    setVehicleCategories((prev) => {
+      const currentVeh = prev.find((v) => v.id === vehicleKey) || VEHICLE_CATEGORIES.find((v) => v.id === vehicleKey);
+      if (!currentVeh) return prev;
 
-    const nextVeh = {
-      ...currentVeh,
-      packages: {
-        ...currentVeh.packages,
-        [packageKey]: updatedPkg
-      }
-    };
+      const nextVeh = {
+        ...currentVeh,
+        packages: {
+          ...currentVeh.packages,
+          [packageKey]: updatedPkg
+        }
+      };
 
-    setVehicleCategories((prev) =>
-      prev.map((veh) => (veh.id === vehicleKey ? nextVeh : veh))
-    );
+      (async () => {
+        try {
+          await supabase.from('vehicle_categories').upsert({
+            id: nextVeh.id,
+            label: nextVeh.label,
+            description: nextVeh.description,
+            examples: nextVeh.examples,
+            packages: nextVeh.packages,
+            available_locations: nextVeh.availableLocations || []
+          });
+        } catch (e) {
+          console.error('Supabase car package update notice:', e);
+        }
+      })();
 
-    (async () => {
-      try {
-        await supabase.from('vehicle_categories').upsert({
-          id: nextVeh.id,
-          label: nextVeh.label,
-          description: nextVeh.description,
-          examples: nextVeh.examples,
-          packages: nextVeh.packages,
-          available_locations: nextVeh.availableLocations || []
-        });
-      } catch (e) {
-        console.error('Supabase car package update notice:', e);
-      }
-    })();
+      return prev.map((veh) => (veh.id === vehicleKey ? nextVeh : veh));
+    });
 
     showToast(`Updated ${vehicleKey.toUpperCase()} ${updatedPkg.name} Package`, 'success');
   };
 
   const deleteCarPackage = (vehicleKey: VehicleCategoryKey, packageKey: string) => {
-    const currentVeh = vehicleCategories.find((v) => v.id === vehicleKey);
-    if (!currentVeh) return;
+    setVehicleCategories((prev) => {
+      const currentVeh = prev.find((v) => v.id === vehicleKey) || VEHICLE_CATEGORIES.find((v) => v.id === vehicleKey);
+      if (!currentVeh) return prev;
 
-    const newPackages = { ...currentVeh.packages };
-    delete newPackages[packageKey as keyof typeof newPackages];
+      const newPackages = { ...currentVeh.packages };
+      delete newPackages[packageKey as keyof typeof newPackages];
 
-    const nextVeh = {
-      ...currentVeh,
-      packages: newPackages
-    };
+      const nextVeh = {
+        ...currentVeh,
+        packages: newPackages
+      };
 
-    setVehicleCategories((prev) =>
-      prev.map((veh) => (veh.id === vehicleKey ? nextVeh : veh))
-    );
+      (async () => {
+        try {
+          await supabase.from('vehicle_categories').upsert({
+            id: nextVeh.id,
+            label: nextVeh.label,
+            description: nextVeh.description,
+            examples: nextVeh.examples,
+            packages: nextVeh.packages,
+            available_locations: nextVeh.availableLocations || []
+          });
+        } catch (e) {
+          console.error('Supabase car package delete notice:', e);
+        }
+      })();
 
-    (async () => {
-      try {
-        await supabase.from('vehicle_categories').upsert({
-          id: nextVeh.id,
-          label: nextVeh.label,
-          description: nextVeh.description,
-          examples: nextVeh.examples,
-          packages: nextVeh.packages,
-          available_locations: nextVeh.availableLocations || []
-        });
-      } catch (e) {
-        console.error('Supabase car package delete notice:', e);
-      }
-    })();
+      return prev.map((veh) => (veh.id === vehicleKey ? nextVeh : veh));
+    });
 
     showToast(`Deleted package from ${vehicleKey.toUpperCase()}`, 'info');
   };
