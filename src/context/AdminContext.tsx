@@ -1074,6 +1074,81 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             available_locations: DEFAULT_LAUNDRY_CONFIG.availableLocations || []
           });
         }
+
+        // 14. Sync Standalone Services
+        const { data: dbServices } = await supabase.from('services').select('*');
+        const dbServiceMap = new Map((dbServices || []).map((s: any) => [s.id, s]));
+
+        const mergedServices: AdminService[] = SEED_SERVICES.map((defaultS) => {
+          const dbS = dbServiceMap.get(defaultS.id);
+          if (dbS) {
+            return {
+              id: dbS.id,
+              title: dbS.title || defaultS.title,
+              category: dbS.category || defaultS.category,
+              startingPrice: dbS.starting_price || dbS.startingPrice || defaultS.startingPrice,
+              priceNumeric: Number(dbS.price_numeric ?? dbS.priceNumeric) || defaultS.priceNumeric,
+              duration: dbS.duration || defaultS.duration,
+              status: dbS.status || defaultS.status,
+              overview: dbS.overview || defaultS.overview,
+              features: dbS.features || defaultS.features,
+              included: dbS.included || defaultS.included,
+              excluded: dbS.excluded || defaultS.excluded,
+              recommendedFor: dbS.recommended_for || dbS.recommendedFor || defaultS.recommendedFor,
+              image: dbS.image || defaultS.image,
+              availableLocations: dbS.available_locations || dbS.availableLocations || defaultS.availableLocations || []
+            };
+          }
+          return defaultS;
+        });
+
+        (dbServices || []).forEach((dbS: any) => {
+          if (!SEED_SERVICES.some((ds) => ds.id === dbS.id)) {
+            mergedServices.push({
+              id: dbS.id,
+              title: dbS.title,
+              category: dbS.category || 'specialized',
+              startingPrice: dbS.starting_price || dbS.startingPrice || '₹999',
+              priceNumeric: Number(dbS.price_numeric ?? dbS.priceNumeric) || 999,
+              duration: dbS.duration || '2 - 3 Hours',
+              status: dbS.status || 'active',
+              overview: dbS.overview || '',
+              features: dbS.features || [],
+              included: dbS.included || [],
+              excluded: dbS.excluded || [],
+              recommendedFor: dbS.recommended_for || dbS.recommendedFor,
+              image: dbS.image || 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=80',
+              availableLocations: dbS.available_locations || dbS.availableLocations || []
+            });
+          }
+        });
+
+        setServices(mergedServices);
+
+        for (const defaultS of SEED_SERVICES) {
+          if (!dbServiceMap.has(defaultS.id)) {
+            (async () => {
+              try {
+                await supabase.from('services').upsert({
+                  id: defaultS.id,
+                  title: defaultS.title,
+                  category: defaultS.category,
+                  starting_price: defaultS.startingPrice,
+                  price_numeric: defaultS.priceNumeric,
+                  duration: defaultS.duration,
+                  status: defaultS.status,
+                  overview: defaultS.overview,
+                  features: defaultS.features,
+                  included: defaultS.included,
+                  excluded: defaultS.excluded,
+                  recommended_for: defaultS.recommendedFor,
+                  image: defaultS.image,
+                  available_locations: defaultS.availableLocations || []
+                });
+              } catch (e) {}
+            })();
+          }
+        }
       } catch (err) {
         console.warn('Supabase sync warning:', err);
       }
@@ -1507,7 +1582,13 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           price_numeric: newService.priceNumeric,
           duration: newService.duration,
           status: newService.status,
-          overview: newService.overview
+          overview: newService.overview,
+          features: newService.features || [],
+          included: newService.included || [],
+          excluded: newService.excluded || [],
+          recommended_for: newService.recommendedFor,
+          image: newService.image,
+          available_locations: newService.availableLocations || []
         });
       } catch (e) {
         console.error('Supabase service insert notice:', e);
@@ -1525,7 +1606,22 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     (async () => {
       try {
-        await supabase.from('services').update(serviceData).eq('id', id);
+        const payload: Record<string, any> = {};
+        if (serviceData.title !== undefined) payload.title = serviceData.title;
+        if (serviceData.category !== undefined) payload.category = serviceData.category;
+        if (serviceData.startingPrice !== undefined) payload.starting_price = serviceData.startingPrice;
+        if (serviceData.priceNumeric !== undefined) payload.price_numeric = serviceData.priceNumeric;
+        if (serviceData.duration !== undefined) payload.duration = serviceData.duration;
+        if (serviceData.status !== undefined) payload.status = serviceData.status;
+        if (serviceData.overview !== undefined) payload.overview = serviceData.overview;
+        if (serviceData.features !== undefined) payload.features = serviceData.features;
+        if (serviceData.included !== undefined) payload.included = serviceData.included;
+        if (serviceData.excluded !== undefined) payload.excluded = serviceData.excluded;
+        if (serviceData.recommendedFor !== undefined) payload.recommended_for = serviceData.recommendedFor;
+        if (serviceData.image !== undefined) payload.image = serviceData.image;
+        if (serviceData.availableLocations !== undefined) payload.available_locations = serviceData.availableLocations;
+
+        await supabase.from('services').update(payload).eq('id', id);
       } catch (e) {
         console.error('Supabase service update notice:', e);
       }
