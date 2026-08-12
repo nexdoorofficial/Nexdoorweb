@@ -269,10 +269,10 @@ export const AdminAvailability: React.FC = () => {
               const dayNum = i + 1;
               const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
               
-              // Find blockages on this date for the activeTab filter
-              const dayBlockages = blockedSlots.filter((slot) => {
-                const isTabMatch = activeTab === 'all' || slot.serviceCategory === 'all' || slot.serviceCategory === activeTab;
-                return slot.date === dateStr && isTabMatch;
+              // Find blockages on this date using filteredSlots (respects location filter, service tab & date aliases)
+              const dayBlockages = filteredSlots.filter((slot) => {
+                const targetDate = slot.date || (slot as any).date_str || '';
+                return targetDate === dateStr;
               });
 
               const isFullDayBlocked = dayBlockages.some(
@@ -370,7 +370,7 @@ export const AdminAvailability: React.FC = () => {
                         </span>
                       </div>
                       <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#0F172A' }}>
-                        📅 {slot.date} {slot.timeSlot ? `• ⏰ ${slot.timeSlot}` : '• 🔴 Full Day'}
+                        📅 {slot.date || (slot as any).date_str} {!slot.timeSlot || slot.timeSlot === 'all' || slot.timeSlot === '' || slot.timeSlot.toLowerCase().includes('full day') ? '• 🔴 Full Day' : `• ⏰ ${slot.timeSlot}`}
                       </div>
                       {slot.reason && (
                         <div style={{ fontSize: '0.72rem', color: '#64748B', marginTop: '2px' }}>

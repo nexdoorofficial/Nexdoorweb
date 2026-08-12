@@ -126,19 +126,19 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
     if (!date) return;
 
     // 1. Resolve Target Locations list
-    let targetLocs: (string | undefined)[] = [];
+    let targetLocs: string[] = [];
     if (selectedLocations.includes('all') || selectedLocations.length === 0) {
-      targetLocs = [undefined]; // 'all' global block
+      targetLocs = ['All Locations']; // Explicit 'All Locations' global block string
     } else {
       targetLocs = selectedLocations;
     }
 
     // 2. Resolve Time Slots list
-    let targetSlots: (string | undefined)[] = [];
+    let targetSlots: string[] = [];
     if (selectedTimeSlots.includes('Full Day Block')) {
-      targetSlots = [undefined]; // Full Day block
+      targetSlots = ['Full Day']; // Explicit 'Full Day' block string
     } else {
-      const activeSlots: (string | undefined)[] = [];
+      const activeSlots: string[] = [];
       selectedTimeSlots.forEach((slot) => {
         if (slot === 'Custom') {
           if (customTime.trim()) activeSlots.push(customTime.trim());
@@ -146,7 +146,7 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
           activeSlots.push(slot);
         }
       });
-      targetSlots = activeSlots.length > 0 ? activeSlots : [undefined];
+      targetSlots = activeSlots.length > 0 ? activeSlots : ['Full Day'];
     }
 
     // 3. Save blockage for each combination
