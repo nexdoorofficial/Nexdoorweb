@@ -1,0 +1,412 @@
+import React, { useState, useMemo } from 'react';
+import {
+  Calendar,
+  Lock,
+  Unlock,
+  Plus,
+  ChevronLeft,
+  ChevronRight,
+  ShieldAlert,
+  Car,
+  Home as HomeIcon,
+  Shirt,
+  Sparkles,
+  Trash2
+} from 'lucide-react';
+import { useAdminData } from '../../context/AdminContext';
+import { BlockSlotModal } from '../../components/admin/BlockSlotModal';
+import type { BlockedSlot } from '../../types/admin';
+
+export const AdminAvailability: React.FC = () => {
+  const { blockedSlots, locations, addBlockedSlot, deleteBlockedSlot } = useAdminData();
+
+  const [activeTab, setActiveTab] = useState<string>('all');
+  const [selectedLocationFilter, setSelectedLocationFilter] = useState<string>('all');
+  const [currentDateView, setCurrentDateView] = useState<Date>(new Date(2026, 7, 1)); // August 2026 default
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedDateForModal, setSelectedDateForModal] = useState<string>('');
+
+  const year = currentDateView.getFullYear();
+  const month = currentDateView.getMonth();
+  const monthName = currentDateView.toLocaleDateString('en-US', { month: 'long' });
+
+  // Filtered blockages based on active service tab & selected location filter
+  const filteredSlots = useMemo(() => {
+    return blockedSlots.filter((slot) => {
+      const catMatch = activeTab === 'all' || slot.serviceCategory === activeTab || slot.serviceCategory === 'all';
+      const locMatch = selectedLocationFilter === 'all' || !slot.location || slot.location === 'all' || slot.location.toLowerCase().trim() === selectedLocationFilter.toLowerCase().trim();
+      return catMatch && locMatch;
+    });
+  }, [blockedSlots, activeTab, selectedLocationFilter]);
+
+  const handlePrevMonth = () => {
+    setCurrentDateView(new Date(year, month - 1, 1));
+  };
+
+  const handleNextMonth = () => {
+    setCurrentDateView(new Date(year, month + 1, 1));
+  };
+
+  const handleOpenBlockModalForDay = (dateStr: string) => {
+    setSelectedDateForModal(dateStr);
+    setIsModalOpen(true);
+  };
+
+  const handleOpenBlockModalNew = () => {
+    setSelectedDateForModal(new Date().toISOString().split('T')[0]);
+    setIsModalOpen(true);
+  };
+
+  const handleUnblock = (id: string) => {
+    if (window.confirm('Are you sure you want to unblock this date/slot?')) {
+      deleteBlockedSlot(id);
+    }
+  };
+
+  // Calendar math
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const startingDay = new Date(year, month, 1).getDay();
+
+  const formatServiceBadge = (cat: BlockedSlot['serviceCategory']) => {
+    const map = {
+      all: { label: 'ALL SERVICES', bg: '#FEF2F2', color: '#DC2626', icon: Lock },
+      'car-wash': { label: 'CAR WASH', bg: '#EFF6FF', color: '#1D4ED8', icon: Car },
+      'house-cleaning': { label: 'HOUSE CLEANING', bg: '#ECFDF5', color: '#047857', icon: HomeIcon },
+      laundry: { label: 'LAUNDRY', bg: '#FEF3C7', color: '#B45309', icon: Shirt },
+      specialized: { label: 'SPECIALIZED', bg: '#F3E8FF', color: '#6B21A8', icon: Sparkles }
+    };
+    const item = map[cat] || map.all;
+    const IconComp = item.icon;
+    return (
+      <span
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '4px',
+          padding: '4px 10px',
+          borderRadius: '16px',
+          fontSize: '0.7rem',
+          fontWeight: 800,
+          background: item.bg,
+          color: item.color,
+          letterSpacing: '0.03em'
+        }}
+      >
+        <IconComp size={12} />
+        {item.label}
+      </span>
+    );
+  };
+
+  return (
+    <div>
+      {/* Header */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '24px',
+          flexWrap: 'wrap',
+          gap: '16px'
+        }}
+      >
+        <div>
+          <h1
+            style={{
+              fontSize: '1.75rem',
+              fontWeight: 800,
+              color: '#0F172A',
+              margin: 0,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px'
+            }}
+          >
+            <Calendar size={28} style={{ color: '#29C3BE' }} />
+            Availability & Slot Blocking Calendar
+          </h1>
+          <p style={{ color: '#64748B', fontSize: '0.9rem', margin: '4px 0 0 0' }}>
+            Manage location-specific and service-specific date and time availability for doorstep dispatch
+          </p>
+        </div>
+
+        <button
+          onClick={handleOpenBlockModalNew}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '12px 24px',
+            borderRadius: '14px',
+            background: 'linear-gradient(135deg, #EF4444, #DC2626)',
+            color: '#FFFFFF',
+            fontWeight: 700,
+            fontSize: '0.9rem',
+            border: 'none',
+            cursor: 'pointer',
+            boxShadow: '0 4px 14px rgba(239, 68, 68, 0.3)',
+            transition: 'all 0.2s ease'
+          }}
+        >
+          <Plus size={18} />
+          Block Date / Time Slot
+        </button>
+      </div>
+
+      {/* Service & Location Filter Bar */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '16px',
+          marginBottom: '24px',
+          flexWrap: 'wrap'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', overflowX: 'auto', paddingBottom: '4px' }}>
+          {[
+            { id: 'all', label: 'All Services', icon: Lock },
+            { id: 'car-wash', label: 'Car Wash', icon: Car },
+            { id: 'house-cleaning', label: 'House Cleaning', icon: HomeIcon },
+            { id: 'laundry', label: 'Laundry', icon: Shirt },
+            { id: 'specialized', label: 'Specialized', icon: Sparkles }
+          ].map((tab) => {
+            const IconComp = tab.icon;
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '10px 18px',
+                  borderRadius: '12px',
+                  fontWeight: 700,
+                  fontSize: '0.85rem',
+                  border: isActive ? 'none' : '1px solid #E2E8F0',
+                  background: isActive ? '#1C2677' : '#FFFFFF',
+                  color: isActive ? '#FFFFFF' : '#475569',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                  whiteSpace: 'nowrap',
+                  boxShadow: isActive ? '0 4px 12px rgba(28, 38, 119, 0.2)' : 'none'
+                }}
+              >
+                <IconComp size={15} style={{ color: isActive ? '#29C3BE' : '#64748B' }} />
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Location Filter Select */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#FFFFFF', padding: '6px 12px', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
+          <span style={{ fontSize: '0.825rem', fontWeight: 800, color: '#1C2677' }}>📍 Location:</span>
+          <select
+            value={selectedLocationFilter}
+            onChange={(e) => setSelectedLocationFilter(e.target.value)}
+            style={{ padding: '6px 10px', borderRadius: '8px', border: '1px solid #CBD5E1', background: '#FFF', fontSize: '0.825rem', fontWeight: 800, color: '#1C2677', cursor: 'pointer', outline: 'none' }}
+          >
+            <option value="all">All Locations (System-wide)</option>
+            {locations.map((loc) => (
+              <option key={loc.id || loc.name} value={loc.name}>
+                {loc.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {/* Grid Layout: Calendar View (Left) & Active Blockages List (Right) */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '24px', marginBottom: '32px' }} className="availability-grid">
+        
+        {/* Left Column: Calendar Card */}
+        <div style={{ background: '#FFFFFF', borderRadius: '20px', border: '1px solid #E2E8F0', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
+          
+          {/* Month Nav Header */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+            <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+              {monthName} {year}
+            </h3>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <button
+                onClick={handlePrevMonth}
+                style={{ padding: '8px 12px', borderRadius: '10px', border: '1px solid #E2E8F0', background: '#F8FAFC', cursor: 'pointer' }}
+              >
+                <ChevronLeft size={18} color="#1E293B" />
+              </button>
+              <button
+                onClick={handleNextMonth}
+                style={{ padding: '8px 12px', borderRadius: '10px', border: '1px solid #E2E8F0', background: '#F8FAFC', cursor: 'pointer' }}
+              >
+                <ChevronRight size={18} color="#1E293B" />
+              </button>
+            </div>
+          </div>
+
+          {/* Weekday Labels */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', textAlign: 'center', fontSize: '0.8rem', fontWeight: 700, color: '#64748B', marginBottom: '12px' }}>
+            <span>Sun</span>
+            <span>Mon</span>
+            <span>Tue</span>
+            <span>Wed</span>
+            <span>Thu</span>
+            <span>Fri</span>
+            <span>Sat</span>
+          </div>
+
+          {/* Day Cells Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px' }}>
+            {Array.from({ length: startingDay }).map((_, i) => (
+              <div key={`empty-${i}`} style={{ padding: '16px', background: 'transparent' }} />
+            ))}
+
+            {Array.from({ length: daysInMonth }).map((_, i) => {
+              const dayNum = i + 1;
+              const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
+              
+              // Find blockages on this date for the activeTab filter
+              const dayBlockages = blockedSlots.filter((slot) => {
+                const isTabMatch = activeTab === 'all' || slot.serviceCategory === 'all' || slot.serviceCategory === activeTab;
+                return slot.date === dateStr && isTabMatch;
+              });
+
+              const isFullDayBlocked = dayBlockages.some((s) => !s.timeSlot || s.timeSlot === 'all');
+              const hasSlotBlock = dayBlockages.length > 0;
+
+              return (
+                <div
+                  key={dayNum}
+                  onClick={() => handleOpenBlockModalForDay(dateStr)}
+                  style={{
+                    minHeight: '74px',
+                    padding: '8px',
+                    borderRadius: '12px',
+                    border: isFullDayBlocked ? '2px solid #EF4444' : hasSlotBlock ? '1.5px solid #F59E0B' : '1px solid #E2E8F0',
+                    background: isFullDayBlocked ? '#FEF2F2' : hasSlotBlock ? '#FFFBEB' : '#FFFFFF',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    transition: 'all 0.15s ease'
+                  }}
+                  title={`Click to manage blockages for ${dateStr}`}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 800, color: isFullDayBlocked ? '#DC2626' : '#1E293B' }}>
+                      {dayNum}
+                    </span>
+                    {hasSlotBlock && (
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: isFullDayBlocked ? '#EF4444' : '#F59E0B' }} />
+                    )}
+                  </div>
+
+                  {hasSlotBlock && (
+                    <div style={{ marginTop: '4px' }}>
+                      {isFullDayBlocked ? (
+                        <span style={{ fontSize: '0.62rem', fontWeight: 800, color: '#DC2626', background: '#FEE2E2', padding: '2px 4px', borderRadius: '4px', display: 'block', textAlign: 'center' }}>
+                          FULL BLOCK
+                        </span>
+                      ) : (
+                        <span style={{ fontSize: '0.62rem', fontWeight: 800, color: '#B45309', background: '#FEF3C7', padding: '2px 4px', borderRadius: '4px', display: 'block', textAlign: 'center' }}>
+                          {dayBlockages.length} slot{dayBlockages.length > 1 ? 's' : ''}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Right Column: Active Blocked Slots Summary & Quick List */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          
+          <div style={{ background: '#FFFFFF', borderRadius: '20px', border: '1px solid #E2E8F0', padding: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+              <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <ShieldAlert size={18} style={{ color: '#EF4444' }} />
+                Active Blockages ({filteredSlots.length})
+              </h4>
+            </div>
+
+            {filteredSlots.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '30px 10px', color: '#64748B' }}>
+                <Unlock size={32} style={{ color: '#CBD5E1', marginBottom: '8px' }} />
+                <p style={{ fontSize: '0.85rem', fontWeight: 600, margin: 0 }}>No active blockages for this view</p>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '420px', overflowY: 'auto' }}>
+                {filteredSlots.map((slot) => (
+                  <div
+                    key={slot.id}
+                    style={{
+                      padding: '12px 14px',
+                      borderRadius: '12px',
+                      background: '#F8FAFC',
+                      border: '1px solid #E2E8F0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between'
+                    }}
+                  >
+                    <div>
+                      <div style={{ marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+                        {formatServiceBadge(slot.serviceCategory)}
+                        <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#1C2677', background: '#EEF2FF', border: '1px solid #C7D2FE', padding: '2px 8px', borderRadius: '12px' }}>
+                          📍 {slot.location && slot.location !== 'all' ? slot.location : 'All Areas'}
+                        </span>
+                      </div>
+                      <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#0F172A' }}>
+                        📅 {slot.date} {slot.timeSlot ? `• ⏰ ${slot.timeSlot}` : '• 🔴 Full Day'}
+                      </div>
+                      {slot.reason && (
+                        <div style={{ fontSize: '0.72rem', color: '#64748B', marginTop: '2px' }}>
+                          Reason: {slot.reason}
+                        </div>
+                      )}
+                    </div>
+                    <button
+                      onClick={() => handleUnblock(slot.id)}
+                      style={{
+                        padding: '6px 10px',
+                        borderRadius: '8px',
+                        border: '1px solid #FECACA',
+                        background: '#FEF2F2',
+                        color: '#DC2626',
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                      }}
+                      title="Unblock this slot"
+                    >
+                      <Trash2 size={13} />
+                      Unblock
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Block Slot Modal */}
+      <BlockSlotModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={addBlockedSlot}
+        initialDate={selectedDateForModal}
+        initialServiceCategory={activeTab as any}
+      />
+    </div>
+  );
+};
