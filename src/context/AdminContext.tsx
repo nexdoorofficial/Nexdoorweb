@@ -947,19 +947,59 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           }
         }
 
-        // 9. Sync Blocked Slots
+        // 9. Sync Blocked Slots with Smart Merging & Auto Seeding
         const { data: dbBlocked } = await supabase.from('blocked_slots').select('*');
-        if (dbBlocked && dbBlocked.length > 0) {
-          const mappedBlocked: BlockedSlot[] = dbBlocked.map((bs: any) => ({
-            id: bs.id,
-            serviceCategory: bs.service_category || bs.serviceCategory || 'all',
-            date: bs.date,
-            timeSlot: bs.time_slot || bs.timeSlot,
-            location: bs.location,
-            reason: bs.reason,
-            createdAt: bs.created_at || new Date().toISOString()
-          }));
-          setBlockedSlots(mappedBlocked);
+        const dbBlockedMap = new Map((dbBlocked || []).map((bs: any) => [bs.id, bs]));
+
+        const mergedBlocked: BlockedSlot[] = SEED_BLOCKED_SLOTS.map((defaultBs) => {
+          const dbBs = dbBlockedMap.get(defaultBs.id);
+          if (dbBs) {
+            return {
+              id: dbBs.id,
+              serviceCategory: dbBs.service_category || dbBs.serviceCategory || defaultBs.serviceCategory,
+              date: dbBs.date || dbBs.date_str || defaultBs.date,
+              timeSlot: dbBs.time_slot || dbBs.timeSlot || defaultBs.timeSlot,
+              location: dbBs.location || dbBs.location_name || defaultBs.location,
+              reason: dbBs.reason || defaultBs.reason,
+              createdAt: dbBs.created_at || defaultBs.createdAt || new Date().toISOString()
+            };
+          }
+          return defaultBs;
+        });
+
+        (dbBlocked || []).forEach((dbBs: any) => {
+          if (!SEED_BLOCKED_SLOTS.some((dbs) => dbs.id === dbBs.id)) {
+            mergedBlocked.push({
+              id: dbBs.id,
+              serviceCategory: dbBs.service_category || dbBs.serviceCategory || 'all',
+              date: dbBs.date || dbBs.date_str || '',
+              timeSlot: dbBs.time_slot || dbBs.timeSlot || 'Full Day',
+              location: dbBs.location || dbBs.location_name || 'All Locations',
+              reason: dbBs.reason || 'Admin Block',
+              createdAt: dbBs.created_at || new Date().toISOString()
+            });
+          }
+        });
+
+        setBlockedSlots(mergedBlocked);
+
+        for (const defaultBs of SEED_BLOCKED_SLOTS) {
+          if (!dbBlockedMap.has(defaultBs.id)) {
+            (async () => {
+              try {
+                await supabase.from('blocked_slots').upsert({
+                  id: defaultBs.id,
+                  service_category: defaultBs.serviceCategory,
+                  date: defaultBs.date,
+                  date_str: defaultBs.date,
+                  time_slot: defaultBs.timeSlot,
+                  location: defaultBs.location,
+                  location_name: defaultBs.location,
+                  reason: defaultBs.reason
+                });
+              } catch (e) {}
+            })();
+          }
         }
 
         // 10. Sync Locations
@@ -2235,8 +2275,10 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           id: newSlot.id,
           service_category: newSlot.serviceCategory,
           date: newSlot.date,
+          date_str: newSlot.date,
           time_slot: newSlot.timeSlot,
           location: newSlot.location,
+          location_name: newSlot.location,
           reason: newSlot.reason
         });
       } catch (e) {
