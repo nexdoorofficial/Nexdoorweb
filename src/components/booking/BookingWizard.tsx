@@ -16,7 +16,11 @@ import {
   ChevronLeft,
   ChevronRight,
   MapPin,
-  Tag
+  Tag,
+  User,
+  Phone,
+  Calendar,
+  Sparkles
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { RefundableBanner } from '../common/RefundableBanner';
@@ -410,78 +414,119 @@ export const BookingWizard: React.FC = () => {
 
   if (isSuccess) {
     return (
-      <div className="glass-card" style={{ padding: '48px', maxWidth: '680px', margin: '0 auto', textAlign: 'center' }}>
+      <div className="glass-card confirmation-container">
+        {/* Success Icon */}
         <div style={{
-          width: '72px',
-          height: '72px',
+          width: '68px',
+          height: '68px',
           borderRadius: '50%',
-          background: '#10B981',
+          background: 'linear-gradient(135deg, #10B981, #059669)',
           color: '#FFFFFF',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          margin: '0 auto 24px auto',
-          boxShadow: '0 8px 24px rgba(16, 185, 129, 0.4)'
+          margin: '0 auto 16px auto',
+          boxShadow: '0 10px 25px rgba(16, 185, 129, 0.35)'
         }}>
-          <CheckCircle2 size={40} />
+          <CheckCircle2 size={38} />
         </div>
 
-        <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1C2677', marginBottom: '8px' }}>
+        <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#1C2677', marginBottom: '6px' }}>
           Booking Confirmed! 🎉
         </h2>
-        <p style={{ fontSize: '1rem', color: '#64748B', marginBottom: '24px' }}>
+        <p style={{ fontSize: '0.92rem', color: '#64748B', marginBottom: '20px' }}>
           Your service has been scheduled successfully with NEXDOOR Cleaning Solutions.
         </p>
 
+        {/* Highlighted Reference Pill */}
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '8px',
+          background: 'rgba(28, 38, 119, 0.08)',
+          border: '1.5px solid rgba(28, 38, 119, 0.2)',
+          padding: '8px 18px',
+          borderRadius: '30px',
+          marginBottom: '20px'
+        }}>
+          <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#64748B' }}>Booking Reference:</span>
+          <span style={{ fontSize: '1.05rem', fontWeight: 800, color: '#1C2677', letterSpacing: '0.5px' }}>{bookingRef}</span>
+        </div>
+
+        {/* Detailed Summary Card */}
         <div style={{
           background: '#F8FAFC',
-          borderRadius: '16px',
-          padding: '24px',
+          borderRadius: '20px',
+          padding: '16px',
           textAlign: 'left',
           marginBottom: '24px',
-          border: '1px solid #E2E8F0',
-          fontSize: '0.9rem'
+          border: '1px solid #E2E8F0'
         }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-            <span style={{ color: '#64748B' }}>Booking Reference:</span>
-            <span style={{ fontWeight: 800, color: '#1C2677' }}>{bookingRef}</span>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-            <span style={{ color: '#64748B' }}>Service Scheduled:</span>
-            <span style={{ fontWeight: 700, color: '#1B2236', textTransform: 'capitalize' }}>
-              {serviceId.replace('-', ' ')} {serviceId === 'house-cleaning' ? `(${houseCategory})` : serviceId === 'car-wash' ? `(${vehicleCategory})` : `(${laundryWeight}kg - ${laundryPackage})`}
-            </span>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-            <span style={{ color: '#64748B' }}>Scheduled Date & Time:</span>
-            <span style={{ fontWeight: 700, color: '#1B2236' }}>{formattedSelectedDate} at {selectedTimeSlot}</span>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-            <span style={{ color: '#64748B' }}>Service Location:</span>
-            <span style={{ fontWeight: 700, color: '#1B2236' }}>{area}, Kochi ({pincode})</span>
-          </div>
-          {customRequirements && (
-            <div style={{ marginBottom: '12px', background: 'rgba(41, 195, 190, 0.1)', padding: '10px 14px', borderRadius: '10px' }}>
-              <span style={{ fontWeight: 700, color: '#1C2677', display: 'block' }}>Custom Needs & Special Notes:</span>
-              <span style={{ color: '#334155' }}>"{customRequirements}"</span>
+          <div className="confirmation-detail-grid">
+            <div className="confirmation-row">
+              <span className="confirmation-row-label"><User size={15} color="#29C3BE" /> Customer Name:</span>
+              <span className="confirmation-row-value">{fullName || 'Valued Customer'}</span>
             </div>
-          )}
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-            <span style={{ color: '#64748B' }}>Estimated Total:</span>
-            <span style={{ fontWeight: 700, color: '#1B2236' }}>
-              {isCustomHouse ? 'Quote / Inspection' : `₹${estimatedTotal}`}
-            </span>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '12px', borderTop: '1px solid #CBD5E1' }}>
-            <span style={{ fontWeight: 700, color: '#10B981' }}>Refundable Deposit Paid (Demo):</span>
-            <span style={{ fontWeight: 800, color: '#10B981' }}>₹{DEMO_BOOKING_DEPOSIT}</span>
+
+            <div className="confirmation-row">
+              <span className="confirmation-row-label"><Phone size={15} color="#29C3BE" /> Contact Phone:</span>
+              <span className="confirmation-row-value">{phone || '+91 98765 43210'}</span>
+            </div>
+
+            <div className="confirmation-row">
+              <span className="confirmation-row-label"><Sparkles size={15} color="#29C3BE" /> Service Scheduled:</span>
+              <span className="confirmation-row-value" style={{ textTransform: 'capitalize' }}>
+                {serviceId.replace('-', ' ')} {serviceId === 'house-cleaning' ? `(${houseCategory})` : serviceId === 'car-wash' ? `(${vehicleCategory})` : `(${laundryWeight}kg - ${laundryPackage})`}
+              </span>
+            </div>
+
+            <div className="confirmation-row">
+              <span className="confirmation-row-label"><Calendar size={15} color="#29C3BE" /> Date & Time Slot:</span>
+              <span className="confirmation-row-value">{formattedSelectedDate} at {selectedTimeSlot}</span>
+            </div>
+
+            <div className="confirmation-row">
+              <span className="confirmation-row-label"><MapPin size={15} color="#29C3BE" /> Service Location:</span>
+              <span className="confirmation-row-value">{addressLine ? `${addressLine}, ${area} (${pincode})` : `${area}, Kochi (${pincode})`}</span>
+            </div>
+
+            {customRequirements && (
+              <div style={{ background: 'rgba(41, 195, 190, 0.1)', padding: '12px 14px', borderRadius: '12px', border: '1px solid rgba(41, 195, 190, 0.2)' }}>
+                <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#1C2677', display: 'block', marginBottom: '2px' }}>
+                  Custom Needs & Special Notes:
+                </span>
+                <span style={{ fontSize: '0.88rem', color: '#334155', fontStyle: 'italic' }}>"{customRequirements}"</span>
+              </div>
+            )}
+
+            {/* Financial Summary Highlight */}
+            <div style={{
+              background: 'linear-gradient(135deg, #1C2677, #0F172A)',
+              color: '#FFFFFF',
+              borderRadius: '16px',
+              padding: '16px',
+              marginTop: '6px'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <span style={{ fontSize: '0.85rem', color: '#94A3B8' }}>Estimated Total:</span>
+                <span style={{ fontSize: '1.2rem', fontWeight: 800, color: '#29C3BE' }}>
+                  {isCustomHouse ? 'Quote / Inspection' : `₹${estimatedTotal}`}
+                </span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '8px', borderTop: '1px solid rgba(255, 255, 255, 0.15)' }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#10B981', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  ✓ Refundable Deposit Paid:
+                </span>
+                <span style={{ fontSize: '1.1rem', fontWeight: 800, color: '#10B981' }}>₹{DEMO_BOOKING_DEPOSIT}</span>
+              </div>
+            </div>
           </div>
         </div>
 
         <RefundableBanner variant="full" />
 
-        <div style={{ marginTop: '32px', display: 'flex', gap: '16px', justifyContent: 'center' }}>
-          <button onClick={() => navigate('/')} className="btn-primary">
+        <div style={{ marginTop: '28px', display: 'flex', gap: '16px', justifyContent: 'center' }}>
+          <button onClick={() => navigate('/')} className="btn-primary" style={{ width: '100%', maxWidth: '280px', padding: '14px' }}>
             Return to Homepage
           </button>
         </div>
