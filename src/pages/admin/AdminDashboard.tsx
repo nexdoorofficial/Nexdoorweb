@@ -140,16 +140,26 @@ export const AdminDashboard: React.FC = () => {
             </button>
           </div>
 
-          <div style={{ overflowX: 'auto' }}>
+          <div
+            data-lenis-prevent
+            onWheel={(e) => e.stopPropagation()}
+            style={{
+              overflowX: 'auto',
+              overflowY: 'auto',
+              maxHeight: '480px',
+              paddingRight: '4px',
+              scrollbarWidth: 'thin'
+            }}
+          >
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
-              <thead>
-                <tr style={{ borderBottom: '2px solid #F1F5F9', color: '#64748B' }}>
-                  <th style={{ padding: '12px 10px', fontWeight: 700 }}>Ref ID</th>
-                  <th style={{ padding: '12px 10px', fontWeight: 700 }}>Customer</th>
-                  <th style={{ padding: '12px 10px', fontWeight: 700 }}>Service</th>
-                  <th style={{ padding: '12px 10px', fontWeight: 700 }}>Schedule</th>
-                  <th style={{ padding: '12px 10px', fontWeight: 700 }}>Status</th>
-                  <th style={{ padding: '12px 10px', fontWeight: 700, textAlign: 'right' }}>Action</th>
+              <thead style={{ position: 'sticky', top: 0, background: '#FFFFFF', zIndex: 10 }}>
+                <tr style={{ borderBottom: '2px solid #F1F5F9', color: '#64748B', background: '#FFFFFF' }}>
+                  <th style={{ padding: '12px 10px', fontWeight: 700, background: '#FFFFFF' }}>Ref ID</th>
+                  <th style={{ padding: '12px 10px', fontWeight: 700, background: '#FFFFFF' }}>Customer</th>
+                  <th style={{ padding: '12px 10px', fontWeight: 700, background: '#FFFFFF' }}>Service</th>
+                  <th style={{ padding: '12px 10px', fontWeight: 700, background: '#FFFFFF' }}>Schedule</th>
+                  <th style={{ padding: '12px 10px', fontWeight: 700, background: '#FFFFFF' }}>Status</th>
+                  <th style={{ padding: '12px 10px', fontWeight: 700, textAlign: 'right', background: '#FFFFFF' }}>Action</th>
                 </tr>
               </thead>
               <tbody>
