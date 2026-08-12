@@ -153,7 +153,7 @@ export const AdminDashboard: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {bookings.slice(0, 5).map((b) => {
+                {bookings.map((b) => {
                   const badge = getStatusBadge(b.status);
                   return (
                     <tr key={b.id} style={{ borderBottom: '1px solid #F8FAFC' }}>

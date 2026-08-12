@@ -811,31 +811,62 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             let catPkg = b.category_or_package || b.categoryOrPackage;
             let userNotes = b.notes || '';
 
-            if (userNotes.startsWith('[Customer:')) {
-              const metaEndIdx = userNotes.indexOf(']');
-              if (metaEndIdx > 0) {
-                const metaStr = userNotes.substring(10, metaEndIdx);
-                userNotes = userNotes.substring(metaEndIdx + 1).trim();
+            // Ultra-robust Regex parsing for Customer Name, Phone, Email, Area, Service, Options from notes metadata
+            if (userNotes && userNotes.includes('Customer:')) {
+              const matchName = userNotes.match(/Customer:\s*([^|\]]+)/i);
+              if (matchName && matchName[1] && matchName[1].trim() && matchName[1].trim() !== 'Valued Customer') {
+                cName = matchName[1].trim();
+              }
 
-                const parts = metaStr.split('|').map((s: string) => s.trim());
-                parts.forEach((part: string) => {
-                  if (part.startsWith('Customer:') && !cName) cName = part.replace('Customer:', '').trim();
-                  if (part.startsWith('Phone:') && !cPhone) cPhone = part.replace('Phone:', '').trim();
-                  if (part.startsWith('Email:') && !cEmail) cEmail = part.replace('Email:', '').trim();
-                  if (part.startsWith('Area:') && !bArea) bArea = part.replace('Area:', '').trim();
-                  if (part.startsWith('Service:') && !sName) sName = part.replace('Service:', '').trim();
-                  if (part.startsWith('Options:') && !catPkg) catPkg = part.replace('Options:', '').trim();
-                });
+              const matchPhone = userNotes.match(/Phone:\s*([^|\]]+)/i);
+              if (matchPhone && matchPhone[1] && matchPhone[1].trim()) {
+                cPhone = matchPhone[1].trim();
+              }
+
+              const matchEmail = userNotes.match(/Email:\s*([^|\]]+)/i);
+              if (matchEmail && matchEmail[1] && matchEmail[1].trim()) {
+                cEmail = matchEmail[1].trim();
+              }
+
+              const matchArea = userNotes.match(/Area:\s*([^|\]]+)/i);
+              if (matchArea && matchArea[1] && matchArea[1].trim()) {
+                bArea = matchArea[1].trim();
+              }
+
+              const matchService = userNotes.match(/Service:\s*([^|\]]+)/i);
+              if (matchService && matchService[1] && matchService[1].trim()) {
+                sName = matchService[1].trim();
+              }
+
+              const matchOptions = userNotes.match(/Options:\s*([^|\]]+)/i);
+              if (matchOptions && matchOptions[1] && matchOptions[1].trim()) {
+                catPkg = matchOptions[1].trim();
+              }
+
+              // Strip metadata tag prefix from user notes for clean display
+              const metaEndIdx = userNotes.indexOf(']');
+              if (metaEndIdx > 0 && userNotes.includes('[')) {
+                userNotes = userNotes.substring(metaEndIdx + 1).trim();
+              }
+            }
+
+            // Fallback: extract customer name from address string if address contains "Name - Address"
+            let finalAddress = b.address || 'Doorstep Address';
+            if ((!cName || cName === 'Valued Customer') && finalAddress.includes(' - ')) {
+              const parts = finalAddress.split(' - ');
+              if (parts.length > 1 && parts[0].trim()) {
+                cName = parts[0].trim();
+                finalAddress = parts.slice(1).join(' - ').trim();
               }
             }
 
             return {
               id: b.id,
               referenceId: b.reference_id || b.referenceId || 'REF-' + b.id,
-              customerName: cName || 'Valued Customer',
+              customerName: cName && cName !== 'Valued Customer' ? cName : (b.customer_name || 'Valued Customer'),
               customerPhone: cPhone || '+91 98765 43210',
               customerEmail: cEmail || '',
-              address: b.address || 'Doorstep Address',
+              address: finalAddress,
               area: bArea || 'Kakkanad',
               pincode: bPincode || '682030',
               serviceId: b.service_id || b.serviceId || 'house-cleaning',
@@ -1244,7 +1275,7 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           id: newBooking.id,
           reference_id: newBooking.referenceId,
           service_id: newBooking.serviceId,
-          address: `${newBooking.address}, ${newBooking.area} (${newBooking.pincode})`,
+          address: `${newBooking.customerName} - ${newBooking.address}, ${newBooking.area} (${newBooking.pincode})`,
           selected_date: newBooking.scheduledDate,
           selected_time_slot: newBooking.scheduledTime,
           estimated_total: newBooking.estimatedTotal,
