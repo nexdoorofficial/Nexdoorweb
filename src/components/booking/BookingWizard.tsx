@@ -307,6 +307,29 @@ export const BookingWizard: React.FC = () => {
         const netInvoice = Math.max(0, estimatedTotal - couponDiscount);
         const finalNotes = `${customRequirements ? customRequirements + ' ' : ''}${appliedCoupon ? `[Coupon Code: ${appliedCoupon.code} (-₹${couponDiscount})]` : ''}`.trim();
 
+        // Construct detailed service name and full specification breakdown
+        let formattedServiceName = '';
+        let formattedCategoryOrPackage = '';
+
+        if (serviceId === 'house-cleaning') {
+          formattedServiceName = `House Cleaning (${activeHouseCat?.label || houseCategory})`;
+          const planName = housePlan === 'premium' ? 'Premium Ultra Clean' : housePlan === 'standard' ? 'Standard Deep Clean' : housePlan;
+          const duration = housePlan === 'premium' ? activeHouseCat?.premium?.duration : activeHouseCat?.standard?.duration;
+          const pros = housePlan === 'premium' ? activeHouseCat?.premium?.professionals : activeHouseCat?.standard?.professionals;
+          formattedCategoryOrPackage = `${planName}${duration ? ` | Duration: ${duration}` : ''}${pros ? ` | Crew: ${pros} Pros` : ''}`;
+        } else if (serviceId === 'car-wash') {
+          formattedServiceName = `Car Wash & Detailing (${activeVehicle?.label || vehicleCategory})`;
+          const pkgObj = (activeVehicle?.packages as any)?.[carPackage];
+          const pkgName = pkgObj?.name || carPackage.toUpperCase();
+          formattedCategoryOrPackage = `Package: ${pkgName} | Vehicle: ${activeVehicle?.label || vehicleCategory}`;
+        } else {
+          formattedServiceName = `Doorstep Laundry Service (${laundryWeight} Kg)`;
+          const pkgName = laundryPackage === 'wash-iron' ? 'Wash + Dry + Steam Press' : laundryPackage === 'laundry-only' ? 'Wash & Tumble Dry Only' : laundryPackage === 'iron-only' ? 'Crisp Steam Press Only' : 'Dry Cleaning (Solvent Dry Wash)';
+          const speedStr = laundrySpeed === 'express' ? '⚡ Express (Same Day Delivery)' : 'Standard (2 Days Free Delivery)';
+          const qualityStr = laundryQuality === 'premium' ? '✨ Premium Luxury Care' : 'Standard Care';
+          formattedCategoryOrPackage = `Weight: ${laundryWeight} Kg | Package: ${pkgName} | Speed: ${speedStr} | Care: ${qualityStr}`;
+        }
+
         adminData.addBooking({
           referenceId: randomRef,
           customerName: fullName || 'Valued Customer',
@@ -315,8 +338,8 @@ export const BookingWizard: React.FC = () => {
           area: area || 'Kakkanad',
           pincode: pincode || '682030',
           serviceId,
-          serviceName: serviceId === 'house-cleaning' ? `House Cleaning (${houseCategory})` : serviceId === 'car-wash' ? `Car Wash (${vehicleCategory})` : `Laundry (${laundryWeight}kg)`,
-          categoryOrPackage: serviceId === 'house-cleaning' ? housePlan : serviceId === 'car-wash' ? carPackage : laundryPackage,
+          serviceName: formattedServiceName,
+          categoryOrPackage: formattedCategoryOrPackage,
           scheduledDate: selectedDateObj ? selectedDateObj.toISOString().split('T')[0] : '2026-08-12',
           scheduledTime: selectedTimeSlot || '11:30 AM',
           estimatedTotal: Number(netInvoice) || 1499,

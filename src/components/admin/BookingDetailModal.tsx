@@ -192,8 +192,37 @@ export const BookingDetailModal: React.FC<Props> = ({ booking, isOpen, onClose }
                 <strong>{booking.serviceName}</strong>
               </div>
               <div>
-                <span style={{ color: '#64748B', display: 'block', fontSize: '0.8rem' }}>Specification / Package</span>
-                <span>{booking.categoryOrPackage}</span>
+                <span style={{ color: '#64748B', display: 'block', fontSize: '0.8rem', marginBottom: '4px' }}>Order Specifications & Options</span>
+                {(() => {
+                  const spec = booking.categoryOrPackage || '';
+                  const parts = spec.split('|').map((s) => s.trim());
+                  if (parts.length > 1) {
+                    return (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginTop: '2px' }}>
+                        {parts.map((p, i) => (
+                          <div
+                            key={i}
+                            style={{
+                              background: '#FAFCFF',
+                              border: '1px solid #CBD5E1',
+                              padding: '6px 12px',
+                              borderRadius: '8px',
+                              fontSize: '0.825rem',
+                              fontWeight: 700,
+                              color: '#1C2677',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '6px'
+                            }}
+                          >
+                            <span style={{ color: '#29C3BE', fontWeight: 900 }}>✓</span> {p}
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  }
+                  return <strong style={{ color: '#1E293B', fontSize: '0.9rem' }}>{spec}</strong>;
+                })()}
               </div>
               <div>
                 <span style={{ color: '#64748B', display: 'block', fontSize: '0.8rem' }}>Scheduled Time</span>
