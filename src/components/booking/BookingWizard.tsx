@@ -292,6 +292,14 @@ export const BookingWizard: React.FC = () => {
   };
 
   const handlePayDemoDeposit = () => {
+    // Guard: Ensure Step 5 mandatory customer info was provided
+    if (!fullName || !fullName.trim() || !phone || !phone.trim() || !addressLine || !addressLine.trim()) {
+      setStep(5);
+      validateStep5();
+      alert('⚠️ Please fill in your Full Name, Phone Number, and Address before confirming your booking.');
+      return;
+    }
+
     // Trigger celebration confetti
     confetti({
       particleCount: 100,

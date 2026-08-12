@@ -103,7 +103,7 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
   };
 
   const handleBookCarService = () => {
-    navigate(`/book?service=car-wash&vehicle=${selectedVehicle}&package=${selectedPkgKey}&location=${encodeURIComponent(location)}&step=4`);
+    navigate(`/book?service=car-wash&vehicle=${selectedVehicle}&package=${selectedPkgKey}&location=${encodeURIComponent(location)}&step=5`);
   };
 
   const toggleMobileAccordion = (pkgKey: string, e: React.MouseEvent) => {

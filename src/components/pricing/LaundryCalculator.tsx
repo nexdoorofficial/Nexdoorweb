@@ -106,7 +106,7 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
   };
 
   const handleBookNow = () => {
-    navigate(`/book?service=laundry&weight=${weightKg}&pkg=${pkg}&speed=${speed}&quality=${quality}&location=${encodeURIComponent(location)}&step=4`);
+    navigate(`/book?service=laundry&weight=${weightKg}&pkg=${pkg}&speed=${speed}&quality=${quality}&location=${encodeURIComponent(location)}&step=5`);
   };
 
   return (
