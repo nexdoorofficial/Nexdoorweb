@@ -929,57 +929,115 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
         // 11. Sync House Categories (Pricing & Specifications)
         const { data: dbHouseCats } = await supabase.from('house_categories').select('*');
-        if (dbHouseCats && dbHouseCats.length > 0) {
-          const mappedHouseCats: HouseCategoryData[] = dbHouseCats.map((hc: any) => ({
-            id: hc.id,
-            label: hc.label,
-            description: hc.description || hc.label,
-            sqftRange: hc.sqft_range || hc.sqftRange || '',
-            standard: hc.standard || {},
-            premium: hc.premium || {},
-            customPlans: hc.custom_plans || hc.customPlans || [],
-            availableLocations: hc.available_locations || hc.availableLocations || []
-          }));
-          setHouseCategories(mappedHouseCats);
-        } else {
-          // Seed default house categories to Supabase
-          for (const hc of HOUSE_CATEGORIES) {
-            await supabase.from('house_categories').upsert({
-              id: hc.id,
-              label: hc.label,
-              description: hc.description,
-              sqft_range: hc.sqftRange,
-              standard: hc.standard,
-              premium: hc.premium,
-              custom_plans: hc.customPlans || [],
-              available_locations: hc.availableLocations || []
+        const dbHouseMap = new Map((dbHouseCats || []).map((hc: any) => [hc.id, hc]));
+
+        // Smart Merge: Preserve ALL default house categories (1-bhk, 2-bhk, 3-bhk, 4-bhk, villa, custom) while keeping DB edits!
+        const mergedHouseCats: HouseCategoryData[] = HOUSE_CATEGORIES.map((defaultHc) => {
+          const dbHc = dbHouseMap.get(defaultHc.id);
+          if (dbHc) {
+            return {
+              id: dbHc.id as HouseCategoryKey,
+              label: dbHc.label || defaultHc.label,
+              description: dbHc.description || defaultHc.description,
+              sqftRange: dbHc.sqft_range || dbHc.sqftRange || defaultHc.sqftRange,
+              standard: dbHc.standard && dbHc.standard.name ? dbHc.standard : defaultHc.standard,
+              premium: dbHc.premium && dbHc.premium.name ? dbHc.premium : defaultHc.premium,
+              customPlans: dbHc.custom_plans || dbHc.customPlans || defaultHc.customPlans || [],
+              availableLocations: dbHc.available_locations || dbHc.availableLocations || defaultHc.availableLocations || []
+            };
+          }
+          return defaultHc;
+        });
+
+        // Retain any extra custom categories added by admin
+        (dbHouseCats || []).forEach((dbHc: any) => {
+          if (!HOUSE_CATEGORIES.some((dhc) => dhc.id === dbHc.id)) {
+            mergedHouseCats.push({
+              id: dbHc.id as HouseCategoryKey,
+              label: dbHc.label,
+              description: dbHc.description || dbHc.label,
+              sqftRange: dbHc.sqft_range || dbHc.sqftRange || '',
+              standard: dbHc.standard || {},
+              premium: dbHc.premium || {},
+              customPlans: dbHc.custom_plans || dbHc.customPlans || [],
+              availableLocations: dbHc.available_locations || dbHc.availableLocations || []
             });
+          }
+        });
+
+        setHouseCategories(mergedHouseCats);
+
+        // Background seed any missing default house categories to Supabase
+        for (const defaultHc of HOUSE_CATEGORIES) {
+          if (!dbHouseMap.has(defaultHc.id)) {
+            (async () => {
+              try {
+                await supabase.from('house_categories').upsert({
+                  id: defaultHc.id,
+                  label: defaultHc.label,
+                  description: defaultHc.description,
+                  sqft_range: defaultHc.sqftRange,
+                  standard: defaultHc.standard,
+                  premium: defaultHc.premium,
+                  custom_plans: defaultHc.customPlans || [],
+                  available_locations: defaultHc.availableLocations || []
+                });
+              } catch (e) {}
+            })();
           }
         }
 
         // 12. Sync Vehicle Categories (Car Wash Packages & Pricing)
         const { data: dbVehCats } = await supabase.from('vehicle_categories').select('*');
-        if (dbVehCats && dbVehCats.length > 0) {
-          const mappedVehCats: VehicleCategoryData[] = dbVehCats.map((vc: any) => ({
-            id: vc.id,
-            label: vc.label,
-            description: vc.description || vc.label,
-            examples: vc.examples || '',
-            packages: vc.packages || {},
-            availableLocations: vc.available_locations || vc.availableLocations || []
-          }));
-          setVehicleCategories(mappedVehCats);
-        } else {
-          // Seed default vehicle categories to Supabase
-          for (const vc of VEHICLE_CATEGORIES) {
-            await supabase.from('vehicle_categories').upsert({
-              id: vc.id,
-              label: vc.label,
-              description: vc.description,
-              examples: vc.examples,
-              packages: vc.packages,
-              available_locations: vc.availableLocations || []
+        const dbVehMap = new Map((dbVehCats || []).map((vc: any) => [vc.id, vc]));
+
+        // Smart Merge: Preserve ALL default vehicle categories (hatchback, sedan, suv, luxury-suv, premium-car)
+        const mergedVehCats: VehicleCategoryData[] = VEHICLE_CATEGORIES.map((defaultVc) => {
+          const dbVc = dbVehMap.get(defaultVc.id);
+          if (dbVc) {
+            return {
+              id: dbVc.id as VehicleCategoryKey,
+              label: dbVc.label || defaultVc.label,
+              description: dbVc.description || defaultVc.description,
+              examples: dbVc.examples || defaultVc.examples,
+              packages: dbVc.packages || defaultVc.packages,
+              availableLocations: dbVc.available_locations || dbVc.availableLocations || defaultVc.availableLocations || []
+            };
+          }
+          return defaultVc;
+        });
+
+        // Retain any extra vehicle categories added by admin
+        (dbVehCats || []).forEach((dbVc: any) => {
+          if (!VEHICLE_CATEGORIES.some((dvc) => dvc.id === dbVc.id)) {
+            mergedVehCats.push({
+              id: dbVc.id as VehicleCategoryKey,
+              label: dbVc.label,
+              description: dbVc.description || dbVc.label,
+              examples: dbVc.examples || '',
+              packages: dbVc.packages || {},
+              availableLocations: dbVc.available_locations || dbVc.availableLocations || []
             });
+          }
+        });
+
+        setVehicleCategories(mergedVehCats);
+
+        // Background seed any missing default vehicle categories to Supabase
+        for (const defaultVc of VEHICLE_CATEGORIES) {
+          if (!dbVehMap.has(defaultVc.id)) {
+            (async () => {
+              try {
+                await supabase.from('vehicle_categories').upsert({
+                  id: defaultVc.id,
+                  label: defaultVc.label,
+                  description: defaultVc.description,
+                  examples: defaultVc.examples,
+                  packages: defaultVc.packages,
+                  available_locations: defaultVc.availableLocations || []
+                });
+              } catch (e) {}
+            })();
           }
         }
 
