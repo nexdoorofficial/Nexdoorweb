@@ -28,6 +28,7 @@ import { HOUSE_CATEGORIES, VEHICLE_CATEGORIES } from '../../data/categories';
 import { calculateLaundryPrice, DEMO_BOOKING_DEPOSIT } from '../../data/pricing';
 import type { ServiceId, HouseCategoryKey, VehicleCategoryKey, LaundryPackageKey, LaundrySpeedKey, LaundryQualityKey } from '../../types';
 import { useAdminData } from '../../context/AdminContext';
+import { sendNewOrderNotification } from '../../lib/email';
 
 const SERVICEABLE_LOCATIONS = [
   { id: 'Kakkanad', name: 'Kakkanad', zone: 'SmartCity, Infopark & Seaport-Airport Rd', pincode: '682030' },
@@ -330,7 +331,7 @@ export const BookingWizard: React.FC = () => {
           formattedCategoryOrPackage = `Weight: ${laundryWeight} Kg | Package: ${pkgName} | Speed: ${speedStr} | Care: ${qualityStr}`;
         }
 
-        adminData.addBooking({
+        const newBookingRecord = {
           referenceId: randomRef,
           customerName: fullName || 'Valued Customer',
           customerPhone: phone || '+91 98765 43210',
@@ -344,10 +345,15 @@ export const BookingWizard: React.FC = () => {
           scheduledTime: selectedTimeSlot || '11:30 AM',
           estimatedTotal: Number(netInvoice) || 1499,
           depositPaid: DEMO_BOOKING_DEPOSIT || 199,
-          status: 'pending',
+          status: 'pending' as const,
           assignedStaff: 'Unassigned',
           notes: finalNotes || ''
-        });
+        };
+
+        adminData.addBooking(newBookingRecord);
+
+        // Dispatch instant email notification to nexdoorofficial@gmail.com
+        sendNewOrderNotification(newBookingRecord).catch((e) => console.warn('Email dispatch background notice:', e));
 
         // Increment coupon usage count if used
         if (appliedCoupon && adminData.updateCoupon) {
