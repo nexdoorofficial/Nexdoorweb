@@ -2314,18 +2314,47 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     locationName?: string
   ): boolean => {
     return blockedSlots.some((slot) => {
-      // 1. Check service category match ('all' matches any service)
-      const serviceMatch = slot.serviceCategory === 'all' || slot.serviceCategory === serviceCategory;
-      if (!serviceMatch) return false;
+      // 1. Check service category match ('all', 'All Services', 'Global' or empty matches any service)
+      const isGlobalService =
+        !slot.serviceCategory ||
+        slot.serviceCategory === 'all' ||
+        slot.serviceCategory.toLowerCase().includes('all service') ||
+        slot.serviceCategory.toLowerCase().includes('global');
 
-      // 2. Check date match
-      if (slot.date !== dateStr) return false;
+      if (!isGlobalService && serviceCategory) {
+        const cleanSlotCat = slot.serviceCategory.toLowerCase().trim();
+        const cleanInputCat = serviceCategory.toLowerCase().trim();
+        if (
+          cleanSlotCat !== cleanInputCat &&
+          !cleanInputCat.includes(cleanSlotCat) &&
+          !cleanSlotCat.includes(cleanInputCat)
+        ) {
+          return false;
+        }
+      }
 
-      // 3. Check location match ('all' or undefined/empty matches any location)
-      if (locationName && slot.location && slot.location !== 'all') {
-        const cleanSlotLoc = slot.location.toLowerCase().trim();
+      // 2. Check date match (check both date and date_str properties)
+      const targetDate = slot.date || (slot as any).date_str || '';
+      if (targetDate !== dateStr) return false;
+
+      // 3. Check location match ('all', 'All Locations', 'All Areas', 'Global' or empty matches any location)
+      const isGlobalLocation =
+        !slot.location ||
+        slot.location === 'all' ||
+        slot.location.toLowerCase().includes('all location') ||
+        slot.location.toLowerCase().includes('all area') ||
+        slot.location.toLowerCase().includes('global');
+
+      if (!isGlobalLocation && locationName) {
+        const cleanSlotLoc = (slot.location || '').toLowerCase().trim();
         const cleanInputLoc = locationName.toLowerCase().trim();
-        if (cleanSlotLoc !== cleanInputLoc) return false;
+        if (
+          cleanSlotLoc !== cleanInputLoc &&
+          !cleanInputLoc.includes(cleanSlotLoc) &&
+          !cleanSlotLoc.includes(cleanInputLoc)
+        ) {
+          return false;
+        }
       }
 
       // 4. If slot has no specific timeSlot or is a Full Day block, it blocks the full day
@@ -2339,10 +2368,9 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
       // 5. If checking a specific timeSlot
       if (timeSlot) {
-        return slot.timeSlot.toLowerCase() === timeSlot.toLowerCase();
+        return slot.timeSlot.toLowerCase().trim() === timeSlot.toLowerCase().trim();
       }
 
-      // If checking day-level availability and slot is for a specific time, day is not 100% blocked
       return false;
     });
   };
