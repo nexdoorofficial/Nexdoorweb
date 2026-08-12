@@ -5,13 +5,11 @@ import {
   CheckCircle2,
   XCircle,
   Clock,
-  ArrowRight,
   ChevronDown
 } from 'lucide-react';
 import { VEHICLE_CATEGORIES } from '../../data/categories';
 import { useAdminData } from '../../context/AdminContext';
 import type { VehicleCategoryKey } from '../../types';
-import { useNavigate } from 'react-router-dom';
 
 const SERVICEABLE_LOCATIONS = [
   { id: 'Kakkanad', name: 'Kakkanad' },
@@ -35,7 +33,6 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
   onSelectPackage,
   hideHeader = false
 }) => {
-  const navigate = useNavigate();
   let vehicleCategoriesList = VEHICLE_CATEGORIES;
   let rawLocationsList: any[] = SERVICEABLE_LOCATIONS;
 
@@ -95,15 +92,10 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
     }
   }, [availableLocationsList]);
   const packageKeys = Object.keys(activeVehicle?.packages || {});
-  const activePackage = (activeVehicle?.packages as any)?.[selectedPkgKey] || Object.values(activeVehicle?.packages || {})[0];
 
   const handleSelectPkg = (pkgKey: any) => {
     setSelectedPkgKey(pkgKey);
     if (onSelectPackage) onSelectPackage(pkgKey);
-  };
-
-  const handleBookCarService = () => {
-    navigate(`/book?service=car-wash&vehicle=${selectedVehicle}&package=${selectedPkgKey}&location=${encodeURIComponent(location)}&step=5`);
   };
 
   const toggleMobileAccordion = (pkgKey: string, e: React.MouseEvent) => {
@@ -450,43 +442,7 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
         })}
       </div>
 
-      {/* Selected Package Deep Breakdown */}
-      <div style={{
-        background: '#1C2677',
-        color: '#FFFFFF',
-        borderRadius: '20px',
-        padding: '20px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '16px'
-      }}>
-        <div>
-          <div style={{ fontSize: '0.725rem', fontWeight: 700, color: '#29C3BE', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '4px' }}>
-            Selected Specification Breakdown
-          </div>
-          <h4 style={{ fontSize: '1.2rem', fontWeight: 800, margin: 0, marginBottom: '6px', color: '#FFFFFF' }}>
-            {activePackage.name} for {activeVehicle.label}
-          </h4>
-          <p style={{ fontSize: '0.825rem', color: '#CBD5E1', margin: 0, marginBottom: '12px', lineHeight: 1.4 }}>
-            {activePackage.overview}
-          </p>
 
-          <div style={{ display: 'flex', gap: '14px', fontSize: '0.775rem', color: '#94A3B8', flexWrap: 'wrap' }}>
-            <div>⏱️ Duration: <strong style={{ color: '#FFF' }}>{activePackage.duration}</strong></div>
-            <div>🗓️ Frequency: <strong style={{ color: '#FFF' }}>{activePackage.frequency}</strong></div>
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', borderTop: '1px solid rgba(255,255,255,0.12)', paddingTop: '14px', flexWrap: 'wrap' }}>
-          <div>
-            <div style={{ fontSize: '0.725rem', color: '#94A3B8' }}>Package Price</div>
-            <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#29C3BE' }}>₹{activePackage.price}</div>
-          </div>
-          <button onClick={handleBookCarService} className="btn-primary" style={{ padding: '12px 18px', fontSize: '0.875rem' }}>
-            Book Car Service <ArrowRight size={16} />
-          </button>
-        </div>
-      </div>
 
       <style>{`
         .car-packages-grid {
