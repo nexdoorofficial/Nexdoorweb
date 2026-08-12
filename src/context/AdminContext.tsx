@@ -881,21 +881,70 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           setCoupons(mappedCoupons);
         }
 
-        // 8. Sync Technicians / Staff
+        // 8. Sync Technicians / Staff with Smart Merging & Auto Seeding
         const { data: dbTechs } = await supabase.from('technicians').select('*');
-        if (dbTechs && dbTechs.length > 0) {
-          const mappedTechs: Technician[] = dbTechs.map((t: any) => ({
-            id: t.id,
-            name: t.name,
-            phone: t.phone,
-            email: t.email || '',
-            role: t.role,
-            specializations: t.specializations || [],
-            serviceArea: t.service_area || t.serviceArea || 'Kakkanad',
-            rating: Number(t.rating) || 5.0,
-            status: t.status || 'available'
-          }));
-          setTechnicians(mappedTechs);
+        const dbTechMap = new Map((dbTechs || []).map((t: any) => [t.id, t]));
+
+        const mergedTechs: Technician[] = SEED_TECHNICIANS.map((defaultT) => {
+          const dbT = dbTechMap.get(defaultT.id);
+          if (dbT) {
+            return {
+              id: dbT.id,
+              name: dbT.name || defaultT.name,
+              phone: dbT.phone || defaultT.phone,
+              email: dbT.email || defaultT.email,
+              role: dbT.role || defaultT.role,
+              specializations: dbT.specializations || defaultT.specializations,
+              serviceArea: dbT.service_area || dbT.serviceArea || defaultT.serviceArea,
+              rating: Number(dbT.rating ?? defaultT.rating) || defaultT.rating,
+              status: dbT.status || defaultT.status,
+              joinedDate: dbT.joined_date || dbT.joinedDate || defaultT.joinedDate,
+              completedJobs: Number(dbT.completed_jobs ?? dbT.completedJobs) || defaultT.completedJobs
+            };
+          }
+          return defaultT;
+        });
+
+        (dbTechs || []).forEach((dbT: any) => {
+          if (!SEED_TECHNICIANS.some((dt) => dt.id === dbT.id)) {
+            mergedTechs.push({
+              id: dbT.id,
+              name: dbT.name,
+              phone: dbT.phone,
+              email: dbT.email || '',
+              role: dbT.role || 'Service Crew',
+              specializations: dbT.specializations || [],
+              serviceArea: dbT.service_area || dbT.serviceArea || 'Kakkanad',
+              rating: Number(dbT.rating) || 5.0,
+              status: dbT.status || 'available',
+              joinedDate: dbT.joined_date || dbT.joinedDate || 'Aug 2025',
+              completedJobs: Number(dbT.completed_jobs || dbT.completedJobs) || 0
+            });
+          }
+        });
+
+        setTechnicians(mergedTechs);
+
+        for (const defaultT of SEED_TECHNICIANS) {
+          if (!dbTechMap.has(defaultT.id)) {
+            (async () => {
+              try {
+                await supabase.from('technicians').upsert({
+                  id: defaultT.id,
+                  name: defaultT.name,
+                  phone: defaultT.phone,
+                  email: defaultT.email,
+                  role: defaultT.role,
+                  specializations: defaultT.specializations,
+                  service_area: defaultT.serviceArea,
+                  rating: defaultT.rating,
+                  status: defaultT.status,
+                  joined_date: defaultT.joinedDate,
+                  completed_jobs: defaultT.completedJobs
+                });
+              } catch (e) {}
+            })();
+          }
         }
 
         // 9. Sync Blocked Slots
@@ -2078,7 +2127,9 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const addStaff = (staffData: Omit<Technician, 'id'>): Technician => {
     const newStaff: Technician = {
       ...staffData,
-      id: 'staff-' + Date.now()
+      id: 'staff-' + Date.now(),
+      joinedDate: staffData.joinedDate || 'Aug 2025',
+      completedJobs: staffData.completedJobs || 0
     };
     setTechnicians((prev) => [newStaff, ...prev]);
 
@@ -2093,7 +2144,9 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           specializations: newStaff.specializations,
           service_area: newStaff.serviceArea,
           rating: newStaff.rating,
-          status: newStaff.status
+          status: newStaff.status,
+          joined_date: newStaff.joinedDate,
+          completed_jobs: newStaff.completedJobs
         });
       } catch (e) {
         console.error('Supabase staff insert notice:', e);
@@ -2120,6 +2173,8 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         if (updates.serviceArea !== undefined) payload.service_area = updates.serviceArea;
         if (updates.rating !== undefined) payload.rating = updates.rating;
         if (updates.status !== undefined) payload.status = updates.status;
+        if (updates.joinedDate !== undefined) payload.joined_date = updates.joinedDate;
+        if (updates.completedJobs !== undefined) payload.completed_jobs = updates.completedJobs;
 
         await supabase.from('technicians').update(payload).eq('id', id);
       } catch (e) {
@@ -2145,25 +2200,24 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const toggleStaffStatus = (id: string) => {
-    const target = technicians.find((t) => t.id === id);
-    if (!target) return;
+    setTechnicians((prev) => {
+      const target = prev.find((t) => t.id === id) || SEED_TECHNICIANS.find((t) => t.id === id);
+      if (!target) return prev;
 
-    const nextStatus: Technician['status'] =
-      target.status === 'available' ? 'assigned' : target.status === 'assigned' ? 'off' : 'available';
+      const nextStatus: Technician['status'] =
+        target.status === 'available' ? 'assigned' : target.status === 'assigned' ? 'off' : 'available';
 
-    setTechnicians((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, status: nextStatus } : t))
-    );
+      (async () => {
+        try {
+          await supabase.from('technicians').update({ status: nextStatus }).eq('id', id);
+        } catch (e) {
+          console.error('Supabase staff toggle status notice:', e);
+        }
+      })();
 
-    (async () => {
-      try {
-        await supabase.from('technicians').update({ status: nextStatus }).eq('id', id);
-      } catch (e) {
-        console.error('Supabase staff toggle status notice:', e);
-      }
-    })();
-
-    showToast(`${target.name} is now ${nextStatus.toUpperCase()}`, 'info');
+      showToast(`${target.name} is now ${nextStatus.toUpperCase()}`, 'info');
+      return prev.map((t) => (t.id === id ? { ...t, status: nextStatus } : t));
+    });
   };
 
   // Blocked Slots / Availability Handlers
