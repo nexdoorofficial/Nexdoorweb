@@ -109,6 +109,22 @@ export default async function handler(req: any, res: any) {
       </html>
     `;
 
+    const textContent = `
+NEXDOOR - NEW ORDER CONFIRMED
+---------------------------------
+Booking Ref: ${booking.referenceId || 'NEX-BOOKING'}
+Customer Name: ${booking.customerName || 'Valued Customer'}
+Phone Number: ${booking.customerPhone}
+Email: ${booking.customerEmail || 'N/A'}
+Service Name: ${booking.serviceName || 'Cleaning Service'}
+Schedule: ${booking.scheduledDate} at ${booking.scheduledTime}
+Location: ${booking.address || 'Doorstep Address'}, ${booking.area || 'Kakkanad'} (${booking.pincode || '682030'})
+Specifications: ${booking.categoryOrPackage || 'Standard'}
+Estimated Total: ₹${booking.estimatedTotal || 0}
+Deposit Paid: ₹${booking.depositPaid || 199}
+Notes: ${booking.notes || 'None'}
+`.trim();
+
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -118,8 +134,9 @@ export default async function handler(req: any, res: any) {
       body: JSON.stringify({
         from: 'NEXDOOR Orders <onboarding@resend.dev>',
         to: [ADMIN_NOTIFICATION_EMAIL],
-        subject: `🚨 New Order! [${booking.referenceId}] - ${booking.serviceName} (${booking.area})`,
-        html: htmlContent
+        subject: `🚨 New Order Received! [${booking.referenceId}] - ${booking.serviceName} (${booking.area})`,
+        html: htmlContent,
+        text: textContent
       })
     });
 
