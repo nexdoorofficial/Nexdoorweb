@@ -1321,27 +1321,78 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const updateBookingStatus = (id: string, status: BookingStatus) => {
     setBookings((prev) =>
-      prev.map((b) => (b.id === id ? { ...b, status } : b))
+      prev.map((b) => (b.id === id || b.referenceId === id ? { ...b, status } : b))
     );
+
+    (async () => {
+      try {
+        await supabase
+          .from('bookings')
+          .update({ status })
+          .or(`id.eq.${id},reference_id.eq.${id}`);
+      } catch (e) {
+        console.error('Supabase status update notice:', e);
+      }
+    })();
+
     showToast(`Booking status updated to ${status.toUpperCase()}`, 'info');
   };
 
   const assignTechnician = (bookingId: string, techName: string) => {
     setBookings((prev) =>
-      prev.map((b) => (b.id === bookingId ? { ...b, assignedStaff: techName } : b))
+      prev.map((b) => (b.id === bookingId || b.referenceId === bookingId ? { ...b, assignedStaff: techName } : b))
     );
+
+    (async () => {
+      try {
+        await supabase
+          .from('bookings')
+          .update({
+            assigned_staff: techName,
+            assigned_technician: techName
+          })
+          .or(`id.eq.${bookingId},reference_id.eq.${bookingId}`);
+      } catch (e) {
+        console.error('Supabase staff assign notice:', e);
+      }
+    })();
+
     showToast(`Assigned ${techName} to booking`, 'success');
   };
 
   const updateBookingNotes = (bookingId: string, notes: string) => {
     setBookings((prev) =>
-      prev.map((b) => (b.id === bookingId ? { ...b, notes } : b))
+      prev.map((b) => (b.id === bookingId || b.referenceId === bookingId ? { ...b, notes } : b))
     );
+
+    (async () => {
+      try {
+        await supabase
+          .from('bookings')
+          .update({ notes })
+          .or(`id.eq.${bookingId},reference_id.eq.${bookingId}`);
+      } catch (e) {
+        console.error('Supabase notes update notice:', e);
+      }
+    })();
+
     showToast('Booking notes updated', 'info');
   };
 
   const deleteBooking = (id: string) => {
-    setBookings((prev) => prev.filter((b) => b.id !== id));
+    setBookings((prev) => prev.filter((b) => b.id !== id && b.referenceId !== id));
+
+    (async () => {
+      try {
+        await supabase
+          .from('bookings')
+          .delete()
+          .or(`id.eq.${id},reference_id.eq.${id}`);
+      } catch (e) {
+        console.error('Supabase delete booking notice:', e);
+      }
+    })();
+
     showToast('Booking removed', 'error');
   };
 
@@ -1352,6 +1403,24 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       id: serviceData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Math.floor(Math.random() * 1000)
     };
     setServices((prev) => [newService, ...prev]);
+
+    (async () => {
+      try {
+        await supabase.from('services').insert({
+          id: newService.id,
+          title: newService.title,
+          category: newService.category,
+          starting_price: newService.startingPrice,
+          price_numeric: newService.priceNumeric,
+          duration: newService.duration,
+          status: newService.status,
+          overview: newService.overview
+        });
+      } catch (e) {
+        console.error('Supabase service insert notice:', e);
+      }
+    })();
+
     showToast(`New service "${newService.title}" created successfully!`, 'success');
     return newService;
   };
@@ -1360,24 +1429,51 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setServices((prev) =>
       prev.map((s) => (s.id === id ? { ...s, ...serviceData } : s))
     );
+
+    (async () => {
+      try {
+        await supabase.from('services').update(serviceData).eq('id', id);
+      } catch (e) {
+        console.error('Supabase service update notice:', e);
+      }
+    })();
+
     showToast('Service updated successfully!', 'success');
   };
 
   const toggleServiceStatus = (id: string) => {
+    let nextStatus: 'active' | 'inactive' = 'active';
     setServices((prev) =>
       prev.map((s) => {
         if (s.id === id) {
-          const nextStatus = s.status === 'active' ? 'inactive' : 'active';
+          nextStatus = s.status === 'active' ? 'inactive' : 'active';
           showToast(`Service "${s.title}" is now ${nextStatus.toUpperCase()}`, 'info');
           return { ...s, status: nextStatus };
         }
         return s;
       })
     );
+
+    (async () => {
+      try {
+        await supabase.from('services').update({ status: nextStatus }).eq('id', id);
+      } catch (e) {
+        console.error('Supabase service status notice:', e);
+      }
+    })();
   };
 
   const deleteService = (id: string) => {
     setServices((prev) => prev.filter((s) => s.id !== id));
+
+    (async () => {
+      try {
+        await supabase.from('services').delete().eq('id', id);
+      } catch (e) {
+        console.error('Supabase service delete notice:', e);
+      }
+    })();
+
     showToast('Service deleted', 'error');
   };
 
@@ -1565,6 +1661,25 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       id: 'staff-' + Date.now()
     };
     setTechnicians((prev) => [newStaff, ...prev]);
+
+    (async () => {
+      try {
+        await supabase.from('technicians').insert({
+          id: newStaff.id,
+          name: newStaff.name,
+          phone: newStaff.phone,
+          email: newStaff.email,
+          role: newStaff.role,
+          specializations: newStaff.specializations,
+          service_area: newStaff.serviceArea,
+          rating: newStaff.rating,
+          status: newStaff.status
+        });
+      } catch (e) {
+        console.error('Supabase staff insert notice:', e);
+      }
+    })();
+
     showToast(`Staff member "${newStaff.name}" added successfully!`, 'success');
     return newStaff;
   };
@@ -1573,11 +1688,39 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setTechnicians((prev) =>
       prev.map((t) => (t.id === id ? { ...t, ...updates } : t))
     );
+
+    (async () => {
+      try {
+        const payload: Record<string, any> = {};
+        if (updates.name !== undefined) payload.name = updates.name;
+        if (updates.phone !== undefined) payload.phone = updates.phone;
+        if (updates.email !== undefined) payload.email = updates.email;
+        if (updates.role !== undefined) payload.role = updates.role;
+        if (updates.specializations !== undefined) payload.specializations = updates.specializations;
+        if (updates.serviceArea !== undefined) payload.service_area = updates.serviceArea;
+        if (updates.rating !== undefined) payload.rating = updates.rating;
+        if (updates.status !== undefined) payload.status = updates.status;
+
+        await supabase.from('technicians').update(payload).eq('id', id);
+      } catch (e) {
+        console.error('Supabase staff update notice:', e);
+      }
+    })();
+
     showToast('Staff member updated successfully!', 'success');
   };
 
   const deleteStaff = (id: string) => {
     setTechnicians((prev) => prev.filter((t) => t.id !== id));
+
+    (async () => {
+      try {
+        await supabase.from('technicians').delete().eq('id', id);
+      } catch (e) {
+        console.error('Supabase staff delete notice:', e);
+      }
+    })();
+
     showToast('Staff member removed', 'error');
   };
 
@@ -1591,6 +1734,14 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setTechnicians((prev) =>
       prev.map((t) => (t.id === id ? { ...t, status: nextStatus } : t))
     );
+
+    (async () => {
+      try {
+        await supabase.from('technicians').update({ status: nextStatus }).eq('id', id);
+      } catch (e) {
+        console.error('Supabase staff toggle status notice:', e);
+      }
+    })();
 
     showToast(`${target.name} is now ${nextStatus.toUpperCase()}`, 'info');
   };
@@ -1796,20 +1947,56 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const updateInquiryStatus = (id: string, status: InquiryStatus) => {
     setInquiries((prev) =>
-      prev.map((inq) => (inq.id === id ? { ...inq, status } : inq))
+      prev.map((inq) => (inq.id === id || inq.referenceId === id ? { ...inq, status } : inq))
     );
+
+    (async () => {
+      try {
+        await supabase
+          .from('inquiries')
+          .update({ status })
+          .or(`id.eq.${id},reference_id.eq.${id}`);
+      } catch (e) {
+        console.error('Supabase inquiry status notice:', e);
+      }
+    })();
+
     showToast('Inquiry status updated', 'info');
   };
 
   const updateInquiryNotes = (id: string, notes: string) => {
     setInquiries((prev) =>
-      prev.map((inq) => (inq.id === id ? { ...inq, notes } : inq))
+      prev.map((inq) => (inq.id === id || inq.referenceId === id ? { ...inq, notes } : inq))
     );
+
+    (async () => {
+      try {
+        await supabase
+          .from('inquiries')
+          .update({ notes })
+          .or(`id.eq.${id},reference_id.eq.${id}`);
+      } catch (e) {
+        console.error('Supabase inquiry notes notice:', e);
+      }
+    })();
+
     showToast('Inquiry notes saved', 'success');
   };
 
   const deleteInquiry = (id: string) => {
-    setInquiries((prev) => prev.filter((inq) => inq.id !== id));
+    setInquiries((prev) => prev.filter((inq) => inq.id !== id && inq.referenceId !== id));
+
+    (async () => {
+      try {
+        await supabase
+          .from('inquiries')
+          .delete()
+          .or(`id.eq.${id},reference_id.eq.${id}`);
+      } catch (e) {
+        console.error('Supabase inquiry delete notice:', e);
+      }
+    })();
+
     showToast('Inquiry deleted', 'info');
   };
 
