@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Car,
   CheckCircle2,
   XCircle,
   Clock,
-  ChevronDown
+  ChevronDown,
+  ArrowRight
 } from 'lucide-react';
 import { VEHICLE_CATEGORIES } from '../../data/categories';
 import { useAdminData } from '../../context/AdminContext';
@@ -93,9 +95,18 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
   }, [availableLocationsList]);
   const packageKeys = Object.keys(activeVehicle?.packages || {});
 
+  const continueBtnRef = useRef<HTMLDivElement>(null);
+
   const handleSelectPkg = (pkgKey: any) => {
     setSelectedPkgKey(pkgKey);
     if (onSelectPackage) onSelectPackage(pkgKey);
+
+    // Auto-scroll ONLY on mobile devices (screen width <= 768px) when selecting a package
+    if (window.innerWidth <= 768 && continueBtnRef.current) {
+      setTimeout(() => {
+        continueBtnRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
   };
 
   const toggleMobileAccordion = (pkgKey: string, e: React.MouseEvent) => {
@@ -442,7 +453,72 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
         })}
       </div>
 
+      {/* Continue to Booking Banner */}
+      {(() => {
+        const selectedPkgObj = (activeVehicle?.packages as any)?.[selectedPkgKey];
+        return (
+          <div
+            ref={continueBtnRef}
+            style={{
+              marginTop: '24px',
+              background: 'linear-gradient(135deg, #1C2677 0%, #0F172A 100%)',
+              borderRadius: '20px',
+              padding: '22px 28px',
+              color: '#FFFFFF',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '16px',
+              flexWrap: 'wrap',
+              boxShadow: '0 8px 30px rgba(28, 38, 119, 0.25)',
+              border: '1px solid rgba(41, 195, 190, 0.2)'
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '0.725rem', fontWeight: 800, textTransform: 'uppercase', background: '#29C3BE', color: '#1C2677', padding: '3px 9px', borderRadius: '8px', letterSpacing: '0.04em' }}>
+                  {activeVehicle?.label}
+                </span>
+                <span style={{ fontSize: '0.825rem', color: '#CBD5E1', fontWeight: 700 }}>
+                  📍 {location}
+                </span>
+              </div>
+              <h4 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: '#FFFFFF' }}>
+                {selectedPkgObj?.name || 'Selected Package'} — ₹{selectedPkgObj?.price || 0}
+              </h4>
+              <p style={{ fontSize: '0.8rem', color: '#94A3B8', margin: '4px 0 0 0' }}>
+                Duration: {selectedPkgObj?.duration} • Pick your date & arrival time slot on next step
+              </p>
+            </div>
 
+            <Link
+              to={`/book?service=car-wash&vehicle=${selectedVehicle}&package=${selectedPkgKey}&location=${encodeURIComponent(location)}`}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '10px',
+                padding: '14px 28px',
+                borderRadius: '14px',
+                background: 'linear-gradient(135deg, #29C3BE 0%, #00B4D8 100%)',
+                color: '#FFFFFF',
+                fontWeight: 800,
+                fontSize: '0.95rem',
+                textDecoration: 'none',
+                boxShadow: '0 4px 16px rgba(41, 195, 190, 0.4)',
+                transition: 'all 0.2s ease',
+                whiteSpace: 'nowrap',
+                width: '100%',
+                maxWidth: '280px'
+              }}
+              className="continue-booking-btn"
+            >
+              <span>Continue to Booking</span>
+              <ArrowRight size={18} />
+            </Link>
+          </div>
+        );
+      })()}
 
       <style>{`
         .car-packages-grid {
