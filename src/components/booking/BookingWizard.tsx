@@ -34,14 +34,7 @@ import type { ServiceId, HouseCategoryKey, VehicleCategoryKey, LaundryPackageKey
 import { useAdminData } from '../../context/AdminContext';
 import { sendNewOrderNotification } from '../../lib/email';
 
-const SERVICEABLE_LOCATIONS = [
-  { id: 'Kakkanad', name: 'Kakkanad', zone: 'SmartCity, Infopark & Seaport-Airport Rd', pincode: '682030' },
-  { id: 'Edappally', name: 'Edappally', zone: 'Lulu Mall & Bypass Corridor', pincode: '682024' },
-  { id: 'Kalamassery', name: 'Kalamassery', zone: 'CUSAT & Apollo Hospital Zone', pincode: '682022' },
-  { id: 'Ernakulam Central', name: 'Marine Drive & MG Road', zone: 'Ernakulam Commercial Central', pincode: '682011' },
-  { id: 'Vytila', name: 'Vytila & Thripunithura', zone: 'Mobility Hub & Metro Corridor', pincode: '682019' },
-  { id: 'Aluva', name: 'Aluva & Angamaly', zone: 'Cochin Airport Highway Belt', pincode: '683101' }
-];
+const FALLBACK_LOCATIONS: any[] = [];
 
 export const BookingWizard: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -701,9 +694,9 @@ export const BookingWizard: React.FC = () => {
                   </p>
 
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '14px' }}>
-                    {((adminData && adminData.locations && adminData.locations.length > 0)
+                    {((adminData && adminData.locations)
                       ? adminData.locations.filter((l: any) => !l.status || l.status === 'active').map((l: any) => ({ id: l.name, name: l.name, zone: l.zone || 'Kochi Service Zone', pincode: l.pincode }))
-                      : SERVICEABLE_LOCATIONS
+                      : FALLBACK_LOCATIONS
                     ).map((loc: any) => {
                       const isSelected = area.toLowerCase().includes(loc.id.toLowerCase()) || loc.id.toLowerCase().includes(area.toLowerCase());
                       const isAvailable = adminData?.isServiceAvailableInLocation
@@ -1397,9 +1390,9 @@ export const BookingWizard: React.FC = () => {
                       onChange={(e) => {
                         const newLoc = e.target.value;
                         setArea(newLoc);
-                        const match = ((adminData && adminData.locations && adminData.locations.length > 0)
+                        const match = ((adminData && adminData.locations)
                           ? adminData.locations
-                          : SERVICEABLE_LOCATIONS
+                          : FALLBACK_LOCATIONS
                         ).find((l: any) => l.name === newLoc);
                         if (match && match.pincode) setPincode(match.pincode);
                       }}
@@ -1407,7 +1400,7 @@ export const BookingWizard: React.FC = () => {
                     >
                       {(() => {
                         const activeSubKey = serviceId === 'house-cleaning' ? houseCategory : serviceId === 'car-wash' ? vehicleCategory : undefined;
-                        const validLocations = ((adminData && adminData.locations && adminData.locations.length > 0)
+                        const validLocations = ((adminData && adminData.locations)
                           ? adminData.locations.filter((l: any) => {
                               const isActiveSystem = !l.status || l.status === 'active';
                               const isServiceAvail = adminData.isServiceAvailableInLocation
@@ -1415,10 +1408,10 @@ export const BookingWizard: React.FC = () => {
                                 : true;
                               return isActiveSystem && isServiceAvail;
                             })
-                          : SERVICEABLE_LOCATIONS
+                          : FALLBACK_LOCATIONS
                         );
                         
-                        const listToRender = validLocations.length > 0 ? validLocations : SERVICEABLE_LOCATIONS;
+                        const listToRender = validLocations.length > 0 ? validLocations : (adminData?.locations || FALLBACK_LOCATIONS);
 
                         return listToRender.map((loc: any) => (
                           <option key={loc.id || loc.name} value={loc.name}>

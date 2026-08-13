@@ -17,14 +17,7 @@ import { useAdminData } from '../../context/AdminContext';
 import type { LaundryPackageKey, LaundrySpeedKey, LaundryQualityKey } from '../../types';
 import { useNavigate } from 'react-router-dom';
 
-const SERVICEABLE_LOCATIONS = [
-  { id: 'Kakkanad', name: 'Kakkanad', zone: 'SmartCity & Infopark' },
-  { id: 'Edappally', name: 'Edappally', zone: 'Lulu Mall Belt' },
-  { id: 'Kalamassery', name: 'Kalamassery', zone: 'CUSAT Zone' },
-  { id: 'Marine Drive & MG Road', name: 'Marine Drive & MG Road', zone: 'Ernakulam Central' },
-  { id: 'Vytila & Thripunithura', name: 'Vytila & Thripunithura', zone: 'Mobility Hub' },
-  { id: 'Aluva & Angamaly', name: 'Aluva & Angamaly', zone: 'Airport Highway' }
-];
+const FALLBACK_LOCATIONS: any[] = [];
 
 interface LaundryCalculatorProps {
   initialWeight?: number;
@@ -41,14 +34,14 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
 }) => {
   const navigate = useNavigate();
   let laundryConfig: any = null;
-  let rawLocationsList: any[] = SERVICEABLE_LOCATIONS;
+  let rawLocationsList: any[] = FALLBACK_LOCATIONS;
 
   try {
     const adminData = useAdminData();
     if (adminData && adminData.laundryConfig) {
       laundryConfig = adminData.laundryConfig;
     }
-    if (adminData && adminData.locations && adminData.locations.length > 0) {
+    if (adminData && adminData.locations) {
       rawLocationsList = adminData.locations;
     }
   } catch (e) {}

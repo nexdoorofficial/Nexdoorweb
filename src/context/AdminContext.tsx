@@ -390,14 +390,7 @@ const SEED_TECHNICIANS: Technician[] = [
   { id: 't-4', name: 'Deepak S.', phone: '+91 98950 44444', email: 'deepak@nexdoor.in', role: 'Garment Care Specialist', rating: 4.7, status: 'assigned', specializations: ['Laundry', 'Dry Cleaning'], serviceArea: 'Vytila', joinedDate: '2025-09-10', completedJobs: 87 }
 ];
 
-const SEED_LOCATIONS: ServiceAreaAdmin[] = [
-  { id: 'loc-1', name: 'Kakkanad', zone: 'SmartCity & Infopark Corridor', pincode: '682030', status: 'active', activeBookingsCount: 14 },
-  { id: 'loc-2', name: 'Edappally', zone: 'Lulu Mall & Bypass Belt', pincode: '682024', status: 'active', activeBookingsCount: 9 },
-  { id: 'loc-3', name: 'Kalamassery', zone: 'CUSAT & Apollo Hospital Zone', pincode: '682022', status: 'active', activeBookingsCount: 6 },
-  { id: 'loc-4', name: 'Ernakulam Central', zone: 'Marine Drive & MG Road', pincode: '682011', status: 'active', activeBookingsCount: 11 },
-  { id: 'loc-5', name: 'Vytila', zone: 'Mobility Hub & Metro Belt', pincode: '682019', status: 'active', activeBookingsCount: 8 },
-  { id: 'loc-6', name: 'Aluva', zone: 'Cochin Airport Highway', pincode: '683101', status: 'active', activeBookingsCount: 4 }
-];
+const SEED_LOCATIONS: ServiceAreaAdmin[] = [];
 
 const SEED_BLOCKED_SLOTS: BlockedSlot[] = [];
 
@@ -896,9 +889,9 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           setBlockedSlots(mappedBlocked);
         }
 
-        // 10. Sync Locations
+        // 10. Sync Locations (Supabase Cloud is Authoritative Single Source of Truth)
         const { data: dbLocs } = await supabase.from('locations').select('*');
-        if (dbLocs && dbLocs.length > 0) {
+        if (dbLocs) {
           const mappedLocs: ServiceAreaAdmin[] = dbLocs.map((l: any) => ({
             id: l.id,
             name: l.name,

@@ -13,14 +13,7 @@ import { VEHICLE_CATEGORIES } from '../../data/categories';
 import { useAdminData } from '../../context/AdminContext';
 import type { VehicleCategoryKey } from '../../types';
 
-const SERVICEABLE_LOCATIONS = [
-  { id: 'Kakkanad', name: 'Kakkanad' },
-  { id: 'Edappally', name: 'Edappally' },
-  { id: 'Kalamassery', name: 'Kalamassery' },
-  { id: 'Marine Drive & MG Road', name: 'Marine Drive & MG Road' },
-  { id: 'Vytila & Thripunithura', name: 'Vytila & Thripunithura' },
-  { id: 'Aluva & Angamaly', name: 'Aluva & Angamaly' }
-];
+const FALLBACK_LOCATIONS: any[] = [];
 
 interface CarWashCalculatorProps {
   initialVehicle?: VehicleCategoryKey;
@@ -36,14 +29,14 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
   hideHeader = false
 }) => {
   let vehicleCategoriesList = VEHICLE_CATEGORIES;
-  let rawLocationsList: any[] = SERVICEABLE_LOCATIONS;
+  let rawLocationsList: any[] = FALLBACK_LOCATIONS;
 
   try {
     const adminData = useAdminData();
     if (adminData && adminData.vehicleCategories && adminData.vehicleCategories.length > 0) {
       vehicleCategoriesList = adminData.vehicleCategories;
     }
-    if (adminData && adminData.locations && adminData.locations.length > 0) {
+    if (adminData && adminData.locations) {
       rawLocationsList = adminData.locations;
     }
   } catch (e) {}

@@ -13,14 +13,7 @@ import { useAdminData } from '../../context/AdminContext';
 import type { HouseCategoryKey, HousePlanDetails } from '../../types';
 import { useNavigate } from 'react-router-dom';
 
-const SERVICEABLE_LOCATIONS = [
-  { id: 'Kakkanad', name: 'Kakkanad' },
-  { id: 'Edappally', name: 'Edappally' },
-  { id: 'Kalamassery', name: 'Kalamassery' },
-  { id: 'Marine Drive & MG Road', name: 'Marine Drive & MG Road' },
-  { id: 'Vytila & Thripunithura', name: 'Vytila & Thripunithura' },
-  { id: 'Aluva & Angamaly', name: 'Aluva & Angamaly' }
-];
+const FALLBACK_LOCATIONS: any[] = [];
 
 interface HousePricingCalculatorProps {
   initialCategory?: HouseCategoryKey;
@@ -37,14 +30,14 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
 }) => {
   const navigate = useNavigate();
   let houseCategoriesList = HOUSE_CATEGORIES;
-  let rawLocationsList: any[] = SERVICEABLE_LOCATIONS;
+  let rawLocationsList: any[] = FALLBACK_LOCATIONS;
 
   try {
     const adminData = useAdminData();
     if (adminData && adminData.houseCategories && adminData.houseCategories.length > 0) {
       houseCategoriesList = adminData.houseCategories;
     }
-    if (adminData && adminData.locations && adminData.locations.length > 0) {
+    if (adminData && adminData.locations) {
       rawLocationsList = adminData.locations;
     }
   } catch (e) {}
