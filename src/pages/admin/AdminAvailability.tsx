@@ -427,7 +427,6 @@ export const AdminAvailability: React.FC = () => {
         onSave={addBlockedSlot}
         initialDate={selectedDateForModal}
         initialServiceCategory={activeTab as any}
-        existingBlockages={blockedSlots.filter((s) => (s.date || (s as any).date_str) === selectedDateForModal)}
       />
     </div>
   );
