@@ -453,8 +453,8 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
         })}
       </div>
 
-      {/* Continue to Booking Banner */}
-      {(() => {
+      {/* Continue to Booking Banner (Only rendered on standalone pages like /services/car-wash, hidden inside Booking Wizard steps) */}
+      {!hideHeader && (() => {
         const selectedPkgObj = (activeVehicle?.packages as any)?.[selectedPkgKey];
         return (
           <div
