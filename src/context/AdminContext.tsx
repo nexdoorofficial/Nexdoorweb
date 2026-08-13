@@ -401,70 +401,7 @@ const SEED_LOCATIONS: ServiceAreaAdmin[] = [
 
 const SEED_BLOCKED_SLOTS: BlockedSlot[] = [];
 
-const SEED_COUPONS: Coupon[] = [
-  {
-    id: 'c-1',
-    code: 'WELCOME20',
-    title: '20% Off Welcome Offer',
-    description: 'Get 20% discount up to ₹300 on your first booking with NEXDOOR!',
-    discountType: 'percentage',
-    discountValue: 20,
-    maxDiscountAmount: 300,
-    minOrderAmount: 499,
-    applicableServices: 'all',
-    expiryDate: '', // Perpetual / Never expires
-    oncePerCustomerPhone: true,
-    status: 'active',
-    usageCount: 142,
-    createdAt: '2026-08-01T10:00:00Z'
-  },
-  {
-    id: 'c-2',
-    code: 'FLAT150',
-    title: 'Flat ₹150 Instant Off',
-    description: 'Flat ₹150 discount on orders above ₹799 across any service category.',
-    discountType: 'fixed',
-    discountValue: 150,
-    minOrderAmount: 799,
-    applicableServices: 'all',
-    expiryDate: '2026-12-31',
-    oncePerCustomerPhone: false,
-    status: 'active',
-    usageCount: 89,
-    createdAt: '2026-08-01T10:00:00Z'
-  },
-  {
-    id: 'c-3',
-    code: 'LAUNDRY50',
-    title: 'Flat ₹50 Off Laundry Care',
-    description: 'Flat ₹50 instant discount on all Doorstep Express Laundry orders.',
-    discountType: 'fixed',
-    discountValue: 50,
-    minOrderAmount: 199,
-    applicableServices: 'laundry',
-    expiryDate: '', // Never expires
-    oncePerCustomerPhone: false,
-    status: 'active',
-    usageCount: 215,
-    createdAt: '2026-08-01T10:00:00Z'
-  },
-  {
-    id: 'c-4',
-    code: 'FESTIVE25',
-    title: '25% Off Deep Home Cleaning',
-    description: 'Exclusive 25% discount up to ₹500 on Premium Deep Home Cleaning & Villa Sanitization.',
-    discountType: 'percentage',
-    discountValue: 25,
-    maxDiscountAmount: 500,
-    minOrderAmount: 1499,
-    applicableServices: 'house-cleaning',
-    expiryDate: '2026-10-31',
-    oncePerCustomerPhone: true,
-    status: 'active',
-    usageCount: 64,
-    createdAt: '2026-08-01T10:00:00Z'
-  }
-];
+const SEED_COUPONS: Coupon[] = [];
 
 const SEED_INQUIRIES: InquiryRecord[] = [
   {
@@ -856,9 +793,9 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           setBlogs(mappedBlogs);
         }
 
-        // 7. Sync Coupons
+        // 7. Sync Coupons (Supabase Cloud is Authoritative Single Source of Truth)
         const { data: dbCoupons } = await supabase.from('coupons').select('*').order('created_at', { ascending: false });
-        if (dbCoupons && dbCoupons.length > 0) {
+        if (dbCoupons) {
           const mappedCoupons: Coupon[] = dbCoupons.map((c: any) => ({
             id: c.id,
             code: c.code,
