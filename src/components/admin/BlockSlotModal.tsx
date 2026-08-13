@@ -9,6 +9,7 @@ interface BlockSlotModalProps {
   onSave: (slot: Omit<BlockedSlot, 'id' | 'createdAt'>) => void;
   initialDate?: string;
   initialServiceCategory?: BlockedSlot['serviceCategory'];
+  existingBlockages?: BlockedSlot[];
 }
 
 const COMMON_TIME_SLOTS = [
@@ -29,7 +30,8 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
   onClose,
   onSave,
   initialDate,
-  initialServiceCategory = 'all'
+  initialServiceCategory = 'all',
+  existingBlockages = []
 }) => {
   const { locations } = useAdminData();
   const allLocations = locations && locations.length > 0
@@ -62,11 +64,33 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
       setSelectedLocations(['all']);
       setIsLocDropdownOpen(false);
       setDate(initialDate || new Date().toISOString().split('T')[0]);
-      setSelectedTimeSlots(['Full Day Block']);
       setCustomTime('');
       setReason('');
+
+      // Smart time slot pre-selection based on existing blockages for initialDate
+      if (existingBlockages && existingBlockages.length > 0) {
+        const hasFullDay = existingBlockages.some(
+          (b) =>
+            !b.timeSlot ||
+            b.timeSlot === 'all' ||
+            b.timeSlot === '' ||
+            b.timeSlot.toLowerCase().includes('full day')
+        );
+
+        if (hasFullDay) {
+          setSelectedTimeSlots(['Full Day Block']);
+        } else {
+          // Date has partial slot blockages (e.g. 10:30 PM) -> pre-select those specific slots!
+          const activeSlots = existingBlockages
+            .map((b) => b.timeSlot)
+            .filter(Boolean) as string[];
+          setSelectedTimeSlots(activeSlots.length > 0 ? activeSlots : ['Full Day Block']);
+        }
+      } else {
+        setSelectedTimeSlots(['Full Day Block']);
+      }
     }
-  }, [isOpen, initialDate, initialServiceCategory]);
+  }, [isOpen, initialDate, initialServiceCategory, existingBlockages]);
 
   if (!isOpen) return null;
 

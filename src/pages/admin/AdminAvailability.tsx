@@ -348,7 +348,19 @@ export const AdminAvailability: React.FC = () => {
                 <p style={{ fontSize: '0.85rem', fontWeight: 600, margin: 0 }}>No active blockages for this view</p>
               </div>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '420px', overflowY: 'auto' }}>
+              <div
+                className="custom-scrollbar"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '10px',
+                  maxHeight: '520px',
+                  overflowY: 'auto',
+                  overscrollBehavior: 'contain',
+                  WebkitOverflowScrolling: 'touch',
+                  paddingRight: '6px'
+                }}
+              >
                 {filteredSlots.map((slot) => (
                   <div
                     key={slot.id}
@@ -413,6 +425,7 @@ export const AdminAvailability: React.FC = () => {
         onSave={addBlockedSlot}
         initialDate={selectedDateForModal}
         initialServiceCategory={activeTab as any}
+        existingBlockages={blockedSlots.filter((s) => (s.date || (s as any).date_str) === selectedDateForModal)}
       />
     </div>
   );
