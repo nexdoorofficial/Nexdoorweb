@@ -427,6 +427,7 @@ export const AdminAvailability: React.FC = () => {
         onSave={addBlockedSlot}
         initialDate={selectedDateForModal}
         initialServiceCategory={activeTab as any}
+        initialLocation={selectedLocationFilter}
       />
     </div>
   );

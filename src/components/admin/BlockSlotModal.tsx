@@ -9,6 +9,7 @@ interface BlockSlotModalProps {
   onSave: (slot: Omit<BlockedSlot, 'id' | 'createdAt'>) => void;
   initialDate?: string;
   initialServiceCategory?: BlockedSlot['serviceCategory'];
+  initialLocation?: string;
 }
 
 const COMMON_TIME_SLOTS = [
@@ -29,7 +30,8 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
   onClose,
   onSave,
   initialDate,
-  initialServiceCategory = 'all'
+  initialServiceCategory = 'all',
+  initialLocation = 'all'
 }) => {
   const { locations } = useAdminData();
   const allLocations = locations && locations.length > 0
@@ -59,14 +61,24 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       setServiceCategory(initialServiceCategory || 'all');
-      setSelectedLocations(['all']);
+      
+      if (initialLocation && initialLocation !== 'all') {
+        setSelectedLocations([initialLocation]);
+      } else {
+        setSelectedLocations(['all']);
+      }
+
       setIsLocDropdownOpen(false);
-      setDate(initialDate || new Date().toISOString().split('T')[0]);
+      
+      const today = new Date();
+      const localTodayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+      setDate(initialDate || localTodayStr);
+      
       setSelectedTimeSlots(['Full Day Block']);
       setCustomTime('');
       setReason('');
     }
-  }, [isOpen, initialDate, initialServiceCategory]);
+  }, [isOpen, initialDate, initialServiceCategory, initialLocation]);
 
   if (!isOpen) return null;
 
