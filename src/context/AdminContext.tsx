@@ -947,58 +947,35 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           }
         }
 
-        // 9. Sync Blocked Slots with Smart Merging & Auto Seeding
+        // 9. Sync Blocked Slots (Supabase Cloud is Authoritative Source of Truth)
         const { data: dbBlocked } = await supabase.from('blocked_slots').select('*');
-        const dbBlockedMap = new Map((dbBlocked || []).map((bs: any) => [bs.id, bs]));
-
-        const mergedBlocked: BlockedSlot[] = SEED_BLOCKED_SLOTS.map((defaultBs) => {
-          const dbBs = dbBlockedMap.get(defaultBs.id);
-          if (dbBs) {
-            return {
-              id: dbBs.id,
-              serviceCategory: dbBs.service_category || dbBs.serviceCategory || defaultBs.serviceCategory,
-              date: dbBs.date || dbBs.date_str || defaultBs.date,
-              timeSlot: dbBs.time_slot || dbBs.timeSlot || defaultBs.timeSlot,
-              location: dbBs.location || dbBs.location_name || defaultBs.location,
-              reason: dbBs.reason || defaultBs.reason,
-              createdAt: dbBs.created_at || defaultBs.createdAt || new Date().toISOString()
-            };
-          }
-          return defaultBs;
-        });
-
-        (dbBlocked || []).forEach((dbBs: any) => {
-          if (!SEED_BLOCKED_SLOTS.some((dbs) => dbs.id === dbBs.id)) {
-            mergedBlocked.push({
-              id: dbBs.id,
-              serviceCategory: dbBs.service_category || dbBs.serviceCategory || 'all',
-              date: dbBs.date || dbBs.date_str || '',
-              timeSlot: dbBs.time_slot || dbBs.timeSlot || 'Full Day',
-              location: dbBs.location || dbBs.location_name || 'All Locations',
-              reason: dbBs.reason || 'Admin Block',
-              createdAt: dbBs.created_at || new Date().toISOString()
-            });
-          }
-        });
-
-        setBlockedSlots(mergedBlocked);
-
-        for (const defaultBs of SEED_BLOCKED_SLOTS) {
-          if (!dbBlockedMap.has(defaultBs.id)) {
-            (async () => {
-              try {
-                await supabase.from('blocked_slots').upsert({
-                  id: defaultBs.id,
-                  service_category: defaultBs.serviceCategory,
-                  date: defaultBs.date,
-                  date_str: defaultBs.date,
-                  time_slot: defaultBs.timeSlot,
-                  location: defaultBs.location,
-                  location_name: defaultBs.location,
-                  reason: defaultBs.reason
-                });
-              } catch (e) {}
-            })();
+        if (dbBlocked && dbBlocked.length > 0) {
+          const mappedBlocked: BlockedSlot[] = dbBlocked.map((bs: any) => ({
+            id: bs.id,
+            serviceCategory: bs.service_category || bs.serviceCategory || 'all',
+            date: bs.date || bs.date_str || '',
+            timeSlot: bs.time_slot || bs.timeSlot,
+            location: bs.location || bs.location_name || 'All Locations',
+            reason: bs.reason || 'Unavailable',
+            createdAt: bs.created_at || new Date().toISOString()
+          }));
+          setBlockedSlots(mappedBlocked);
+        } else if (dbBlocked && dbBlocked.length === 0) {
+          // Table is brand-new (0 rows) - seed initial defaults ONCE
+          setBlockedSlots(SEED_BLOCKED_SLOTS);
+          for (const defaultBs of SEED_BLOCKED_SLOTS) {
+            try {
+              await supabase.from('blocked_slots').upsert({
+                id: defaultBs.id,
+                service_category: defaultBs.serviceCategory,
+                date: defaultBs.date,
+                date_str: defaultBs.date,
+                time_slot: defaultBs.timeSlot || 'Full Day',
+                location: defaultBs.location,
+                location_name: defaultBs.location,
+                reason: defaultBs.reason
+              });
+            } catch (e) {}
           }
         }
 
@@ -2267,19 +2244,19 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       id: 'bslot-' + Date.now(),
       createdAt: new Date().toISOString()
     };
-    setBlockedSlots((prev) => [newSlot, ...prev]);
+    setBlockedSlots((prev) => [newSlot, ...prev.filter((s) => s.id !== newSlot.id)]);
 
     (async () => {
       try {
-        await supabase.from('blocked_slots').insert({
+        await supabase.from('blocked_slots').upsert({
           id: newSlot.id,
-          service_category: newSlot.serviceCategory,
+          service_category: newSlot.serviceCategory || 'all',
           date: newSlot.date,
           date_str: newSlot.date,
-          time_slot: newSlot.timeSlot,
-          location: newSlot.location,
-          location_name: newSlot.location,
-          reason: newSlot.reason
+          time_slot: newSlot.timeSlot || 'Full Day',
+          location: newSlot.location || 'All Locations',
+          location_name: newSlot.location || 'All Locations',
+          reason: newSlot.reason || 'Unavailable'
         });
       } catch (e) {
         console.error('Supabase blocked slot insert notice:', e);
@@ -2294,11 +2271,18 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const deleteBlockedSlot = (id: string) => {
+    const targetSlot = blockedSlots.find((s) => s.id === id);
     setBlockedSlots((prev) => prev.filter((s) => s.id !== id));
 
     (async () => {
       try {
         await supabase.from('blocked_slots').delete().eq('id', id);
+        if (targetSlot && targetSlot.date) {
+          await supabase
+            .from('blocked_slots')
+            .delete()
+            .or(`id.eq.${id},date.eq.${targetSlot.date},date_str.eq.${targetSlot.date}`);
+        }
       } catch (e) {
         console.error('Supabase blocked slot delete notice:', e);
       }
@@ -2314,64 +2298,91 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     locationName?: string
   ): boolean => {
     return blockedSlots.some((slot) => {
-      // 1. Check service category match ('all', 'All Services', 'Global' or empty matches any service)
-      const isGlobalService =
-        !slot.serviceCategory ||
-        slot.serviceCategory === 'all' ||
-        slot.serviceCategory.toLowerCase().includes('all service') ||
-        slot.serviceCategory.toLowerCase().includes('global');
-
-      if (!isGlobalService && serviceCategory) {
-        const cleanSlotCat = slot.serviceCategory.toLowerCase().trim();
-        const cleanInputCat = serviceCategory.toLowerCase().trim();
-        if (
-          cleanSlotCat !== cleanInputCat &&
-          !cleanInputCat.includes(cleanSlotCat) &&
-          !cleanSlotCat.includes(cleanInputCat)
-        ) {
-          return false;
-        }
-      }
-
-      // 2. Check date match (check both date and date_str properties)
+      // 1. Check Date match first (date or date_str)
       const targetDate = slot.date || (slot as any).date_str || '';
       if (targetDate !== dateStr) return false;
 
-      // 3. Check location match ('all', 'All Locations', 'All Areas', 'Global' or empty matches any location)
-      const isGlobalLocation =
-        !slot.location ||
-        slot.location === 'all' ||
-        slot.location.toLowerCase().includes('all location') ||
-        slot.location.toLowerCase().includes('all area') ||
-        slot.location.toLowerCase().includes('global');
+      // 2. Check Service Category match
+      const slotCat = (slot.serviceCategory || 'all').toLowerCase().trim();
+      const inputCat = (serviceCategory || 'all').toLowerCase().trim();
 
-      if (!isGlobalLocation && locationName) {
-        const cleanSlotLoc = (slot.location || '').toLowerCase().trim();
-        const cleanInputLoc = locationName.toLowerCase().trim();
+      const isGlobalService =
+        slotCat === 'all' ||
+        slotCat.includes('all service') ||
+        slotCat.includes('global') ||
+        inputCat === 'all' ||
+        inputCat.includes('all service') ||
+        inputCat.includes('global');
+
+      if (!isGlobalService) {
+        const cleanSlotCat = slotCat.replace(/[^a-z0-9]/g, '');
+        const cleanInputCat = inputCat.replace(/[^a-z0-9]/g, '');
         if (
-          cleanSlotLoc !== cleanInputLoc &&
-          !cleanInputLoc.includes(cleanSlotLoc) &&
-          !cleanSlotLoc.includes(cleanInputLoc)
+          cleanSlotCat !== cleanInputCat &&
+          !cleanSlotCat.includes(cleanInputCat) &&
+          !cleanInputCat.includes(cleanSlotCat)
         ) {
-          return false;
+          return false; // Category does NOT match -> NOT BLOCKED for this service!
         }
       }
 
-      // 4. If slot has no specific timeSlot or is a Full Day block, it blocks the full day
-      if (
-        !slot.timeSlot ||
-        slot.timeSlot === 'all' ||
-        slot.timeSlot === '' ||
-        slot.timeSlot.toLowerCase().includes('full day') ||
-        slot.timeSlot.toLowerCase() === 'full-day'
-      ) return true;
+      // 3. Check Location match
+      const slotLoc = (slot.location || 'all').toLowerCase().trim();
+      const inputLoc = (locationName || 'all').toLowerCase().trim();
 
-      // 5. If checking a specific timeSlot
-      if (timeSlot) {
-        return slot.timeSlot.toLowerCase().trim() === timeSlot.toLowerCase().trim();
+      const isGlobalLocation =
+        slotLoc === 'all' ||
+        slotLoc.includes('all location') ||
+        slotLoc.includes('all area') ||
+        slotLoc.includes('global') ||
+        inputLoc === 'all' ||
+        inputLoc.includes('all location') ||
+        inputLoc.includes('all area') ||
+        inputLoc.includes('global');
+
+      if (!isGlobalLocation) {
+        const cleanSlotLoc = slotLoc.replace(/[^a-z0-9]/g, '');
+        const cleanInputLoc = inputLoc.replace(/[^a-z0-9]/g, '');
+        if (
+          cleanSlotLoc !== cleanInputLoc &&
+          !cleanSlotLoc.includes(cleanInputLoc) &&
+          !cleanInputLoc.includes(cleanSlotLoc)
+        ) {
+          return false; // Location does NOT match -> NOT BLOCKED for this location!
+        }
       }
 
-      return false;
+      // 4. Check Time Slot match
+      const slotTime = (slot.timeSlot || '').toLowerCase().trim();
+      const isFullDayBlock =
+        !slot.timeSlot ||
+        slotTime === '' ||
+        slotTime === 'all' ||
+        slotTime.includes('full day') ||
+        slotTime === 'full-day';
+
+      if (isFullDayBlock) {
+        // Full Day Block blocks ALL time slots on this date/location/service combination!
+        return true;
+      }
+
+      // If checking day-level availability (timeSlot parameter is undefined)
+      if (!timeSlot) {
+        // A specific time slot block (e.g. 10:00 AM) does NOT 100% block the whole day
+        return false;
+      }
+
+      // Checking a specific timeSlot (e.g. '10:00 AM')
+      const inputTime = timeSlot.toLowerCase().trim();
+      const cleanSlotTime = slotTime.replace(/\s+/g, '');
+      const cleanInputTime = inputTime.replace(/\s+/g, '');
+
+      return (
+        slotTime === inputTime ||
+        cleanSlotTime === cleanInputTime ||
+        slotTime.includes(inputTime) ||
+        inputTime.includes(slotTime)
+      );
     });
   };
 
