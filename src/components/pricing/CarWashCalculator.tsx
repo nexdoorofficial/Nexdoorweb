@@ -492,7 +492,7 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
             </div>
 
             <Link
-              to={`/book?service=car-wash&vehicle=${selectedVehicle}&package=${selectedPkgKey}&location=${encodeURIComponent(location)}`}
+              to={`/book?service=car-wash&vehicle=${selectedVehicle}&package=${selectedPkgKey}&location=${encodeURIComponent(location)}&step=4`}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',

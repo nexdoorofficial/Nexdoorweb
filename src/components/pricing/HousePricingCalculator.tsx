@@ -99,7 +99,7 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
     if (onSelectPlan) {
       onSelectPlan(planType);
     } else {
-      navigate(`/book?service=house-cleaning&category=${selectedCategory}&plan=${planType}&location=${encodeURIComponent(location)}&step=5`);
+      navigate(`/book?service=house-cleaning&category=${selectedCategory}&plan=${planType}&location=${encodeURIComponent(location)}&step=4`);
     }
   };
 

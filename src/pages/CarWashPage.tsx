@@ -105,7 +105,7 @@ export const CarWashPage: React.FC = () => {
                   </ul>
                 </div>
 
-                <Link to="/book" className="btn-primary">
+                <Link to="/book?service=car-wash&step=4" className="btn-primary">
                   {activeService.ctaText} <ArrowRight size={18} />
                 </Link>
               </div>

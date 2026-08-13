@@ -120,7 +120,7 @@ export const HouseCleaningPage: React.FC = () => {
                   </ul>
                 </div>
 
-                <Link to="/book" className="btn-primary">
+                <Link to="/book?service=house-cleaning&step=4" className="btn-primary">
                   {activeFeatured.ctaText} <ArrowRight size={18} />
                 </Link>
               </div>

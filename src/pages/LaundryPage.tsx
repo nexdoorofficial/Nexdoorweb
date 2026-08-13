@@ -146,7 +146,7 @@ export const LaundryPage: React.FC = () => {
                   {activeService.overview}
                 </p>
 
-                <Link to="/book" className="btn-primary">
+                <Link to="/book?service=laundry&step=4" className="btn-primary">
                   {activeService.ctaText} <ArrowRight size={18} />
                 </Link>
               </div>
