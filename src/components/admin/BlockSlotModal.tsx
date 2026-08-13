@@ -33,7 +33,7 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
   initialServiceCategory = 'all',
   initialLocation = 'all'
 }) => {
-  const { locations } = useAdminData();
+  const { blockedSlots, locations } = useAdminData();
   const allLocations = locations && locations.length > 0
     ? locations
     : [
@@ -60,25 +60,70 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
 
   useEffect(() => {
     if (isOpen) {
-      setServiceCategory(initialServiceCategory || 'all');
-      
-      if (initialLocation && initialLocation !== 'all') {
-        setSelectedLocations([initialLocation]);
+      const today = new Date();
+      const localTodayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+      const targetDate = initialDate || localTodayStr;
+      setDate(targetDate);
+
+      // Hydrate state from existing blockages for targetDate if available
+      const existingForDate = blockedSlots.filter((s) => (s.date || (s as any).date_str) === targetDate);
+
+      if (existingForDate.length > 0) {
+        // 1. Service Category
+        const cats = Array.from(new Set(existingForDate.map((s) => s.serviceCategory).filter(Boolean)));
+        if (cats.length === 1 && cats[0]) {
+          setServiceCategory(cats[0] as any);
+        } else {
+          setServiceCategory(initialServiceCategory || 'all');
+        }
+
+        // 2. Locations
+        const locs = Array.from(new Set(existingForDate.map((s) => s.location || (s as any).location_name).filter(Boolean)));
+        const isGlobalLoc = locs.some((l) => !l || l === 'all' || l.toLowerCase().includes('all location'));
+        if (isGlobalLoc || locs.length === 0) {
+          setSelectedLocations(['all']);
+        } else {
+          setSelectedLocations(locs as string[]);
+        }
+
+        // 3. Time Slots
+        const hasFullDay = existingForDate.some(
+          (s) =>
+            !s.timeSlot ||
+            s.timeSlot === 'all' ||
+            s.timeSlot === '' ||
+            s.timeSlot === 'Full Day' ||
+            s.timeSlot.toLowerCase().includes('full day')
+        );
+
+        if (hasFullDay) {
+          setSelectedTimeSlots(['Full Day Block']);
+        } else {
+          const activeSlots = Array.from(
+            new Set(existingForDate.map((s) => normalizeSlotString(s.timeSlot!)).filter(Boolean))
+          );
+          setSelectedTimeSlots(activeSlots.length > 0 ? activeSlots : ['Full Day Block']);
+        }
+
+        // 4. Reason
+        const firstReason = existingForDate.find((s) => s.reason)?.reason;
+        setReason(firstReason || '');
       } else {
-        setSelectedLocations(['all']);
+        // Fresh date with zero blockages -> use default active filter values
+        setServiceCategory(initialServiceCategory || 'all');
+        if (initialLocation && initialLocation !== 'all') {
+          setSelectedLocations([initialLocation]);
+        } else {
+          setSelectedLocations(['all']);
+        }
+        setSelectedTimeSlots(['Full Day Block']);
+        setReason('');
       }
 
       setIsLocDropdownOpen(false);
-      
-      const today = new Date();
-      const localTodayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-      setDate(initialDate || localTodayStr);
-      
-      setSelectedTimeSlots(['Full Day Block']);
       setCustomTime('');
-      setReason('');
     }
-  }, [isOpen, initialDate, initialServiceCategory, initialLocation]);
+  }, [isOpen, initialDate, initialServiceCategory, initialLocation, blockedSlots]);
 
   if (!isOpen) return null;
 
