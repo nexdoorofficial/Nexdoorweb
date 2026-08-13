@@ -99,6 +99,7 @@ export interface ServiceAreaAdmin {
   status: 'active' | 'coming_soon';
   activeBookingsCount: number;
   description?: string;
+  availableServices?: string[];
 }
 
 export interface BlockedSlot {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, MapPin } from 'lucide-react';
+import { X, MapPin, CheckCircle2 } from 'lucide-react';
 import { useAdminData } from '../../context/AdminContext';
 import type { ServiceAreaAdmin } from '../../types/admin';
 
@@ -9,13 +9,41 @@ interface Props {
   onClose: () => void;
 }
 
+const DEFAULT_PRIMARY_SERVICES = [
+  { id: 'house-cleaning', label: 'House Cleaning', icon: '🏠' },
+  { id: 'car-wash', label: 'Car Wash', icon: '🚗' },
+  { id: 'laundry', label: 'Express Laundry', icon: '🧺' },
+  { id: 'specialized', label: 'Specialized Hygiene', icon: '🧹' }
+];
+
 export const NewLocationModal: React.FC<Props> = ({ locationToEdit, isOpen, onClose }) => {
-  const { addServiceLocation, updateServiceLocation } = useAdminData();
+  const { addServiceLocation, updateServiceLocation, services } = useAdminData();
 
   const [name, setName] = useState('');
   const [zone, setZone] = useState('');
   const [pincode, setPincode] = useState('');
   const [status, setStatus] = useState<'active' | 'coming_soon'>('active');
+  const [selectedServices, setSelectedServices] = useState<string[]>([
+    'house-cleaning',
+    'car-wash',
+    'laundry',
+    'specialized'
+  ]);
+
+  // Combine default primary services with any custom services created by admin
+  const allServiceOptions = React.useMemo(() => {
+    const list = [...DEFAULT_PRIMARY_SERVICES];
+    (services || []).forEach((s) => {
+      if (!list.some((existing) => existing.id === s.id || existing.id === s.category)) {
+        list.push({
+          id: s.id,
+          label: s.title,
+          icon: '✨'
+        });
+      }
+    });
+    return list;
+  }, [services]);
 
   useEffect(() => {
     if (locationToEdit) {
@@ -23,15 +51,37 @@ export const NewLocationModal: React.FC<Props> = ({ locationToEdit, isOpen, onCl
       setZone(locationToEdit.zone);
       setPincode(locationToEdit.pincode);
       setStatus(locationToEdit.status);
+      setSelectedServices(
+        locationToEdit.availableServices && locationToEdit.availableServices.length > 0
+          ? locationToEdit.availableServices
+          : ['house-cleaning', 'car-wash', 'laundry', 'specialized']
+      );
     } else {
       setName('');
       setZone('');
       setPincode('682001');
       setStatus('active');
+      setSelectedServices(allServiceOptions.map((s) => s.id));
     }
-  }, [locationToEdit, isOpen]);
+  }, [locationToEdit, isOpen, allServiceOptions]);
 
   if (!isOpen) return null;
+
+  const toggleService = (serviceId: string) => {
+    setSelectedServices((prev) =>
+      prev.includes(serviceId)
+        ? prev.filter((id) => id !== serviceId)
+        : [...prev, serviceId]
+    );
+  };
+
+  const toggleAllServices = () => {
+    if (selectedServices.length === allServiceOptions.length) {
+      setSelectedServices([]);
+    } else {
+      setSelectedServices(allServiceOptions.map((s) => s.id));
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,14 +91,16 @@ export const NewLocationModal: React.FC<Props> = ({ locationToEdit, isOpen, onCl
         name,
         zone,
         pincode,
-        status
+        status,
+        availableServices: selectedServices
       });
     } else {
       addServiceLocation({
         name,
         zone,
         pincode,
-        status
+        status,
+        availableServices: selectedServices
       });
     }
 
@@ -71,7 +123,9 @@ export const NewLocationModal: React.FC<Props> = ({ locationToEdit, isOpen, onCl
         background: '#FFFFFF',
         borderRadius: '24px',
         width: '100%',
-        maxWidth: '520px',
+        maxWidth: '540px',
+        maxHeight: '90vh',
+        overflowY: 'auto',
         boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
         border: '1px solid #E2E8F0',
         padding: '32px'
@@ -86,7 +140,7 @@ export const NewLocationModal: React.FC<Props> = ({ locationToEdit, isOpen, onCl
                 {locationToEdit ? 'Edit Service Location' : 'Add New Service Location'}
               </h2>
               <p style={{ fontSize: '0.85rem', color: '#64748B', margin: 0 }}>
-                Expand coverage zone & operational pincode
+                Expand coverage zone & available service dispatch
               </p>
             </div>
           </div>
@@ -106,7 +160,7 @@ export const NewLocationModal: React.FC<Props> = ({ locationToEdit, isOpen, onCl
             <input type="text" placeholder="e.g. Heritage Island & Coastal Belt" value={zone} onChange={(e) => setZone(e.target.value)} style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #CBD5E1' }} />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '20px' }}>
             <div>
               <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>Pincode *</label>
               <input type="text" required value={pincode} onChange={(e) => setPincode(e.target.value)} style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #CBD5E1' }} />
@@ -117,6 +171,61 @@ export const NewLocationModal: React.FC<Props> = ({ locationToEdit, isOpen, onCl
                 <option value="active">Active Operations</option>
                 <option value="coming_soon">Coming Soon</option>
               </select>
+            </div>
+          </div>
+
+          {/* Available Services Selector */}
+          <div style={{ marginBottom: '24px', background: '#F8FAFC', padding: '16px', borderRadius: '16px', border: '1px solid #E2E8F0' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+              <label style={{ fontSize: '0.85rem', fontWeight: 800, color: '#1E293B', margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                ⚡ Available Services in Location
+              </label>
+              <button
+                type="button"
+                onClick={toggleAllServices}
+                style={{ background: 'none', border: 'none', color: '#1C2677', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
+              >
+                {selectedServices.length === allServiceOptions.length ? 'Deselect All' : 'Select All'}
+              </button>
+            </div>
+
+            <p style={{ fontSize: '0.78rem', color: '#64748B', margin: '0 0 12px 0', lineHeight: 1.35 }}>
+              Choose which services are offered in this location. Unchecked services will show as unavailable on user side.
+            </p>
+
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {allServiceOptions.map((srv) => {
+                const isChecked = selectedServices.includes(srv.id);
+
+                return (
+                  <div
+                    key={srv.id}
+                    onClick={() => toggleService(srv.id)}
+                    style={{
+                      padding: '8px 14px',
+                      borderRadius: '12px',
+                      fontSize: '0.82rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      userSelect: 'none',
+                      transition: 'all 0.15s ease',
+                      background: isChecked
+                        ? 'linear-gradient(135deg, #1C2677, #29C3BE)'
+                        : '#FFFFFF',
+                      color: isChecked ? '#FFFFFF' : '#475569',
+                      border: isChecked ? '1px solid transparent' : '1px solid #CBD5E1',
+                      boxShadow: isChecked ? '0 4px 12px rgba(41, 195, 190, 0.25)' : 'none'
+                    }}
+                  >
+                    <span>{srv.icon}</span>
+                    <span>{srv.label}</span>
+                    {isChecked && <CheckCircle2 size={14} style={{ marginLeft: '2px' }} />}
+                  </div>
+                );
+              })}
             </div>
           </div>
 

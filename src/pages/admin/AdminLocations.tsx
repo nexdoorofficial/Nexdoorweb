@@ -92,9 +92,39 @@ export const AdminLocations: React.FC = () => {
                   </button>
                 </div>
 
-                <p style={{ fontSize: '0.85rem', color: '#475569', marginBottom: '16px' }}>
+                <p style={{ fontSize: '0.85rem', color: '#475569', marginBottom: '12px' }}>
                   {loc.zone}
                 </p>
+
+                {/* Available Service Badges */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' }}>
+                  {(loc.availableServices && loc.availableServices.length > 0
+                    ? loc.availableServices
+                    : ['house-cleaning', 'car-wash', 'laundry', 'specialized']
+                  ).map((srv) => (
+                    <span
+                      key={srv}
+                      style={{
+                        fontSize: '0.72rem',
+                        fontWeight: 700,
+                        padding: '3px 9px',
+                        borderRadius: '20px',
+                        background: '#EFF6FF',
+                        color: '#1E40AF'
+                      }}
+                    >
+                      {srv === 'house-cleaning'
+                        ? '🏠 House'
+                        : srv === 'car-wash'
+                        ? '🚗 Car Wash'
+                        : srv === 'laundry'
+                        ? '🧺 Laundry'
+                        : srv === 'specialized'
+                        ? '🧹 Specialized'
+                        : srv}
+                    </span>
+                  ))}
+                </div>
               </div>
 
               <div>

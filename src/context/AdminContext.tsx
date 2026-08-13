@@ -898,7 +898,8 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             zone: l.zone || 'Ernakulam Central',
             pincode: l.pincode || '682030',
             status: l.status || 'active',
-            activeBookingsCount: Number(l.active_bookings_count || l.activeBookingsCount) || 0
+            activeBookingsCount: Number(l.active_bookings_count || l.activeBookingsCount) || 0,
+            availableServices: l.available_services || l.availableServices || ['house-cleaning', 'car-wash', 'laundry', 'specialized']
           }));
           setLocations(mappedLocs);
         }
@@ -1922,7 +1923,8 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const newLoc: ServiceAreaAdmin = {
       ...locData,
       id: 'loc-' + Date.now(),
-      activeBookingsCount: 0
+      activeBookingsCount: 0,
+      availableServices: locData.availableServices || ['house-cleaning', 'car-wash', 'laundry', 'specialized']
     };
     setLocations((prev) => [newLoc, ...prev]);
 
@@ -1934,7 +1936,8 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           zone: newLoc.zone,
           pincode: newLoc.pincode,
           status: newLoc.status,
-          active_bookings_count: 0
+          active_bookings_count: 0,
+          available_services: newLoc.availableServices
         });
       } catch (e) {
         console.error('Supabase location insert notice:', e);
@@ -1951,7 +1954,12 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     (async () => {
       try {
-        await supabase.from('locations').update(updatedLoc).eq('id', id);
+        const payload: any = { ...updatedLoc };
+        if (updatedLoc.availableServices !== undefined) {
+          payload.available_services = updatedLoc.availableServices;
+          delete payload.availableServices;
+        }
+        await supabase.from('locations').update(payload).eq('id', id);
       } catch (e) {
         console.error('Supabase location update notice:', e);
       }
@@ -2735,6 +2743,27 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       if (!locs || locs.length === 0) return true;
       return locs.some((loc) => loc.toLowerCase().trim() === cleanLoc);
     };
+
+    // 0. LOCATION-LEVEL SERVICE COVERAGE CHECK
+    const targetLoc = locations.find(
+      (l) => l.name.toLowerCase().trim() === cleanLoc || l.id.toLowerCase().trim() === cleanLoc
+    );
+    if (targetLoc && targetLoc.availableServices && targetLoc.availableServices.length > 0) {
+      const activeCategory =
+        serviceIdOrCategory === 'house-cleaning' ||
+        serviceIdOrCategory === 'car-wash' ||
+        serviceIdOrCategory === 'laundry' ||
+        serviceIdOrCategory === 'specialized'
+          ? serviceIdOrCategory
+          : services.find((s) => s.id === serviceIdOrCategory)?.category || serviceIdOrCategory;
+
+      const isEnabledInLocation = targetLoc.availableServices.some(
+        (srv) =>
+          srv.toLowerCase().trim() === activeCategory.toLowerCase().trim() ||
+          srv.toLowerCase().trim() === serviceIdOrCategory.toLowerCase().trim()
+      );
+      if (!isEnabledInLocation) return false;
+    }
 
     // --- CASE A: SPECIFIC SUBCATEGORY CHECK (e.g. subCategoryKey = '2-bhk' or 'sedan') ---
     if (subCategoryKey) {
