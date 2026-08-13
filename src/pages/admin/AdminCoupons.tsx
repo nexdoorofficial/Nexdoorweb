@@ -15,17 +15,20 @@ import { CouponModal } from '../../components/admin/CouponModal';
 import type { Coupon } from '../../types/admin';
 
 export const AdminCoupons: React.FC = () => {
-  const { coupons, addCoupon, updateCoupon, deleteCoupon, toggleCouponStatus } = useAdminData();
+  const { coupons, bookings, addCoupon, updateCoupon, deleteCoupon, toggleCouponStatus } = useAdminData();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState<'all' | 'active' | 'percentage' | 'fixed'>('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCoupon, setEditingCoupon] = useState<Coupon | null>(null);
 
-  // Stats calculation
+  // Stats calculation dynamically driven by live database bookings and usage counters
   const totalCoupons = coupons.length;
   const activeCoupons = coupons.filter((c) => c.status === 'active').length;
-  const totalRedemptions = coupons.reduce((sum, c) => sum + (c.usageCount || 0), 0);
+  const totalRedemptions = coupons.reduce((sum, c) => {
+    const actual = (bookings || []).filter((b) => b.notes && b.notes.toUpperCase().includes(c.code.toUpperCase())).length;
+    return sum + Math.max(c.usageCount || 0, actual);
+  }, 0);
 
   const filteredCoupons = coupons.filter((c) => {
     const matchesSearch =
@@ -161,6 +164,11 @@ export const AdminCoupons: React.FC = () => {
         {filteredCoupons.map((coupon) => {
           const isPercentage = coupon.discountType === 'percentage';
           const isExpired = coupon.expiryDate && new Date().toISOString().split('T')[0] > coupon.expiryDate;
+          const actualRedemptions = (bookings || []).filter((b) => {
+            const cleanCode = coupon.code.toUpperCase();
+            return b.notes && b.notes.toUpperCase().includes(cleanCode);
+          }).length;
+          const displayRedemptions = Math.max(coupon.usageCount || 0, actualRedemptions);
 
           return (
             <div
@@ -287,7 +295,7 @@ export const AdminCoupons: React.FC = () => {
 
               {/* Card Footer: Usage */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #F1F5F9', paddingTop: '10px', fontSize: '0.75rem', color: '#64748B' }}>
-                <span>Redeemed: <strong>{coupon.usageCount} times</strong></span>
+                <span>Redeemed: <strong>{displayRedemptions} {displayRedemptions === 1 ? 'time' : 'times'}</strong></span>
                 {coupon.usageLimit ? <span>Limit: {coupon.usageLimit} max</span> : <span>Unlimited uses</span>}
               </div>
             </div>
