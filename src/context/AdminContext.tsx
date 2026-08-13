@@ -2244,7 +2244,19 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       id: 'bslot-' + Date.now(),
       createdAt: new Date().toISOString()
     };
-    setBlockedSlots((prev) => [newSlot, ...prev.filter((s) => s.id !== newSlot.id)]);
+
+    setBlockedSlots((prev) => {
+      // Deduplicate: If exact same blockage already exists, prevent duplicate entry
+      const exists = prev.some(
+        (s) =>
+          (s.serviceCategory || 'all') === (newSlot.serviceCategory || 'all') &&
+          (s.date || (s as any).date_str) === (newSlot.date || (newSlot as any).date_str) &&
+          (s.location || 'All Locations') === (newSlot.location || 'All Locations') &&
+          (s.timeSlot || 'Full Day') === (newSlot.timeSlot || 'Full Day')
+      );
+      if (exists) return prev;
+      return [newSlot, ...prev];
+    });
 
     (async () => {
       try {
