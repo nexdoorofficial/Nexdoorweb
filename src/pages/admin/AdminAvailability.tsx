@@ -48,6 +48,17 @@ export const AdminAvailability: React.FC = () => {
   };
 
   const handleOpenBlockModalForDay = (dateStr: string) => {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const cellDate = new Date(y, m - 1, d);
+    cellDate.setHours(0, 0, 0, 0);
+
+    const todayAtMidnight = new Date();
+    todayAtMidnight.setHours(0, 0, 0, 0);
+
+    if (cellDate < todayAtMidnight) {
+      return; // Past dates cannot be blocked
+    }
+
     setSelectedDateForModal(dateStr);
     setIsModalOpen(true);
   };
@@ -271,6 +282,14 @@ export const AdminAvailability: React.FC = () => {
               const dayNum = i + 1;
               const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
               
+              const cellDate = new Date(year, month, dayNum);
+              cellDate.setHours(0, 0, 0, 0);
+
+              const todayAtMidnight = new Date();
+              todayAtMidnight.setHours(0, 0, 0, 0);
+
+              const isPastDate = cellDate < todayAtMidnight;
+              
               // Find blockages on this date using filteredSlots (respects location filter, service tab & date aliases)
               const dayBlockages = filteredSlots.filter((slot) => {
                 const targetDate = slot.date || (slot as any).date_str || '';
@@ -290,31 +309,38 @@ export const AdminAvailability: React.FC = () => {
               return (
                 <div
                   key={dayNum}
-                  onClick={() => handleOpenBlockModalForDay(dateStr)}
+                  onClick={() => !isPastDate && handleOpenBlockModalForDay(dateStr)}
                   style={{
                     minHeight: '74px',
                     padding: '8px',
                     borderRadius: '12px',
-                    border: isFullDayBlocked ? '2px solid #EF4444' : hasSlotBlock ? '1.5px solid #F59E0B' : '1px solid #E2E8F0',
-                    background: isFullDayBlocked ? '#FEF2F2' : hasSlotBlock ? '#FFFBEB' : '#FFFFFF',
-                    cursor: 'pointer',
+                    border: isPastDate ? '1px solid #E2E8F0' : isFullDayBlocked ? '2px solid #EF4444' : hasSlotBlock ? '1.5px solid #F59E0B' : '1px solid #CBD5E1',
+                    background: isPastDate ? '#F8FAFC' : isFullDayBlocked ? '#FEF2F2' : hasSlotBlock ? '#FFFBEB' : '#FFFFFF',
+                    cursor: isPastDate ? 'not-allowed' : 'pointer',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                    transition: 'all 0.15s ease'
+                    transition: 'all 0.15s ease',
+                    opacity: isPastDate ? 0.45 : 1
                   }}
-                  title={`Click to manage blockages for ${dateStr}`}
+                  title={isPastDate ? 'Past dates cannot be blocked' : `Click to manage blockages for ${dateStr}`}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontSize: '0.85rem', fontWeight: 800, color: isFullDayBlocked ? '#DC2626' : '#1E293B' }}>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 800, color: isPastDate ? '#94A3B8' : isFullDayBlocked ? '#DC2626' : '#1E293B' }}>
                       {dayNum}
                     </span>
-                    {hasSlotBlock && (
+                    {hasSlotBlock && !isPastDate && (
                       <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: isFullDayBlocked ? '#EF4444' : '#F59E0B' }} />
                     )}
                   </div>
 
-                  {hasSlotBlock && (
+                  {isPastDate ? (
+                    <div style={{ marginTop: '4px' }}>
+                      <span style={{ fontSize: '0.58rem', fontWeight: 700, color: '#94A3B8', background: '#F1F5F9', padding: '2px 4px', borderRadius: '4px', display: 'block', textAlign: 'center' }}>
+                        PASSED
+                      </span>
+                    </div>
+                  ) : hasSlotBlock ? (
                     <div style={{ marginTop: '4px' }}>
                       {isFullDayBlocked ? (
                         <span style={{ fontSize: '0.62rem', fontWeight: 800, color: '#DC2626', background: '#FEE2E2', padding: '2px 4px', borderRadius: '4px', display: 'block', textAlign: 'center' }}>
@@ -326,7 +352,7 @@ export const AdminAvailability: React.FC = () => {
                         </span>
                       )}
                     </div>
-                  )}
+                  ) : null}
                 </div>
               );
             })}

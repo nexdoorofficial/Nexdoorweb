@@ -168,9 +168,36 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
     return trimmed;
   };
 
+  // Helper to check if a time slot has already passed today
+  const isSlotInPastForDate = (slotName: string, targetDateStr: string): boolean => {
+    if (!targetDateStr) return false;
+    if (slotName === 'Full Day Block' || slotName === 'Custom') return false;
+
+    const today = new Date();
+    const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    if (targetDateStr !== todayStr) return false; // Only applies to today's date
+
+    const match = slotName.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+    if (!match) return false;
+
+    let hours = parseInt(match[1], 10);
+    const minutes = parseInt(match[2], 10);
+    const ampm = match[3].toUpperCase();
+
+    if (ampm === 'PM' && hours < 12) hours += 12;
+    if (ampm === 'AM' && hours === 12) hours = 0;
+
+    const slotTimeObj = new Date();
+    slotTimeObj.setHours(hours, minutes, 0, 0);
+
+    return slotTimeObj < today;
+  };
+
   // Toggle Time Slot Pill
   const handleTimeSlotToggle = (slot: string) => {
     const normSlot = normalizeSlotString(slot);
+    if (isSlotInPastForDate(normSlot, date)) return; // Past time slots cannot be toggled
+
     if (normSlot === 'Full Day Block') {
       setSelectedTimeSlots(['Full Day Block']);
     } else if (normSlot === 'Custom') {
@@ -501,6 +528,7 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
             <input
               type="date"
               required
+              min={`${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`}
               value={date}
               onChange={(e) => setDate(e.target.value)}
               style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #CBD5E1', fontSize: '0.88rem' }}
@@ -523,25 +551,31 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '10px' }}>
               {COMMON_TIME_SLOTS.map((slot) => {
                 const isSelected = selectedTimeSlots.includes(slot);
+                const isPastSlot = isSlotInPastForDate(slot, date);
+
                 return (
                   <button
                     key={slot}
                     type="button"
-                    onClick={() => handleTimeSlotToggle(slot)}
+                    disabled={isPastSlot}
+                    onClick={() => !isPastSlot && handleTimeSlotToggle(slot)}
                     style={{
                       padding: '6px 12px',
                       borderRadius: '8px',
                       fontSize: '0.78rem',
                       fontWeight: 700,
-                      cursor: 'pointer',
-                      border: isSelected ? '2px solid #EF4444' : '1px solid #E2E8F0',
-                      background: isSelected ? '#FEF2F2' : '#F8FAFC',
-                      color: isSelected ? '#DC2626' : '#334155',
+                      cursor: isPastSlot ? 'not-allowed' : 'pointer',
+                      border: isPastSlot ? '1px solid #E2E8F0' : isSelected ? '2px solid #EF4444' : '1px solid #E2E8F0',
+                      background: isPastSlot ? '#F1F5F9' : isSelected ? '#FEF2F2' : '#F8FAFC',
+                      color: isPastSlot ? '#94A3B8' : isSelected ? '#DC2626' : '#334155',
+                      opacity: isPastSlot ? 0.5 : 1,
                       display: 'flex',
                       alignItems: 'center',
                       gap: '4px',
-                      transition: 'all 0.15s ease'
+                      transition: 'all 0.15s ease',
+                      textDecoration: isPastSlot ? 'line-through' : 'none'
                     }}
+                    title={isPastSlot ? 'This time slot has already passed today' : undefined}
                   >
                     {isSelected && <Check size={12} />}
                     {slot}
