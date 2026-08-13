@@ -2239,9 +2239,10 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Blocked Slots / Availability Handlers
   const addBlockedSlot = (slotData: Omit<BlockedSlot, 'id' | 'createdAt'>): BlockedSlot => {
+    const uniqueSuffix = Math.random().toString(36).substring(2, 8);
     const newSlot: BlockedSlot = {
       ...slotData,
-      id: 'bslot-' + Date.now(),
+      id: `bslot-${Date.now()}-${uniqueSuffix}`,
       createdAt: new Date().toISOString()
     };
 
