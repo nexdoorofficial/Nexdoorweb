@@ -98,26 +98,40 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
     setSelectedLocations([allLocations[0]?.name || 'Kakkanad']);
   };
 
+  // Helper to normalize time slot string format (e.g., '8:30 AM' -> '08:30 AM')
+  const normalizeSlotString = (str: string): string => {
+    const trimmed = str.trim();
+    const match = trimmed.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+    if (match) {
+      const hh = match[1].padStart(2, '0');
+      const mm = match[2];
+      const ampm = match[3].toUpperCase();
+      return `${hh}:${mm} ${ampm}`;
+    }
+    return trimmed;
+  };
+
   // Toggle Time Slot Pill
   const handleTimeSlotToggle = (slot: string) => {
-    if (slot === 'Full Day Block') {
+    const normSlot = normalizeSlotString(slot);
+    if (normSlot === 'Full Day Block') {
       setSelectedTimeSlots(['Full Day Block']);
-    } else if (slot === 'Custom') {
+    } else if (normSlot === 'Custom') {
       if (selectedTimeSlots.includes('Custom')) {
         const next = selectedTimeSlots.filter((s) => s !== 'Custom');
-        setSelectedTimeSlots(next.length === 0 ? ['Full Day Block'] : next);
+        setSelectedTimeSlots(next.length === 0 ? ['Full Day Block'] : Array.from(new Set(next)));
       } else {
         const next = selectedTimeSlots.filter((s) => s !== 'Full Day Block');
-        setSelectedTimeSlots([...next, 'Custom']);
+        setSelectedTimeSlots(Array.from(new Set([...next, 'Custom'])));
       }
     } else {
       let next = selectedTimeSlots.filter((s) => s !== 'Full Day Block');
-      if (next.includes(slot)) {
-        next = next.filter((s) => s !== slot);
+      if (next.includes(normSlot)) {
+        next = next.filter((s) => s !== normSlot);
       } else {
-        next.push(slot);
+        next.push(normSlot);
       }
-      setSelectedTimeSlots(next.length === 0 ? ['Full Day Block'] : next);
+      setSelectedTimeSlots(next.length === 0 ? ['Full Day Block'] : Array.from(new Set(next)));
     }
   };
 
@@ -141,12 +155,12 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
       const activeSlots: string[] = [];
       selectedTimeSlots.forEach((slot) => {
         if (slot === 'Custom') {
-          if (customTime.trim()) activeSlots.push(customTime.trim());
+          if (customTime.trim()) activeSlots.push(normalizeSlotString(customTime.trim()));
         } else {
-          activeSlots.push(slot);
+          activeSlots.push(normalizeSlotString(slot));
         }
       });
-      targetSlots = activeSlots.length > 0 ? activeSlots : ['Full Day'];
+      targetSlots = activeSlots.length > 0 ? Array.from(new Set(activeSlots)) : ['Full Day'];
     }
 
     // 3. Save blockage for each combination
@@ -445,7 +459,7 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
               <span style={{ fontSize: '0.72rem', color: '#DC2626', fontWeight: 700 }}>
                 {selectedTimeSlots.includes('Full Day Block')
                   ? 'Full Day Selected'
-                  : `${selectedTimeSlots.length} Slot(s) Selected`}
+                  : `${COMMON_TIME_SLOTS.filter((s) => selectedTimeSlots.includes(s)).length + (selectedTimeSlots.includes('Custom') ? 1 : 0)} Slot(s) Selected`}
               </span>
             </div>
 

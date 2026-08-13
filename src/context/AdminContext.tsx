@@ -2385,16 +2385,19 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       }
 
       // Checking a specific timeSlot (e.g. '10:00 AM')
-      const inputTime = timeSlot.toLowerCase().trim();
-      const cleanSlotTime = slotTime.replace(/\s+/g, '');
-      const cleanInputTime = inputTime.replace(/\s+/g, '');
+      const normalizeTime = (t: string) => {
+        const lower = t.toLowerCase().trim();
+        const match = lower.match(/^0*(\d{1,2}):(\d{2})\s*(am|pm)$/);
+        if (match) {
+          return `${match[1]}:${match[2]}${match[3]}`;
+        }
+        return lower.replace(/\s+/g, '');
+      };
 
-      return (
-        slotTime === inputTime ||
-        cleanSlotTime === cleanInputTime ||
-        slotTime.includes(inputTime) ||
-        inputTime.includes(slotTime)
-      );
+      const normSlotTime = normalizeTime(slotTime);
+      const normInputTime = normalizeTime(timeSlot);
+
+      return normSlotTime === normInputTime;
     });
   };
 
