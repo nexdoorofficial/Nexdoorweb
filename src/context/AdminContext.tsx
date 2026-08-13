@@ -399,10 +399,7 @@ const SEED_LOCATIONS: ServiceAreaAdmin[] = [
   { id: 'loc-6', name: 'Aluva', zone: 'Cochin Airport Highway', pincode: '683101', status: 'active', activeBookingsCount: 4 }
 ];
 
-const SEED_BLOCKED_SLOTS: BlockedSlot[] = [
-  { id: 'b-slot-1', serviceCategory: 'car-wash', date: '2026-08-22', timeSlot: '10:30 PM', reason: 'Night Equipment Maintenance', createdAt: '2026-08-01T10:00:00Z' },
-  { id: 'b-slot-2', serviceCategory: 'all', date: '2026-08-15', reason: 'Independence Day Holiday', createdAt: '2026-08-01T10:00:00Z' }
-];
+const SEED_BLOCKED_SLOTS: BlockedSlot[] = [];
 
 const SEED_COUPONS: Coupon[] = [
   {
@@ -949,7 +946,7 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
         // 9. Sync Blocked Slots (Supabase Cloud is Authoritative Source of Truth)
         const { data: dbBlocked } = await supabase.from('blocked_slots').select('*');
-        if (dbBlocked && dbBlocked.length > 0) {
+        if (dbBlocked) {
           const mappedBlocked: BlockedSlot[] = dbBlocked.map((bs: any) => ({
             id: bs.id,
             serviceCategory: bs.service_category || bs.serviceCategory || 'all',
@@ -960,23 +957,6 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             createdAt: bs.created_at || new Date().toISOString()
           }));
           setBlockedSlots(mappedBlocked);
-        } else if (dbBlocked && dbBlocked.length === 0) {
-          // Table is brand-new (0 rows) - seed initial defaults ONCE
-          setBlockedSlots(SEED_BLOCKED_SLOTS);
-          for (const defaultBs of SEED_BLOCKED_SLOTS) {
-            try {
-              await supabase.from('blocked_slots').upsert({
-                id: defaultBs.id,
-                service_category: defaultBs.serviceCategory,
-                date: defaultBs.date,
-                date_str: defaultBs.date,
-                time_slot: defaultBs.timeSlot || 'Full Day',
-                location: defaultBs.location,
-                location_name: defaultBs.location,
-                reason: defaultBs.reason
-              });
-            } catch (e) {}
-          }
         }
 
         // 10. Sync Locations
@@ -1413,60 +1393,7 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  // Sync to localStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem('nexdoor_admin_bookings', JSON.stringify(bookings));
-    } catch (e) {}
-  }, [bookings]);
 
-  useEffect(() => {
-    try {
-      localStorage.setItem('nexdoor_admin_services', JSON.stringify(services));
-    } catch (e) {}
-  }, [services]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('nexdoor_admin_house_categories', JSON.stringify(houseCategories));
-    } catch (e) {}
-  }, [houseCategories]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('nexdoor_admin_vehicle_categories', JSON.stringify(vehicleCategories));
-    } catch (e) {}
-  }, [vehicleCategories]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('nexdoor_admin_laundry_config', JSON.stringify(laundryConfig));
-    } catch (e) {}
-  }, [laundryConfig]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('nexdoor_admin_technicians', JSON.stringify(technicians));
-    } catch (e) {}
-  }, [technicians]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('nexdoor_admin_blocked_slots', JSON.stringify(blockedSlots));
-    } catch (e) {}
-  }, [blockedSlots]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('nexdoor_admin_coupons', JSON.stringify(coupons));
-    } catch (e) {}
-  }, [coupons]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('nexdoor_admin_inquiries', JSON.stringify(inquiries));
-    } catch (e) {}
-  }, [inquiries]);
 
   const removeToast = (id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
