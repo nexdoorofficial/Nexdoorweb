@@ -11,14 +11,15 @@ import {
   Home as HomeIcon,
   Shirt,
   Sparkles,
-  Trash2
+  Trash2,
+  Users
 } from 'lucide-react';
 import { useAdminData } from '../../context/AdminContext';
 import { BlockSlotModal } from '../../components/admin/BlockSlotModal';
 import type { BlockedSlot } from '../../types/admin';
 
 export const AdminAvailability: React.FC = () => {
-  const { blockedSlots, locations, addBlockedSlot, deleteBlockedSlot } = useAdminData();
+  const { blockedSlots, locations, addBlockedSlot, deleteBlockedSlot, slotCapacities, setSlotCapacity } = useAdminData();
 
   const [activeTab, setActiveTab] = useState<string>('all');
   const [selectedLocationFilter, setSelectedLocationFilter] = useState<string>('all');
@@ -231,6 +232,75 @@ export const AdminAvailability: React.FC = () => {
               </option>
             ))}
           </select>
+        </div>
+      </div>
+
+      {/* Standing Location Team Defaults Panel */}
+      <div style={{ marginBottom: '24px', background: '#FFFFFF', borderRadius: '20px', border: '1px solid #E2E8F0', padding: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+          <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Users size={18} style={{ color: '#29C3BE' }} />
+            Standing Location Team Defaults
+          </h4>
+          <span style={{ fontSize: '0.72rem', color: '#64748B', fontWeight: 600 }}>
+            These defaults apply to every future date unless overridden
+          </span>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '12px' }}>
+          {locations.map((loc) => {
+            const locDefault = slotCapacities.find((c) => !c.date && c.location && c.location.toLowerCase().trim() === loc.name.toLowerCase().trim());
+            const currentTeams = locDefault ? locDefault.maxTeams : 1;
+            return (
+              <div
+                key={loc.id || loc.name}
+                style={{
+                  padding: '14px 16px',
+                  borderRadius: '14px',
+                  background: 'linear-gradient(135deg, #F8FAFC, #EFF6FF)',
+                  border: '1px solid #E2E8F0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '10px'
+                }}
+              >
+                <div>
+                  <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#1E293B' }}>📍 {loc.name}</div>
+                  <div style={{ fontSize: '0.7rem', color: '#64748B', marginTop: '2px' }}>{loc.zone || ''}</div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <button
+                    onClick={() => setSlotCapacity({ location: loc.name, maxTeams: Math.max(0, currentTeams - 1) })}
+                    style={{
+                      width: '28px', height: '28px', borderRadius: '8px', border: '1px solid #CBD5E1',
+                      background: '#FFFFFF', cursor: 'pointer', fontWeight: 800, fontSize: '1rem',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#475569'
+                    }}
+                  >
+                    −
+                  </button>
+                  <span style={{
+                    minWidth: '42px', textAlign: 'center', fontSize: '0.85rem', fontWeight: 800,
+                    color: currentTeams === 0 ? '#DC2626' : '#1C2677',
+                    background: currentTeams === 0 ? '#FEE2E2' : '#EEF2FF',
+                    padding: '4px 8px', borderRadius: '8px'
+                  }}>
+                    {currentTeams === 0 ? '🔒 0' : `${currentTeams} 👥`}
+                  </span>
+                  <button
+                    onClick={() => setSlotCapacity({ location: loc.name, maxTeams: currentTeams + 1 })}
+                    style={{
+                      width: '28px', height: '28px', borderRadius: '8px', border: '1px solid #CBD5E1',
+                      background: '#FFFFFF', cursor: 'pointer', fontWeight: 800, fontSize: '1rem',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#475569'
+                    }}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 

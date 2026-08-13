@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import type { BookingRecord, AdminService, Technician, ServiceAreaAdmin, BookingStatus, LaundryConfig, BlockedSlot, Coupon, InquiryRecord, InquiryStatus, SiteSettings, JobApplication, ApplicationStatus } from '../types/admin';
+import type { BookingRecord, AdminService, Technician, ServiceAreaAdmin, BookingStatus, LaundryConfig, BlockedSlot, Coupon, InquiryRecord, InquiryStatus, SiteSettings, JobApplication, ApplicationStatus, SlotCapacity } from '../types/admin';
 import type { HouseCategoryData, HouseCategoryKey, HousePlanDetails, VehicleCategoryData, VehicleCategoryKey, CarPackageItem, BlogPost, CareerPosition } from '../types';
 import { HOUSE_CATEGORIES, VEHICLE_CATEGORIES } from '../data/categories';
 import { BLOG_POSTS } from '../data/blogs';
@@ -180,11 +180,22 @@ interface AdminContextType {
   deleteStaff: (id: string) => void;
   toggleStaffStatus: (id: string) => void;
 
-  // Availability / Blocked Slots actions
+  // Availability / Blocked Slots & Capacity Overbooking Engine
   blockedSlots: BlockedSlot[];
   addBlockedSlot: (slot: Omit<BlockedSlot, 'id' | 'createdAt'>) => BlockedSlot;
   deleteBlockedSlot: (id: string) => void;
   isSlotBlocked: (serviceCategory: string, dateStr: string, timeSlot?: string, locationName?: string) => boolean;
+
+  // Slot Capacities & Overbooking Protection Engine
+  slotCapacities: SlotCapacity[];
+  setSlotCapacity: (capacity: { location?: string; serviceCategory?: string; date?: string; timeSlot?: string; maxTeams: number }) => void;
+  getSlotCapacityInfo: (locationName?: string, dateStr?: string, timeSlot?: string, serviceCategory?: string) => {
+    maxTeams: number;
+    bookedCount: number;
+    remainingTeams: number;
+    isOneTeamLeft: boolean;
+    isFull: boolean;
+  };
   
   // Coupon actions
   coupons: Coupon[];
@@ -457,6 +468,7 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [technicians, setTechnicians] = useState<Technician[]>(SEED_TECHNICIANS);
   const [locations, setLocations] = useState<ServiceAreaAdmin[]>(SEED_LOCATIONS);
   const [blockedSlots, setBlockedSlots] = useState<BlockedSlot[]>(SEED_BLOCKED_SLOTS);
+  const [slotCapacities, setSlotCapacities] = useState<SlotCapacity[]>([]);
   const [coupons, setCoupons] = useState<Coupon[]>(SEED_COUPONS);
   const [inquiries, setInquiries] = useState<InquiryRecord[]>(SEED_INQUIRIES);
   const [blogs, setBlogs] = useState<BlogPost[]>(SEED_BLOGS);
@@ -887,6 +899,21 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             createdAt: bs.created_at || new Date().toISOString()
           }));
           setBlockedSlots(mappedBlocked);
+        }
+
+        // 9b. Sync Slot Capacities (Supabase Cloud)
+        const { data: dbCapacities } = await supabase.from('slot_capacities').select('*');
+        if (dbCapacities) {
+          const mappedCaps: SlotCapacity[] = dbCapacities.map((c: any) => ({
+            id: c.id,
+            location: c.location || 'all',
+            serviceCategory: c.service_category || 'all',
+            date: c.date || undefined,
+            timeSlot: c.time_slot || undefined,
+            maxTeams: Number(c.max_teams) || 1,
+            createdAt: c.created_at || new Date().toISOString()
+          }));
+          setSlotCapacities(mappedCaps);
         }
 
         // 10. Sync Locations (Supabase Cloud is Authoritative Single Source of Truth)
@@ -2267,6 +2294,117 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     });
   };
 
+  const setSlotCapacity = (capData: { location?: string; serviceCategory?: string; date?: string; timeSlot?: string; maxTeams: number }) => {
+    const locKey = capData.location || 'all';
+    const catKey = capData.serviceCategory || 'all';
+    const dateKey = capData.date || null;
+    const timeKey = capData.timeSlot || null;
+    const capId = dateKey 
+      ? `cap-${locKey}-${dateKey}-${timeKey || 'day'}`.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+      : `cap-${locKey}-default`.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+    const newCap: SlotCapacity = {
+      id: capId,
+      location: locKey,
+      serviceCategory: catKey,
+      date: dateKey || undefined,
+      timeSlot: timeKey || undefined,
+      maxTeams: Math.max(0, capData.maxTeams),
+      createdAt: new Date().toISOString()
+    };
+
+    setSlotCapacities((prev) => {
+      const filtered = prev.filter((c) => c.id !== capId);
+      return [newCap, ...filtered];
+    });
+
+    (async () => {
+      try {
+        await supabase.from('slot_capacities').upsert({
+          id: newCap.id,
+          location: locKey,
+          service_category: catKey,
+          date: dateKey,
+          time_slot: timeKey,
+          max_teams: newCap.maxTeams
+        });
+      } catch (e) {
+        console.error('Supabase slot capacity insert notice:', e);
+      }
+    })();
+
+    showToast(`Updated capacity for ${locKey} to ${newCap.maxTeams} ${newCap.maxTeams === 1 ? 'Team' : 'Teams'}`, 'success');
+  };
+
+  const getSlotCapacityInfo = (
+    locationName?: string,
+    dateStr?: string,
+    timeSlot?: string,
+    _serviceCategory?: string
+  ) => {
+    const cleanLoc = (locationName || 'all').toLowerCase().trim();
+    const cleanDate = (dateStr || '').trim();
+    const cleanTime = (timeSlot || '').toLowerCase().trim();
+
+    // 2-Tier Resolution:
+    // Tier A: Specific Date + Time Slot Override
+    // Tier B: Specific Date Override
+    // Tier C: Location Standing Baseline Default
+    // Tier D: System Fallback = 1 Team
+    let maxTeams = 1;
+
+    if (cleanDate) {
+      const dateMatch = slotCapacities.find((c) => {
+        if (!c.date || c.date !== cleanDate) return false;
+        if (c.location && c.location !== 'all' && c.location.toLowerCase().trim() !== cleanLoc) return false;
+        if (cleanTime && c.timeSlot && c.timeSlot.toLowerCase().trim() !== cleanTime) return false;
+        return true;
+      });
+      if (dateMatch) {
+        maxTeams = dateMatch.maxTeams;
+      } else {
+        const locDefault = slotCapacities.find((c) => !c.date && c.location && c.location.toLowerCase().trim() === cleanLoc);
+        if (locDefault) {
+          maxTeams = locDefault.maxTeams;
+        }
+      }
+    } else {
+      const locDefault = slotCapacities.find((c) => !c.date && c.location && c.location.toLowerCase().trim() === cleanLoc);
+      if (locDefault) {
+        maxTeams = locDefault.maxTeams;
+      }
+    }
+
+    // Count Active Bookings matching Location + Date + Time Slot
+    let bookedCount = 0;
+    if (cleanDate && cleanTime) {
+      bookedCount = bookings.filter((b) => {
+        if (b.status === 'cancelled') return false;
+        const bDate = (b.scheduledDate || '').trim();
+        const bTime = (b.scheduledTime || '').toLowerCase().trim();
+        const bLoc = (b.area || '').toLowerCase().trim();
+
+        const isDateMatch = bDate === cleanDate;
+        const isTimeMatch = bTime === cleanTime || bTime.includes(cleanTime) || cleanTime.includes(bTime);
+        const isLocMatch = cleanLoc === 'all' || bLoc === cleanLoc || bLoc.includes(cleanLoc) || cleanLoc.includes(bLoc);
+
+        return isDateMatch && isTimeMatch && isLocMatch;
+      }).length;
+    }
+
+    const remainingTeams = Math.max(0, maxTeams - bookedCount);
+    const isOneTeamLeft = maxTeams > 0 && remainingTeams === 1;
+    const isFull = maxTeams <= 0 || remainingTeams <= 0;
+
+    return {
+      maxTeams,
+      bookedCount,
+      remainingTeams,
+      isOneTeamLeft,
+      isFull
+    };
+  };
+
   // Coupon CRUD Actions
   const addCoupon = (couponData: Omit<Coupon, 'id' | 'usageCount' | 'createdAt'>): Coupon => {
     const newCoupon: Coupon = {
@@ -2852,6 +2990,9 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         addBlockedSlot,
         deleteBlockedSlot,
         isSlotBlocked,
+        slotCapacities,
+        setSlotCapacity,
+        getSlotCapacityInfo,
         coupons,
         addCoupon,
         updateCoupon,

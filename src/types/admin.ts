@@ -112,6 +112,16 @@ export interface BlockedSlot {
   createdAt: string;
 }
 
+export interface SlotCapacity {
+  id: string;
+  location?: string;
+  serviceCategory?: string;
+  date?: string; // YYYY-MM-DD (undefined/null for standing location default)
+  timeSlot?: string; // e.g. '10:30 AM' (undefined/null for all day)
+  maxTeams: number;
+  createdAt?: string;
+}
+
 export interface Coupon {
   id: string;
   code: string;

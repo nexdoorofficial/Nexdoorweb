@@ -33,7 +33,8 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
   initialServiceCategory = 'all',
   initialLocation = 'all'
 }) => {
-  const { blockedSlots, locations } = useAdminData();
+  const { blockedSlots, locations, setSlotCapacity } = useAdminData();
+  const [maxTeams, setMaxTeams] = useState<number>(1);
   const allLocations = locations && locations.length > 0
     ? locations
     : [
@@ -60,6 +61,7 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
 
   useEffect(() => {
     if (isOpen) {
+      setMaxTeams(1);
       const today = new Date();
       const localTodayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
       const targetDate = initialDate || localTodayStr;
@@ -247,16 +249,26 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
       targetSlots = activeSlots.length > 0 ? Array.from(new Set(activeSlots)) : ['Full Day'];
     }
 
-    // 3. Save blockage for each combination
+    // 3. Save blockage or team capacity for each combination
     targetLocs.forEach((locName) => {
       targetSlots.forEach((slotTime) => {
-        onSave({
-          serviceCategory,
-          location: locName,
-          date,
-          timeSlot: slotTime,
-          reason: reason.trim() || 'Unavailable'
-        });
+        if (maxTeams === 0) {
+          onSave({
+            serviceCategory,
+            location: locName,
+            date,
+            timeSlot: slotTime,
+            reason: reason.trim() || 'Fully Blocked'
+          });
+        } else {
+          setSlotCapacity({
+            location: locName,
+            serviceCategory,
+            date,
+            timeSlot: slotTime === 'Full Day' ? undefined : slotTime,
+            maxTeams
+          });
+        }
       });
     });
 
@@ -610,6 +622,40 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
                 style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #CBD5E1', fontSize: '0.88rem' }}
               />
             )}
+          </div>
+
+          {/* Operational Team Capacity Selector */}
+          <div style={{ marginBottom: '20px', background: '#F8FAFC', padding: '16px', borderRadius: '16px', border: '1px solid #E2E8F0' }}>
+            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 800, color: '#1E293B', marginBottom: '6px' }}>
+              👥 Operational Team Capacity
+            </label>
+            <p style={{ fontSize: '0.78rem', color: '#64748B', margin: '0 0 10px 0', lineHeight: 1.35 }}>
+              Set how many dispatch teams operate in this slot. 0 = Fully Blocked, 1 = Only 1 team (triggers "🔥 Only 1 Team Left!" urgency on user side), 2+ = Multiple teams.
+            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {[0, 1, 2, 3, 4, 5].map((num) => (
+                <button
+                  key={num}
+                  type="button"
+                  onClick={() => setMaxTeams(num)}
+                  style={{
+                    padding: '8px 14px',
+                    borderRadius: '10px',
+                    fontWeight: 800,
+                    fontSize: '0.82rem',
+                    cursor: 'pointer',
+                    border: maxTeams === num ? '1px solid transparent' : '1px solid #CBD5E1',
+                    background: maxTeams === num
+                      ? (num === 0 ? '#DC2626' : 'linear-gradient(135deg, #1C2677, #29C3BE)')
+                      : '#FFFFFF',
+                    color: maxTeams === num ? '#FFFFFF' : '#334155',
+                    boxShadow: maxTeams === num ? '0 4px 12px rgba(41, 195, 190, 0.25)' : 'none'
+                  }}
+                >
+                  {num === 0 ? '🔒 Block (0 Teams)' : `${num} ${num === 1 ? 'Team' : 'Teams'}`}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Reason */}

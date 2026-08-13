@@ -1160,7 +1160,13 @@ export const BookingWizard: React.FC = () => {
                         const selectedDateStr = `${selectedDateObj.getFullYear()}-${String(selectedDateObj.getMonth() + 1).padStart(2, '0')}-${String(selectedDateObj.getDate()).padStart(2, '0')}`;
                         const isBlocked = adminData?.isSlotBlocked ? adminData.isSlotBlocked(serviceId, selectedDateStr, slot, area) : false;
                         const isPastSlot = isTimeSlotInPast(slot, selectedDateObj);
-                        const isDisabledSlot = isBlocked || isPastSlot;
+
+                        // Team Capacity Check
+                        const capacityInfo = adminData?.getSlotCapacityInfo
+                          ? adminData.getSlotCapacityInfo(area, selectedDateStr, slot, serviceId)
+                          : { maxTeams: 1, bookedCount: 0, remainingTeams: 1, isOneTeamLeft: false, isFull: false };
+
+                        const isDisabledSlot = isBlocked || isPastSlot || capacityInfo.isFull;
 
                         return (
                           <button
@@ -1172,9 +1178,9 @@ export const BookingWizard: React.FC = () => {
                               borderRadius: '12px',
                               fontWeight: 700,
                               fontSize: '0.8rem',
-                              background: isDisabledSlot ? '#F1F5F9' : isSlotSelected ? '#1C2677' : '#FFFFFF',
+                              background: isDisabledSlot ? '#F1F5F9' : isSlotSelected ? '#1C2677' : capacityInfo.isOneTeamLeft ? '#FFF7ED' : '#FFFFFF',
                               color: isDisabledSlot ? '#94A3B8' : isSlotSelected ? '#FFFFFF' : '#1B2236',
-                              border: `1.5px solid ${isDisabledSlot ? '#E2E8F0' : isSlotSelected ? '#1C2677' : '#E2E8F0'}`,
+                              border: `1.5px solid ${isDisabledSlot ? '#E2E8F0' : isSlotSelected ? '#1C2677' : capacityInfo.isOneTeamLeft ? '#F97316' : '#E2E8F0'}`,
                               cursor: isDisabledSlot ? 'not-allowed' : 'pointer',
                               boxShadow: isSlotSelected && !isDisabledSlot ? '0 4px 12px rgba(28, 38, 119, 0.2)' : 'none',
                               transition: 'all 0.15s',
@@ -1183,7 +1189,7 @@ export const BookingWizard: React.FC = () => {
                               opacity: isPastSlot ? 0.45 : 1,
                               textDecoration: isPastSlot ? 'line-through' : 'none'
                             }}
-                            title={isPastSlot ? 'Time slot has passed' : isBlocked ? `Slot unavailable for ${serviceId.replace('-', ' ')}` : undefined}
+                            title={isPastSlot ? 'Time slot has passed' : isBlocked ? `Slot unavailable for ${serviceId.replace('-', ' ')}` : capacityInfo.isFull ? 'All teams are booked for this slot' : capacityInfo.isOneTeamLeft ? 'Only 1 team remaining – book quickly!' : undefined}
                           >
                             {slot}
                             {isPastSlot && (
@@ -1194,6 +1200,16 @@ export const BookingWizard: React.FC = () => {
                             {isBlocked && !isPastSlot && (
                               <span style={{ display: 'block', fontSize: '0.62rem', color: '#EF4444', fontWeight: 800, marginTop: '2px' }}>
                                 Unavailable
+                              </span>
+                            )}
+                            {capacityInfo.isFull && !isBlocked && !isPastSlot && (
+                              <span style={{ display: 'block', fontSize: '0.6rem', color: '#DC2626', fontWeight: 800, marginTop: '2px', letterSpacing: '0.02em' }}>
+                                🔒 FULLY BOOKED
+                              </span>
+                            )}
+                            {capacityInfo.isOneTeamLeft && !isDisabledSlot && !isPastSlot && (
+                              <span style={{ display: 'block', fontSize: '0.6rem', color: '#EA580C', fontWeight: 800, marginTop: '2px', animation: 'pulse 2s infinite' }}>
+                                🔥 Only 1 Team Left!
                               </span>
                             )}
                           </button>
