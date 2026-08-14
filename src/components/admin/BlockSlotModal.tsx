@@ -249,18 +249,22 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
       targetSlots = activeSlots.length > 0 ? Array.from(new Set(activeSlots)) : ['Full Day'];
     }
 
-    // 3. Save blockage or team capacity for each combination
+    // 3. Always create a blocked slot entry (so it shows in admin calendar + isSlotBlocked works).
+    //    Additionally save team capacity when maxTeams >= 1 (partial teams still get a blockage entry
+    //    so the admin calendar shows it, but the capacity layer controls urgency badges on user side).
     targetLocs.forEach((locName) => {
       targetSlots.forEach((slotTime) => {
-        if (maxTeams === 0) {
-          onSave({
-            serviceCategory,
-            location: locName,
-            date,
-            timeSlot: slotTime,
-            reason: reason.trim() || 'Fully Blocked'
-          });
-        } else {
+        // Always create the blocked slot entry for calendar visibility
+        onSave({
+          serviceCategory,
+          location: locName,
+          date,
+          timeSlot: slotTime,
+          reason: reason.trim() || (maxTeams === 0 ? 'Fully Blocked' : `${maxTeams} Team${maxTeams > 1 ? 's' : ''} Available`)
+        });
+
+        // Additionally save team capacity record when maxTeams >= 1
+        if (maxTeams > 0) {
           setSlotCapacity({
             location: locName,
             serviceCategory,

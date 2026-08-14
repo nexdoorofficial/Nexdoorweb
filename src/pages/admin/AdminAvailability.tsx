@@ -366,6 +366,18 @@ export const AdminAvailability: React.FC = () => {
                 return targetDate === dateStr;
               });
 
+              // Also find any capacity overrides for this date (respects location filter)
+              const dayCapacities = slotCapacities.filter((c) => {
+                if (!c.date || c.date !== dateStr) return false;
+                const cLoc = (c.location || 'all').toLowerCase().trim();
+                const filterLoc = selectedLocationFilter.toLowerCase().trim();
+                if (filterLoc !== 'all' && cLoc !== 'all' && cLoc !== filterLoc) return false;
+                return true;
+              });
+
+              const hasCapacityOverride = dayCapacities.length > 0;
+              const minTeams = hasCapacityOverride ? Math.min(...dayCapacities.map(c => c.maxTeams)) : null;
+
               const isFullDayBlocked = dayBlockages.some(
                 (s) =>
                   !s.timeSlot ||
@@ -374,7 +386,8 @@ export const AdminAvailability: React.FC = () => {
                   s.timeSlot.toLowerCase().includes('full day') ||
                   s.timeSlot.toLowerCase() === 'full-day'
               );
-              const hasSlotBlock = dayBlockages.length > 0;
+              const hasSlotBlock = dayBlockages.length > 0 || hasCapacityOverride;
+              const slotBlockCount = dayBlockages.filter(s => s.timeSlot && !s.timeSlot.toLowerCase().includes('full day') && s.timeSlot.toLowerCase() !== 'full-day' && s.timeSlot !== '' && s.timeSlot !== 'all').length;
 
               return (
                 <div
@@ -411,14 +424,22 @@ export const AdminAvailability: React.FC = () => {
                       </span>
                     </div>
                   ) : hasSlotBlock ? (
-                    <div style={{ marginTop: '4px' }}>
+                    <div style={{ marginTop: '4px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
                       {isFullDayBlocked ? (
                         <span style={{ fontSize: '0.62rem', fontWeight: 800, color: '#DC2626', background: '#FEE2E2', padding: '2px 4px', borderRadius: '4px', display: 'block', textAlign: 'center' }}>
-                          FULL BLOCK
+                          🔒 FULL BLOCK
                         </span>
-                      ) : (
+                      ) : slotBlockCount > 0 ? (
                         <span style={{ fontSize: '0.62rem', fontWeight: 800, color: '#B45309', background: '#FEF3C7', padding: '2px 4px', borderRadius: '4px', display: 'block', textAlign: 'center' }}>
-                          {dayBlockages.length} slot{dayBlockages.length > 1 ? 's' : ''}
+                          {slotBlockCount} slot{slotBlockCount > 1 ? 's' : ''}
+                        </span>
+                      ) : null}
+                      {hasCapacityOverride && minTeams !== null && !isFullDayBlocked && (
+                        <span style={{ fontSize: '0.6rem', fontWeight: 800, padding: '2px 4px', borderRadius: '4px', display: 'block', textAlign: 'center',
+                          color: minTeams === 0 ? '#DC2626' : minTeams === 1 ? '#EA580C' : '#047857',
+                          background: minTeams === 0 ? '#FEE2E2' : minTeams === 1 ? '#FFF7ED' : '#ECFDF5'
+                        }}>
+                          {minTeams === 0 ? '🔒 Full' : minTeams === 1 ? '🔥 1 Team' : `👥 ${minTeams} Teams`}
                         </span>
                       )}
                     </div>
@@ -478,13 +499,34 @@ export const AdminAvailability: React.FC = () => {
                         <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#1C2677', background: '#EEF2FF', border: '1px solid #C7D2FE', padding: '2px 8px', borderRadius: '12px' }}>
                           📍 {slot.location && slot.location !== 'all' ? slot.location : 'All Areas'}
                         </span>
+                        {/* Show team capacity badge if a capacity override exists for this slot */}
+                        {(() => {
+                          const slotDate = slot.date || (slot as any).date_str;
+                          const matchingCap = slotCapacities.find(c =>
+                            c.date === slotDate &&
+                            (c.location || 'all').toLowerCase() === (slot.location || 'all').toLowerCase() &&
+                            (c.timeSlot ? c.timeSlot === slot.timeSlot : true)
+                          );
+                          if (!matchingCap) return null;
+                          const t = matchingCap.maxTeams;
+                          return (
+                            <span style={{
+                              fontSize: '0.68rem', fontWeight: 800, padding: '2px 7px', borderRadius: '10px',
+                              color: t === 0 ? '#DC2626' : t === 1 ? '#EA580C' : '#047857',
+                              background: t === 0 ? '#FEE2E2' : t === 1 ? '#FFF7ED' : '#ECFDF5',
+                              border: `1px solid ${t === 0 ? '#FECACA' : t === 1 ? '#FDBA74' : '#6EE7B7'}`
+                            }}>
+                              {t === 0 ? '🔒 Fully Blocked' : t === 1 ? '🔥 1 Team' : `👥 ${t} Teams`}
+                            </span>
+                          );
+                        })()}
                       </div>
                       <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#0F172A' }}>
                         📅 {slot.date || (slot as any).date_str} {!slot.timeSlot || slot.timeSlot === 'all' || slot.timeSlot === '' || slot.timeSlot.toLowerCase().includes('full day') ? '• 🔴 Full Day' : `• ⏰ ${slot.timeSlot}`}
                       </div>
                       {slot.reason && (
                         <div style={{ fontSize: '0.72rem', color: '#64748B', marginTop: '2px' }}>
-                          Reason: {slot.reason}
+                          {slot.reason}
                         </div>
                       )}
                     </div>
