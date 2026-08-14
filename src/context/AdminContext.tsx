@@ -189,6 +189,7 @@ interface AdminContextType {
   // Slot Capacities & Overbooking Protection Engine
   slotCapacities: SlotCapacity[];
   setSlotCapacity: (capacity: { location?: string; serviceCategory?: string; date?: string; timeSlot?: string; maxTeams: number }) => void;
+  deleteSlotCapacity: (capId: string) => void;
   getSlotCapacityInfo: (locationName?: string, dateStr?: string, timeSlot?: string, serviceCategory?: string) => {
     maxTeams: number;
     bookedCount: number;
@@ -196,7 +197,7 @@ interface AdminContextType {
     isOneTeamLeft: boolean;
     isFull: boolean;
   };
-  
+
   // Coupon actions
   coupons: Coupon[];
   addCoupon: (coupon: Omit<Coupon, 'id' | 'usageCount' | 'createdAt'>) => Coupon;
@@ -2179,14 +2180,34 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const targetSlot = blockedSlots.find((s) => s.id === id);
     setBlockedSlots((prev) => prev.filter((s) => s.id !== id));
 
+    // Also remove any matching slot capacity entry for the same date/location/timeSlot
+    if (targetSlot) {
+      const targetDate = targetSlot.date || (targetSlot as any).date_str;
+      const targetLoc = (targetSlot.location || 'all').toLowerCase().trim();
+      const targetTime = (targetSlot.timeSlot || '').toLowerCase().trim();
+
+      setSlotCapacities((prev) => prev.filter((c) => {
+        if (!c.date || c.date !== targetDate) return true;
+        const cLoc = (c.location || 'all').toLowerCase().trim();
+        const cTime = (c.timeSlot || '').toLowerCase().trim();
+        const locMatch = cLoc === targetLoc || cLoc === 'all' || targetLoc === 'all';
+        const timeMatch = !cTime || !targetTime || cTime === targetTime || targetTime.includes('full day');
+        return !(locMatch && timeMatch);
+      }));
+    }
+
     (async () => {
       try {
         await supabase.from('blocked_slots').delete().eq('id', id);
         if (targetSlot && targetSlot.date) {
+          // Clean up any capacity overrides for this exact slot
+          const targetDate = targetSlot.date || (targetSlot as any).date_str;
+          const targetLoc = targetSlot.location || 'all';
+          const capIdPattern = `cap-${targetLoc}-${targetDate}`.toLowerCase().replace(/[^a-z0-9]+/g, '-');
           await supabase
-            .from('blocked_slots')
+            .from('slot_capacities')
             .delete()
-            .or(`id.eq.${id},date.eq.${targetSlot.date},date_str.eq.${targetSlot.date}`);
+            .like('id', `${capIdPattern}%`);
         }
       } catch (e) {
         console.error('Supabase blocked slot delete notice:', e);
@@ -2194,6 +2215,18 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     })();
 
     showToast('Unblocked date/time slot', 'success');
+  };
+
+  const deleteSlotCapacity = (capId: string) => {
+    setSlotCapacities((prev) => prev.filter((c) => c.id !== capId));
+    (async () => {
+      try {
+        await supabase.from('slot_capacities').delete().eq('id', capId);
+      } catch (e) {
+        console.error('Supabase slot capacity delete notice:', e);
+      }
+    })();
+    showToast('Team capacity removed', 'success');
   };
 
   const isSlotBlocked = (
@@ -2992,6 +3025,7 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         isSlotBlocked,
         slotCapacities,
         setSlotCapacity,
+        deleteSlotCapacity,
         getSlotCapacityInfo,
         coupons,
         addCoupon,

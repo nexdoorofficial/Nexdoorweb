@@ -19,7 +19,7 @@ import { BlockSlotModal } from '../../components/admin/BlockSlotModal';
 import type { BlockedSlot } from '../../types/admin';
 
 export const AdminAvailability: React.FC = () => {
-  const { blockedSlots, locations, addBlockedSlot, deleteBlockedSlot, slotCapacities, setSlotCapacity } = useAdminData();
+  const { blockedSlots, locations, addBlockedSlot, deleteBlockedSlot, slotCapacities, setSlotCapacity, deleteSlotCapacity } = useAdminData();
 
   const [activeTab, setActiveTab] = useState<string>('all');
   const [selectedLocationFilter, setSelectedLocationFilter] = useState<string>('all');
@@ -555,6 +555,58 @@ export const AdminAvailability: React.FC = () => {
               </div>
             )}
           </div>
+
+          {/* Team Capacity Overrides panel (date-specific, not standing defaults) */}
+          {(() => {
+            const dateCapacities = slotCapacities.filter((c) => {
+              if (!c.date) return false; // skip standing defaults
+              const cLoc = (c.location || 'all').toLowerCase().trim();
+              const filterLoc = selectedLocationFilter.toLowerCase().trim();
+              if (filterLoc !== 'all' && cLoc !== 'all' && cLoc !== filterLoc) return false;
+              return true;
+            });
+            if (dateCapacities.length === 0) return null;
+            return (
+              <div style={{ background: '#FFFFFF', borderRadius: '20px', border: '1px solid #E2E8F0', padding: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
+                <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#0F172A', margin: '0 0 14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Users size={18} style={{ color: '#29C3BE' }} />
+                  Team Capacity Overrides ({dateCapacities.length})
+                </h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '320px', overflowY: 'auto' }}>
+                  {dateCapacities.map((cap) => (
+                    <div key={cap.id} style={{ padding: '10px 12px', borderRadius: '12px', background: '#F8FAFC', border: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap', marginBottom: '4px' }}>
+                          <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#1C2677', background: '#EEF2FF', border: '1px solid #C7D2FE', padding: '2px 8px', borderRadius: '12px' }}>
+                            📍 {cap.location && cap.location !== 'all' ? cap.location : 'All Areas'}
+                          </span>
+                          <span style={{
+                            fontSize: '0.68rem', fontWeight: 800, padding: '2px 7px', borderRadius: '10px',
+                            color: cap.maxTeams === 0 ? '#DC2626' : cap.maxTeams === 1 ? '#EA580C' : '#047857',
+                            background: cap.maxTeams === 0 ? '#FEE2E2' : cap.maxTeams === 1 ? '#FFF7ED' : '#ECFDF5',
+                            border: `1px solid ${cap.maxTeams === 0 ? '#FECACA' : cap.maxTeams === 1 ? '#FDBA74' : '#6EE7B7'}`
+                          }}>
+                            {cap.maxTeams === 0 ? '🔒 Full' : cap.maxTeams === 1 ? '🔥 1 Team' : `👥 ${cap.maxTeams} Teams`}
+                          </span>
+                        </div>
+                        <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#0F172A' }}>
+                          📅 {cap.date} {cap.timeSlot ? `• ⏰ ${cap.timeSlot}` : '• All Day'}
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => deleteSlotCapacity(cap.id)}
+                        style={{ padding: '6px 10px', borderRadius: '8px', border: '1px solid #FECACA', background: '#FEF2F2', color: '#DC2626', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+                        title="Remove this capacity override"
+                      >
+                        <Trash2 size={13} />
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
         </div>
       </div>
 

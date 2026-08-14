@@ -249,22 +249,24 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
       targetSlots = activeSlots.length > 0 ? Array.from(new Set(activeSlots)) : ['Full Day'];
     }
 
-    // 3. Always create a blocked slot entry (so it shows in admin calendar + isSlotBlocked works).
-    //    Additionally save team capacity when maxTeams >= 1 (partial teams still get a blockage entry
-    //    so the admin calendar shows it, but the capacity layer controls urgency badges on user side).
+    // 3. Apply the correct action based on maxTeams:
+    //    maxTeams === 0  → Hard block (slot is fully Unavailable on user side)
+    //    maxTeams >= 1   → Soft capacity limit (slot stays bookable, shows 🔥/🔒 badge via getSlotCapacityInfo)
     targetLocs.forEach((locName) => {
       targetSlots.forEach((slotTime) => {
-        // Always create the blocked slot entry for calendar visibility
-        onSave({
-          serviceCategory,
-          location: locName,
-          date,
-          timeSlot: slotTime,
-          reason: reason.trim() || (maxTeams === 0 ? 'Fully Blocked' : `${maxTeams} Team${maxTeams > 1 ? 's' : ''} Available`)
-        });
-
-        // Additionally save team capacity record when maxTeams >= 1
-        if (maxTeams > 0) {
+        if (maxTeams === 0) {
+          // Hard block: create a blocked_slots entry so isSlotBlocked() returns true → "Unavailable"
+          onSave({
+            serviceCategory,
+            location: locName,
+            date,
+            timeSlot: slotTime,
+            reason: reason.trim() || 'Fully Blocked'
+          });
+        } else {
+          // Soft capacity: save team count to slot_capacities only.
+          // isSlotBlocked() stays false → slot is bookable.
+          // getSlotCapacityInfo() returns capacity info → shows 🔥 "Only 1 Team Left!" or 🔒 "FULLY BOOKED".
           setSlotCapacity({
             location: locName,
             serviceCategory,
