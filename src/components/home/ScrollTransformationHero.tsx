@@ -83,11 +83,11 @@ export const ScrollTransformationHero: React.FC = () => {
       style={{
         position: 'relative',
         height: isMobile ? 'auto' : '240vh',
-        minHeight: isMobile ? '100vh' : 'auto',
+        minHeight: 'auto',
         background: '#0F172A',
         color: '#FFFFFF',
-        paddingTop: isMobile ? '28px' : '0',
-        paddingBottom: isMobile ? '44px' : '0'
+        paddingTop: isMobile ? '24px' : '0',
+        paddingBottom: isMobile ? '28px' : '0'
       }}
     >
       {/* Pinned Stage on Desktop / Standard Centered Block on Mobile */}
@@ -96,14 +96,14 @@ export const ScrollTransformationHero: React.FC = () => {
           position: isMobile ? 'relative' : 'sticky',
           top: 0,
           height: isMobile ? 'auto' : '100vh',
-          minHeight: isMobile ? '100%' : '100vh',
+          minHeight: isMobile ? 'auto' : '100vh',
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
-          padding: isMobile ? '8px 0' : '16px 0'
+          padding: isMobile ? '0' : '16px 0'
         }}
       >
         {/* Ambient Radial Background Glow */}
