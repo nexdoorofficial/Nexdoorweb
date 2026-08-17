@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Sparkles, ArrowRight, ShieldCheck } from 'lucide-react';
@@ -6,40 +6,67 @@ import { TextEffect } from '../core/text-effect';
 
 export const ScrollTransformationHero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 768;
+    }
+    return false;
+  });
 
-  // Track scroll progress within this tall container
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 767px)');
+    const handleMediaChange = (e: MediaQueryListEvent | MediaQueryList) => {
+      setIsMobile(e.matches);
+    };
+
+    handleMediaChange(mediaQuery);
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', handleMediaChange);
+      return () => mediaQuery.removeEventListener('change', handleMediaChange);
+    } else {
+      mediaQuery.addListener(handleMediaChange);
+      return () => mediaQuery.removeListener(handleMediaChange);
+    }
+  }, []);
+
+  // Desktop scroll progress within tall container
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end']
   });
 
-  // Map scroll progress (0.05 to 0.75) to scanline movement from 0% to 100%
-  const sliderPos = useTransform(scrollYProgress, [0.05, 0.75], [0, 100]);
-  const scanlineLeft = useTransform(scrollYProgress, [0.05, 0.75], ['0%', '100%']);
+  // Map scroll progress (0.05 to 0.75) to scanline movement from 0% to 100% on desktop
+  const desktopSliderPos = useTransform(scrollYProgress, [0.05, 0.75], [0, 100]);
+  const desktopScanlineLeft = useTransform(scrollYProgress, [0.05, 0.75], ['0%', '100%']);
+  const desktopClipPath = useTransform(desktopSliderPos, (v) => `inset(0 ${100 - v}% 0 0)`);
 
   return (
     <div
       ref={containerRef}
       style={{
         position: 'relative',
-        height: '240vh', // Mobile-optimized scroll track height
+        height: isMobile ? 'auto' : '240vh',
+        minHeight: isMobile ? '100vh' : 'auto',
         background: '#0F172A',
-        color: '#FFFFFF'
+        color: '#FFFFFF',
+        paddingTop: isMobile ? '36px' : '0',
+        paddingBottom: isMobile ? '48px' : '0'
       }}
     >
-      {/* Sticky Fullscreen Stage (Pinned Viewport) */}
+      {/* Pinned Stage on Desktop / Standard Centered Block on Mobile */}
       <div
         style={{
-          position: 'sticky',
+          position: isMobile ? 'relative' : 'sticky',
           top: 0,
-          height: '100vh',
+          height: isMobile ? 'auto' : '100vh',
+          minHeight: isMobile ? '100%' : '100vh',
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
-          padding: '16px 0'
+          padding: isMobile ? '12px 0' : '16px 0'
         }}
       >
         {/* Ambient Radial Background Glow */}
@@ -85,7 +112,7 @@ export const ScrollTransformationHero: React.FC = () => {
                   letterSpacing: '0.05em'
                 }}
               >
-                <Sparkles size={14} /> SCROLL TO TRANSFORM ROOM
+                <Sparkles size={14} /> {isMobile ? 'LIVE ROOM TRANSFORMATION' : 'SCROLL TO TRANSFORM ROOM'}
               </div>
 
               <TextEffect
@@ -116,12 +143,14 @@ export const ScrollTransformationHero: React.FC = () => {
               </TextEffect>
 
               <p style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)', color: '#94A3B8', margin: 0, lineHeight: 1.5 }}>
-                Scroll down to sweep the cleaning scanline across the room.
+                {isMobile
+                  ? 'Watch our cleaning scanline transform the room into pure perfection.'
+                  : 'Scroll down to sweep the cleaning scanline across the room.'}
               </p>
             </motion.div>
           </div>
 
-          {/* PINNED TRANSFORMATION IMAGE STAGE */}
+          {/* TRANSFORMATION IMAGE STAGE */}
           <div
             className="transformation-stage"
             style={{
@@ -133,8 +162,7 @@ export const ScrollTransformationHero: React.FC = () => {
               boxShadow: '0 25px 60px rgba(0, 0, 0, 0.6), 0 0 35px rgba(41, 195, 190, 0.25)',
               border: '1px solid rgba(255, 255, 255, 0.2)',
               aspectRatio: '16 / 9',
-              background: '#0F172A',
-              touchAction: 'pan-y'
+              background: '#0F172A'
             }}
           >
             {/* 1. DIRTY ROOM IMAGE (Base Layer - Initial 100% View) */}
@@ -150,48 +178,109 @@ export const ScrollTransformationHero: React.FC = () => {
               }}
             />
 
-            {/* 2. SPOTLESS CLEAN ROOM IMAGE (Revealed via clip-path: STATIC, ZERO-ZOOM) */}
-            <motion.div
-              style={{
-                position: 'absolute',
-                inset: 0,
-                width: '100%',
-                height: '100%',
-                clipPath: useTransform(sliderPos, (v) => `inset(0 ${100 - v}% 0 0)`),
-                willChange: 'clip-path',
-                zIndex: 2
-              }}
-            >
-              <img
-                src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1600&q=80"
-                alt="Spotless Clean Room After NEXDOOR Service"
+            {/* 2. SPOTLESS CLEAN ROOM IMAGE (Revealed via clip-path: auto-looping on mobile, scroll-driven on desktop) */}
+            {isMobile ? (
+              <motion.div
+                animate={{
+                  clipPath: [
+                    'inset(0 100% 0 0)',
+                    'inset(0 0% 0 0)',
+                    'inset(0 0% 0 0)',
+                    'inset(0 100% 0 0)'
+                  ]
+                }}
+                transition={{
+                  duration: 5,
+                  ease: 'easeInOut',
+                  repeat: Infinity,
+                  times: [0, 0.45, 0.6, 1]
+                }}
                 style={{
+                  position: 'absolute',
+                  inset: 0,
                   width: '100%',
                   height: '100%',
-                  objectFit: 'cover'
+                  zIndex: 2
+                }}
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1600&q=80"
+                  alt="Spotless Clean Room After NEXDOOR Service"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover'
+                  }}
+                />
+              </motion.div>
+            ) : (
+              <motion.div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  clipPath: desktopClipPath,
+                  willChange: 'clip-path',
+                  zIndex: 2
+                }}
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1600&q=80"
+                  alt="Spotless Clean Room After NEXDOOR Service"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover'
+                  }}
+                />
+              </motion.div>
+            )}
+
+            {/* 3. VERTICAL SCANNING LINE (auto-looping on mobile, scroll-driven on desktop) */}
+            {isMobile ? (
+              <motion.div
+                animate={{
+                  left: ['0%', '100%', '100%', '0%']
+                }}
+                transition={{
+                  duration: 5,
+                  ease: 'easeInOut',
+                  repeat: Infinity,
+                  times: [0, 0.45, 0.6, 1]
+                }}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  bottom: 0,
+                  transform: 'translateX(-50%)',
+                  width: '3px',
+                  background: '#29C3BE',
+                  boxShadow: '0 0 15px #29C3BE, 0 0 35px #29C3BE',
+                  zIndex: 10,
+                  pointerEvents: 'none'
                 }}
               />
-            </motion.div>
-
-            {/* 3. VERTICAL SCANNING LINE */}
-            <motion.div
-              style={{
-                position: 'absolute',
-                top: 0,
-                bottom: 0,
-                left: scanlineLeft,
-                transform: 'translateX(-50%)',
-                width: '3px',
-                background: '#29C3BE',
-                boxShadow: '0 0 15px #29C3BE, 0 0 35px #29C3BE',
-                zIndex: 10,
-                pointerEvents: 'none',
-                willChange: 'left'
-              }}
-            />
+            ) : (
+              <motion.div
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  bottom: 0,
+                  left: desktopScanlineLeft,
+                  transform: 'translateX(-50%)',
+                  width: '3px',
+                  background: '#29C3BE',
+                  boxShadow: '0 0 15px #29C3BE, 0 0 35px #29C3BE',
+                  zIndex: 10,
+                  pointerEvents: 'none',
+                  willChange: 'left'
+                }}
+              />
+            )}
           </div>
 
-          {/* Action Buttons & Mobile Scroll Cue */}
+          {/* Action Buttons & Navigation Cue */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', marginTop: '20px' }}>
             <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
               <Link to="/book" className="btn-primary" style={{ padding: '12px 24px', fontSize: '0.95rem' }}>
@@ -202,9 +291,11 @@ export const ScrollTransformationHero: React.FC = () => {
               </Link>
             </div>
             
-            <div style={{ fontSize: '0.75rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <span>↓ Scroll down to complete transformation</span>
-            </div>
+            {!isMobile && (
+              <div style={{ fontSize: '0.75rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span>↓ Scroll down to complete transformation</span>
+              </div>
+            )}
           </div>
 
         </div>
