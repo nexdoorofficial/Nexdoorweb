@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Lock, ChevronDown, ChevronUp, Check } from 'lucide-react';
+import { X, Lock, ChevronDown, ChevronUp, Check, Trash2 } from 'lucide-react';
 import { useAdminData } from '../../context/AdminContext';
 import type { BlockedSlot } from '../../types/admin';
 
@@ -33,8 +33,8 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
   initialServiceCategory = 'all',
   initialLocation = 'all'
 }) => {
-  const { locations, setSlotCapacity } = useAdminData();
-  const [maxTeams, setMaxTeams] = useState<number>(1);
+  const { locations, blockedSlots, deleteBlockedSlot, slotCapacities, setSlotCapacity, deleteSlotCapacity } = useAdminData();
+  const [maxTeams, setMaxTeams] = useState<number>(0);
   const allLocations = locations && locations.length > 0
     ? locations
     : [
@@ -61,26 +61,23 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
 
   useEffect(() => {
     if (isOpen) {
-      // Always open as a fresh "add new block" form.
-      // Existing blocks for a date are shown in the right panel list for viewing/removing.
-      // Pre-fill only from the admin's current filter context passed via props.
-      setMaxTeams(1);
+      // Default to 0 = Hard Block
+      setMaxTeams(0);
 
       const today = new Date();
       const localTodayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-      setDate(initialDate || localTodayStr);
+      const targetDate = initialDate || localTodayStr;
+      setDate(targetDate);
 
-      // Service category: use the active service tab filter (passed as initialServiceCategory)
+      // Pre-fill from active filters passed via props
       setServiceCategory(initialServiceCategory || 'all');
 
-      // Location: use the active location filter (passed as initialLocation)
       if (initialLocation && initialLocation !== 'all') {
         setSelectedLocations([initialLocation]);
       } else {
         setSelectedLocations(['all']);
       }
 
-      // Time slots: always start fresh with Full Day Block selected
       setSelectedTimeSlots(['Full Day Block']);
       setReason('');
       setIsLocDropdownOpen(false);
@@ -89,6 +86,14 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
   }, [isOpen, initialDate, initialServiceCategory, initialLocation]);
 
   if (!isOpen) return null;
+
+  // Active blocks & capacities on this date
+  const existingBlocksOnDate = (blockedSlots || []).filter(
+    (s) => (s.date || (s as any).date_str) === date
+  );
+  const existingCapacitiesOnDate = (slotCapacities || []).filter(
+    (c) => c.date === date
+  );
 
   // Toggle Location Checkbox
   const handleLocationToggle = (locName: string) => {
@@ -210,13 +215,11 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
       targetSlots = activeSlots.length > 0 ? Array.from(new Set(activeSlots)) : ['Full Day'];
     }
 
-    // 3. Apply the correct action based on maxTeams:
-    //    maxTeams === 0  → Hard block (slot is fully Unavailable on user side)
-    //    maxTeams >= 1   → Soft capacity limit (slot stays bookable, shows 🔥/🔒 badge via getSlotCapacityInfo)
+    // 3. Save blockages & capacity:
     targetLocs.forEach((locName) => {
       targetSlots.forEach((slotTime) => {
         if (maxTeams === 0) {
-          // Hard block: create a blocked_slots entry so isSlotBlocked() returns true → "Unavailable"
+          // Hard block: Save to blocked_slots so isSlotBlocked() returns true
           onSave({
             serviceCategory,
             location: locName,
@@ -224,10 +227,17 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
             timeSlot: slotTime,
             reason: reason.trim() || 'Fully Blocked'
           });
+          // Also record maxTeams = 0 in slot_capacities
+          setSlotCapacity({
+            location: locName,
+            serviceCategory,
+            date,
+            timeSlot: slotTime === 'Full Day' ? undefined : slotTime,
+            maxTeams: 0
+          });
         } else {
-          // Soft capacity: save team count to slot_capacities only.
-          // isSlotBlocked() stays false → slot is bookable.
-          // getSlotCapacityInfo() returns capacity info → shows 🔥 "Only 1 Team Left!" or 🔒 "FULLY BOOKED".
+          // Soft capacity limit (1-5 teams):
+          // Save to slot_capacities with maxTeams
           setSlotCapacity({
             location: locName,
             serviceCategory,
@@ -253,6 +263,15 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
     return `📍 ${selectedLocations.length} Areas Selected (${selectedLocations.join(', ')})`;
   };
 
+  const formatServiceBadge = (cat?: string) => {
+    const c = cat || 'all';
+    if (c === 'car-wash') return <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#1D4ED8', background: '#EFF6FF', padding: '2px 7px', borderRadius: '8px' }}>🚗 Car Wash</span>;
+    if (c === 'house-cleaning') return <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#047857', background: '#ECFDF5', padding: '2px 7px', borderRadius: '8px' }}>🏠 House Cleaning</span>;
+    if (c === 'laundry') return <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#B45309', background: '#FEF3C7', padding: '2px 7px', borderRadius: '8px' }}>🧺 Laundry</span>;
+    if (c === 'specialized') return <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#6B21A8', background: '#F3E8FF', padding: '2px 7px', borderRadius: '8px' }}>✨ Specialized</span>;
+    return <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#DC2626', background: '#FEF2F2', padding: '2px 7px', borderRadius: '8px' }}>🔒 All Services</span>;
+  };
+
   return (
     <div
       data-lenis-prevent
@@ -276,8 +295,8 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
           background: '#FFFFFF',
           borderRadius: '24px',
           width: '100%',
-          maxWidth: '560px',
-          maxHeight: '86vh',
+          maxWidth: '580px',
+          maxHeight: '88vh',
           overflowY: 'auto',
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
           border: '1px solid #E2E8F0',
@@ -290,8 +309,8 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: '20px',
-            paddingBottom: '16px',
+            marginBottom: '16px',
+            paddingBottom: '14px',
             borderBottom: '1px solid #F1F5F9'
           }}
         >
@@ -311,11 +330,11 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
               <Lock size={20} />
             </div>
             <div>
-              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#1E293B', margin: 0 }}>
-                Block Service Date & Time
+              <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#1E293B', margin: 0 }}>
+                Availability & Slot Management
               </h2>
-              <p style={{ fontSize: '0.825rem', color: '#64748B', margin: 0 }}>
-                Make specific dates, locations, or slots unavailable on frontend
+              <p style={{ fontSize: '0.8rem', color: '#64748B', margin: 0 }}>
+                Manage blocks and team capacity for {date || 'selected date'}
               </p>
             </div>
           </div>
@@ -338,10 +357,122 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
           </button>
         </div>
 
+        {/* Existing Active Blocks for this Date */}
+        {(existingBlocksOnDate.length > 0 || existingCapacitiesOnDate.length > 0) && (
+          <div style={{ marginBottom: '20px', background: '#FEF2F2', borderRadius: '16px', border: '1px solid #FECACA', padding: '14px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <span style={{ fontSize: '0.82rem', fontWeight: 800, color: '#991B1B', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Lock size={14} /> Currently Active on {date} ({existingBlocksOnDate.length + existingCapacitiesOnDate.length})
+              </span>
+              <span style={{ fontSize: '0.7rem', color: '#B91C1C', fontWeight: 600 }}>Click trash icon to remove</span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '160px', overflowY: 'auto' }}>
+              {existingBlocksOnDate.map((b) => (
+                <div
+                  key={b.id}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    background: '#FFFFFF',
+                    padding: '8px 12px',
+                    borderRadius: '10px',
+                    border: '1px solid #FCA5A5'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+                    {formatServiceBadge(b.serviceCategory)}
+                    <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#1E293B', background: '#F1F5F9', padding: '2px 6px', borderRadius: '6px' }}>
+                      📍 {b.location || 'All Areas'}
+                    </span>
+                    <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#DC2626', background: '#FEE2E2', padding: '2px 6px', borderRadius: '6px' }}>
+                      ⏰ {b.timeSlot || 'Full Day'} (BLOCKED)
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => deleteBlockedSlot(b.id)}
+                    style={{
+                      border: 'none',
+                      background: '#FEE2E2',
+                      color: '#DC2626',
+                      padding: '4px 8px',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      fontSize: '0.72rem',
+                      fontWeight: 700
+                    }}
+                    title="Remove this block"
+                  >
+                    <Trash2 size={12} />
+                    Remove
+                  </button>
+                </div>
+              ))}
+
+              {existingCapacitiesOnDate.map((c) => (
+                <div
+                  key={c.id}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    background: '#FFFFFF',
+                    padding: '8px 12px',
+                    borderRadius: '10px',
+                    border: '1px solid #CBD5E1'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+                    {formatServiceBadge(c.serviceCategory)}
+                    <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#1E293B', background: '#F1F5F9', padding: '2px 6px', borderRadius: '6px' }}>
+                      📍 {c.location || 'All Areas'}
+                    </span>
+                    <span style={{
+                      fontSize: '0.72rem',
+                      fontWeight: 800,
+                      color: c.maxTeams === 0 ? '#DC2626' : c.maxTeams === 1 ? '#EA580C' : '#047857',
+                      background: c.maxTeams === 0 ? '#FEE2E2' : c.maxTeams === 1 ? '#FFF7ED' : '#ECFDF5',
+                      padding: '2px 6px',
+                      borderRadius: '6px'
+                    }}>
+                      ⏰ {c.timeSlot || 'Full Day'} ({c.maxTeams === 0 ? '0 Teams / Block' : `${c.maxTeams} Teams`})
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => deleteSlotCapacity(c.id)}
+                    style={{
+                      border: 'none',
+                      background: '#F1F5F9',
+                      color: '#64748B',
+                      padding: '4px 8px',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      fontSize: '0.72rem',
+                      fontWeight: 700
+                    }}
+                    title="Remove this capacity override"
+                  >
+                    <Trash2 size={12} />
+                    Clear
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Form */}
         <form onSubmit={handleSubmit}>
           {/* Target Service Category */}
-          <div style={{ marginBottom: '16px' }}>
+          <div style={{ marginBottom: '14px' }}>
             <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
               Target Service Category *
             </label>
@@ -356,13 +487,13 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
               <option value="laundry">🧺 Laundry Services</option>
               <option value="specialized">✨ Specialized Cleaning</option>
             </select>
-            <p style={{ fontSize: '0.75rem', color: '#64748B', marginTop: '4px', margin: '4px 0 0 0' }}>
+            <p style={{ fontSize: '0.74rem', color: '#64748B', margin: '4px 0 0 0' }}>
               Selecting e.g. "Car Wash" blocks ONLY Car Wash on this date/time while House Cleaning remains available.
             </p>
           </div>
 
           {/* Multi-Select Target Location / Area Selector */}
-          <div style={{ marginBottom: '16px', position: 'relative' }}>
+          <div style={{ marginBottom: '14px', position: 'relative' }}>
             <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
               Target Service Area / Location * (Multiple Selection)
             </label>
@@ -407,7 +538,7 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', paddingBottom: '8px', borderBottom: '1px solid #F1F5F9' }}>
                   <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#1C2677' }}>
-                    Select Locations to Block ({selectedLocations.includes('all') ? 'All Active' : `${selectedLocations.length} Active`})
+                    Select Locations ({selectedLocations.includes('all') ? 'All Active' : `${selectedLocations.length} Active`})
                   </span>
                   <div style={{ display: 'flex', gap: '8px' }}>
                     <button type="button" onClick={handleSelectAllLocs} style={{ background: 'none', border: 'none', color: '#1D4ED8', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}>
@@ -427,7 +558,7 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '8px',
-                    maxHeight: '220px',
+                    maxHeight: '200px',
                     overflowY: 'auto',
                     overscrollBehavior: 'contain',
                     WebkitOverflowScrolling: 'touch',
@@ -493,14 +624,10 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
                 </div>
               </div>
             )}
-
-            <p style={{ fontSize: '0.75rem', color: '#64748B', margin: '4px 0 0 0' }}>
-              Check multiple locations e.g. "Kakkanad" & "Edappally" to block them simultaneously.
-            </p>
           </div>
 
           {/* Target Date */}
-          <div style={{ marginBottom: '16px' }}>
+          <div style={{ marginBottom: '14px' }}>
             <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
               Target Date *
             </label>
@@ -518,7 +645,7 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
           <div style={{ marginBottom: '16px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
               <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#334155' }}>
-                Time Slot Blockage * (Select Multiple)
+                Time Slot Selection * (Select Multiple)
               </label>
               <span style={{ fontSize: '0.72rem', color: '#DC2626', fontWeight: 700 }}>
                 {selectedTimeSlots.includes('Full Day Block')
@@ -532,6 +659,13 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
                 const isSelected = selectedTimeSlots.includes(slot);
                 const isPastSlot = isSlotInPastForDate(slot, date);
 
+                // Check if this slot is already blocked on this date
+                const isAlreadyBlocked = existingBlocksOnDate.some((b) => {
+                  const bTime = (b.timeSlot || '').toLowerCase().trim();
+                  if (bTime === '' || bTime === 'all' || bTime.includes('full day')) return true;
+                  return normalizeSlotString(b.timeSlot || '') === normalizeSlotString(slot);
+                });
+
                 return (
                   <button
                     key={slot}
@@ -539,14 +673,32 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
                     disabled={isPastSlot}
                     onClick={() => !isPastSlot && handleTimeSlotToggle(slot)}
                     style={{
-                      padding: '6px 12px',
+                      padding: '7px 12px',
                       borderRadius: '8px',
                       fontSize: '0.78rem',
                       fontWeight: 700,
                       cursor: isPastSlot ? 'not-allowed' : 'pointer',
-                      border: isPastSlot ? '1px solid #E2E8F0' : isSelected ? '2px solid #EF4444' : '1px solid #E2E8F0',
-                      background: isPastSlot ? '#F1F5F9' : isSelected ? '#FEF2F2' : '#F8FAFC',
-                      color: isPastSlot ? '#94A3B8' : isSelected ? '#DC2626' : '#334155',
+                      border: isPastSlot
+                        ? '1px solid #E2E8F0'
+                        : isSelected
+                        ? '2px solid #EF4444'
+                        : isAlreadyBlocked
+                        ? '1.5px dashed #F87171'
+                        : '1px solid #E2E8F0',
+                      background: isPastSlot
+                        ? '#F1F5F9'
+                        : isSelected
+                        ? '#FEF2F2'
+                        : isAlreadyBlocked
+                        ? '#FFF1F2'
+                        : '#F8FAFC',
+                      color: isPastSlot
+                        ? '#94A3B8'
+                        : isSelected
+                        ? '#DC2626'
+                        : isAlreadyBlocked
+                        ? '#BE123C'
+                        : '#334155',
                       opacity: isPastSlot ? 0.5 : 1,
                       display: 'flex',
                       alignItems: 'center',
@@ -554,10 +706,11 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
                       transition: 'all 0.15s ease',
                       textDecoration: isPastSlot ? 'line-through' : 'none'
                     }}
-                    title={isPastSlot ? 'This time slot has already passed today' : undefined}
+                    title={isPastSlot ? 'This time slot has already passed today' : isAlreadyBlocked ? 'Currently blocked for this date' : undefined}
                   >
                     {isSelected && <Check size={12} />}
                     {slot}
+                    {isAlreadyBlocked && !isSelected && <span style={{ fontSize: '0.62rem', color: '#E11D48', fontWeight: 800 }}>🔒</span>}
                   </button>
                 );
               })}
@@ -566,7 +719,7 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
                 type="button"
                 onClick={() => handleTimeSlotToggle('Custom')}
                 style={{
-                  padding: '6px 12px',
+                  padding: '7px 12px',
                   borderRadius: '8px',
                   fontSize: '0.78rem',
                   fontWeight: 700,
@@ -591,13 +744,13 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
             )}
           </div>
 
-          {/* Operational Team Capacity Selector */}
-          <div style={{ marginBottom: '20px', background: '#F8FAFC', padding: '16px', borderRadius: '16px', border: '1px solid #E2E8F0' }}>
-            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 800, color: '#1E293B', marginBottom: '6px' }}>
-              👥 Operational Team Capacity
+          {/* Action / Operational Team Capacity Selector */}
+          <div style={{ marginBottom: '16px', background: '#F8FAFC', padding: '14px', borderRadius: '16px', border: '1px solid #E2E8F0' }}>
+            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 800, color: '#1E293B', marginBottom: '4px' }}>
+              Action / Team Capacity Setting
             </label>
-            <p style={{ fontSize: '0.78rem', color: '#64748B', margin: '0 0 10px 0', lineHeight: 1.35 }}>
-              Set how many dispatch teams operate in this slot. 0 = Fully Blocked, 1 = Only 1 team (triggers "🔥 Only 1 Team Left!" urgency on user side), 2+ = Multiple teams.
+            <p style={{ fontSize: '0.76rem', color: '#64748B', margin: '0 0 10px 0', lineHeight: 1.35 }}>
+              Choose <strong>"🔒 Full Block (0 Teams)"</strong> to completely shut down bookings on the frontend. Or choose <strong>"1-5 Teams"</strong> to limit capacity and trigger urgency badges.
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
               {[0, 1, 2, 3, 4, 5].map((num) => (
@@ -619,32 +772,32 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
                     boxShadow: maxTeams === num ? '0 4px 12px rgba(41, 195, 190, 0.25)' : 'none'
                   }}
                 >
-                  {num === 0 ? '🔒 Block (0 Teams)' : `${num} ${num === 1 ? 'Team' : 'Teams'}`}
+                  {num === 0 ? '🔒 Full Block (0 Teams)' : `${num} ${num === 1 ? 'Team' : 'Teams'}`}
                 </button>
               ))}
             </div>
           </div>
 
           {/* Reason */}
-          <div style={{ marginBottom: '24px' }}>
+          <div style={{ marginBottom: '20px' }}>
             <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
-              Reason / Internal Note
+              Reason / Internal Note (Optional)
             </label>
             <input
               type="text"
-              placeholder="e.g. Night Equipment Maintenance, Fully Booked, Public Holiday..."
+              placeholder="e.g. Equipment Maintenance, Holiday, Peak Rush..."
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #CBD5E1', fontSize: '0.88rem' }}
             />
           </div>
 
-          {/* Buttons */}
+          {/* Action Buttons */}
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
             <button
               type="button"
               onClick={onClose}
-              style={{ padding: '10px 20px', borderRadius: '12px', border: '1px solid #CBD5E1', background: '#FFF', fontWeight: 600, color: '#475569' }}
+              style={{ padding: '10px 20px', borderRadius: '12px', border: '1px solid #CBD5E1', background: '#FFF', fontWeight: 600, color: '#475569', cursor: 'pointer' }}
             >
               Cancel
             </button>
@@ -654,14 +807,14 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
                 padding: '10px 24px',
                 borderRadius: '12px',
                 border: 'none',
-                background: 'linear-gradient(135deg, #EF4444, #DC2626)',
+                background: maxTeams === 0 ? 'linear-gradient(135deg, #EF4444, #DC2626)' : 'linear-gradient(135deg, #1C2677, #29C3BE)',
                 color: '#FFF',
                 fontWeight: 700,
-                boxShadow: '0 4px 12px rgba(239, 68, 68, 0.3)',
+                boxShadow: maxTeams === 0 ? '0 4px 12px rgba(239, 68, 68, 0.3)' : '0 4px 12px rgba(41, 195, 190, 0.3)',
                 cursor: 'pointer'
               }}
             >
-              Confirm Blockage
+              {maxTeams === 0 ? 'Confirm & Apply Blockage' : `Set Capacity (${maxTeams} ${maxTeams === 1 ? 'Team' : 'Teams'})`}
             </button>
           </div>
         </form>

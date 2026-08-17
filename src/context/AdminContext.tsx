@@ -911,7 +911,7 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             serviceCategory: c.service_category || 'all',
             date: c.date || undefined,
             timeSlot: c.time_slot || undefined,
-            maxTeams: Number(c.max_teams) || 1,
+            maxTeams: Number.isFinite(Number(c.max_teams)) ? Number(c.max_teams) : 1,
             createdAt: c.created_at || new Date().toISOString()
           }));
           setSlotCapacities(mappedCaps);
@@ -2373,32 +2373,54 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     locationName?: string,
     dateStr?: string,
     timeSlot?: string,
-    _serviceCategory?: string
+    serviceCategory?: string
   ) => {
     const cleanLoc = (locationName || 'all').toLowerCase().trim();
     const cleanDate = (dateStr || '').trim();
     const cleanTime = (timeSlot || '').toLowerCase().trim();
+    const cleanCat = (serviceCategory || 'all').toLowerCase().trim();
 
-    // 2-Tier Resolution:
-    // Tier A: Specific Date + Time Slot Override
-    // Tier B: Specific Date Override
-    // Tier C: Location Standing Baseline Default
-    // Tier D: System Fallback = 1 Team
+    // 4-Tier Resolution Engine:
+    // Tier 1: Exact Date + Location + Time Slot Override (+ Service Match)
+    // Tier 2: Exact Date + Location (Full Day) Override (+ Service Match)
+    // Tier 3: Location Standing Baseline Default
+    // Tier 4: System Fallback = 1 Team
     let maxTeams = 1;
 
     if (cleanDate) {
-      const dateMatch = slotCapacities.find((c) => {
+      // Helper to match service category
+      const matchCat = (c: SlotCapacity) => {
+        if (!c.serviceCategory || c.serviceCategory === 'all' || cleanCat === 'all') return true;
+        return c.serviceCategory.toLowerCase().trim() === cleanCat;
+      };
+
+      // 1. Try exact time-slot override first
+      const timeSlotMatch = cleanTime ? slotCapacities.find((c) => {
         if (!c.date || c.date !== cleanDate) return false;
         if (c.location && c.location !== 'all' && c.location.toLowerCase().trim() !== cleanLoc) return false;
-        if (cleanTime && c.timeSlot && c.timeSlot.toLowerCase().trim() !== cleanTime) return false;
-        return true;
-      });
-      if (dateMatch) {
-        maxTeams = dateMatch.maxTeams;
+        if (!c.timeSlot || c.timeSlot.toLowerCase().trim() !== cleanTime) return false;
+        return matchCat(c);
+      }) : undefined;
+
+      if (timeSlotMatch) {
+        maxTeams = timeSlotMatch.maxTeams;
       } else {
-        const locDefault = slotCapacities.find((c) => !c.date && c.location && c.location.toLowerCase().trim() === cleanLoc);
-        if (locDefault) {
-          maxTeams = locDefault.maxTeams;
+        // 2. Try day-level (Full Day) override
+        const dayMatch = slotCapacities.find((c) => {
+          if (!c.date || c.date !== cleanDate) return false;
+          if (c.location && c.location !== 'all' && c.location.toLowerCase().trim() !== cleanLoc) return false;
+          if (c.timeSlot && c.timeSlot.toLowerCase().trim() !== 'full day' && c.timeSlot.trim() !== '') return false;
+          return matchCat(c);
+        });
+
+        if (dayMatch) {
+          maxTeams = dayMatch.maxTeams;
+        } else {
+          // 3. Fallback to location baseline default
+          const locDefault = slotCapacities.find((c) => !c.date && c.location && c.location.toLowerCase().trim() === cleanLoc);
+          if (locDefault) {
+            maxTeams = locDefault.maxTeams;
+          }
         }
       }
     } else {
