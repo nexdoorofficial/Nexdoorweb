@@ -20,6 +20,7 @@ import { BeforeAfterSlider } from '../components/common/BeforeAfterSlider';
 import { ScrollTransformationHero } from '../components/home/ScrollTransformationHero';
 import { ServiceProcessMotionSection } from '../components/home/ServiceProcessMotionSection';
 import { TextEffect } from '../components/core/text-effect';
+import { AnimatedCounter } from '../components/common/AnimatedCounter';
 import { useAdminData } from '../context/AdminContext';
 
 export const Home: React.FC = () => {
@@ -132,7 +133,11 @@ export const Home: React.FC = () => {
             >
               <div>
                 <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#1C2677' }}>
-                  {adminData?.siteSettings?.statCleanedCount || '15,000+'}
+                  <AnimatedCounter
+                    rawString={adminData?.siteSettings?.statCleanedCount || '15,000+'}
+                    duration={2.2}
+                    once={false}
+                  />
                 </div>
                 <div style={{ fontSize: '0.85rem', color: '#64748B', fontWeight: 500 }}>
                   {adminData?.siteSettings?.statCleanedLabel || 'Cleaned Homes & Cars'}
@@ -140,7 +145,11 @@ export const Home: React.FC = () => {
               </div>
               <div>
                 <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#29C3BE', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
-                  {adminData?.siteSettings?.statRating || '4.9★'}
+                  <AnimatedCounter
+                    rawString={adminData?.siteSettings?.statRating || '4.9★'}
+                    duration={1.8}
+                    once={false}
+                  />
                 </div>
                 <div style={{ fontSize: '0.85rem', color: '#64748B', fontWeight: 500 }}>
                   {adminData?.siteSettings?.statRatingLabel || 'Customer Rating'}
@@ -148,7 +157,11 @@ export const Home: React.FC = () => {
               </div>
               <div>
                 <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#1C2677' }}>
-                  {adminData?.siteSettings?.statHubsCount || '3 Primary'}
+                  <AnimatedCounter
+                    rawString={adminData?.siteSettings?.statHubsCount || '5 Primary'}
+                    duration={1.6}
+                    once={false}
+                  />
                 </div>
                 <div style={{ fontSize: '0.85rem', color: '#64748B', fontWeight: 500 }}>
                   {adminData?.siteSettings?.statHubsLabel || 'Kochi Service Hubs'}
@@ -156,7 +169,11 @@ export const Home: React.FC = () => {
               </div>
               <div>
                 <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#10B981' }}>
-                  {adminData?.siteSettings?.statEcoPercent || '100%'}
+                  <AnimatedCounter
+                    rawString={adminData?.siteSettings?.statEcoPercent || '100%'}
+                    duration={2.0}
+                    once={false}
+                  />
                 </div>
                 <div style={{ fontSize: '0.85rem', color: '#64748B', fontWeight: 500 }}>
                   {adminData?.siteSettings?.statEcoLabel || 'Eco-Friendly Chemicals'}
