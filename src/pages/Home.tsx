@@ -52,7 +52,7 @@ export const Home: React.FC = () => {
         position: 'relative',
         paddingTop: '60px',
         paddingBottom: '96px',
-        background: 'radial-gradient(100% 100% at 50% 0%, rgba(41, 195, 190, 0.12) 0%, rgba(28, 38, 119, 0.03) 60%, rgba(248, 250, 252, 0) 100%)',
+        background: 'radial-gradient(100% 100% at 50% 0%, rgba(0, 122, 135, 0.10) 0%, rgba(3, 37, 42, 0.02) 60%, rgba(248, 250, 252, 0) 100%)',
         overflow: 'hidden'
       }}>
         <div className="container">
@@ -76,7 +76,7 @@ export const Home: React.FC = () => {
                   fontSize: 'clamp(1.85rem, 4.5vw, 3.5rem)',
                   fontWeight: 800,
                   lineHeight: 1.2,
-                  color: '#1C2677',
+                  color: '#03252A',
                   marginBottom: '16px',
                   letterSpacing: '-0.03em',
                   justifyContent: 'center'
@@ -85,7 +85,7 @@ export const Home: React.FC = () => {
                 Enterprise Cleaning,{' '}
                 <span
                   style={{
-                    background: 'linear-gradient(135deg, #29C3BE 0%, #1C2677 100%)',
+                    background: 'linear-gradient(135deg, #007A87 0%, #9BC83B 100%)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent'
                   }}
@@ -132,7 +132,7 @@ export const Home: React.FC = () => {
               }}
             >
               <div>
-                <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#1C2677' }}>
+                <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#03252A' }}>
                   <AnimatedCounter
                     rawString={adminData?.siteSettings?.statCleanedCount || '15,000+'}
                     duration={2.2}
@@ -144,7 +144,7 @@ export const Home: React.FC = () => {
                 </div>
               </div>
               <div>
-                <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#29C3BE', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
+                <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#007A87', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
                   <AnimatedCounter
                     rawString={adminData?.siteSettings?.statRating || '4.9★'}
                     duration={1.8}
@@ -156,7 +156,7 @@ export const Home: React.FC = () => {
                 </div>
               </div>
               <div>
-                <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#1C2677' }}>
+                <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#03252A' }}>
                   <AnimatedCounter
                     rawString={adminData?.siteSettings?.statHubsCount || '5 Primary'}
                     duration={1.6}
@@ -168,7 +168,7 @@ export const Home: React.FC = () => {
                 </div>
               </div>
               <div>
-                <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#10B981' }}>
+                <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#9BC83B' }}>
                   <AnimatedCounter
                     rawString={adminData?.siteSettings?.statEcoPercent || '100%'}
                     duration={2.0}
@@ -190,7 +190,7 @@ export const Home: React.FC = () => {
         <div className="container">
           <div style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 48px auto' }}>
             <span className="badge-secondary">OUR CORE OFFERINGS</span>
-            <h2 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#1C2677', marginTop: '8px' }}>
+            <h2 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#03252A', marginTop: '8px' }}>
               Three Specialized Service Pillars
             </h2>
             <p style={{ color: '#64748B', fontSize: '1rem', marginTop: '8px' }}>
@@ -217,7 +217,7 @@ export const Home: React.FC = () => {
                   borderRadius: '12px',
                   border: 'none',
                   background: activeServiceTab === 'house' ? '#FFFFFF' : 'transparent',
-                  color: activeServiceTab === 'house' ? '#1C2677' : '#64748B',
+                  color: activeServiceTab === 'house' ? '#03252A' : '#64748B',
                   fontWeight: activeServiceTab === 'house' ? 800 : 600,
                   fontSize: '0.85rem',
                   cursor: 'pointer',
@@ -229,7 +229,7 @@ export const Home: React.FC = () => {
                   transition: 'all 0.2s'
                 }}
               >
-                <HomeIcon size={16} style={{ color: activeServiceTab === 'house' ? '#29C3BE' : '#64748B' }} />
+                <HomeIcon size={16} style={{ color: activeServiceTab === 'house' ? '#007A87' : '#64748B' }} />
                 <span>House</span>
               </button>
 
@@ -241,7 +241,7 @@ export const Home: React.FC = () => {
                   borderRadius: '12px',
                   border: 'none',
                   background: activeServiceTab === 'car' ? '#FFFFFF' : 'transparent',
-                  color: activeServiceTab === 'car' ? '#1C2677' : '#64748B',
+                  color: activeServiceTab === 'car' ? '#03252A' : '#64748B',
                   fontWeight: activeServiceTab === 'car' ? 800 : 600,
                   fontSize: '0.85rem',
                   cursor: 'pointer',
@@ -253,7 +253,7 @@ export const Home: React.FC = () => {
                   transition: 'all 0.2s'
                 }}
               >
-                <Car size={16} style={{ color: activeServiceTab === 'car' ? '#1C2677' : '#64748B' }} />
+                <Car size={16} style={{ color: activeServiceTab === 'car' ? '#03252A' : '#64748B' }} />
                 <span>Car Wash</span>
               </button>
 
@@ -265,7 +265,7 @@ export const Home: React.FC = () => {
                   borderRadius: '12px',
                   border: 'none',
                   background: activeServiceTab === 'laundry' ? '#FFFFFF' : 'transparent',
-                  color: activeServiceTab === 'laundry' ? '#1C2677' : '#64748B',
+                  color: activeServiceTab === 'laundry' ? '#03252A' : '#64748B',
                   fontWeight: activeServiceTab === 'laundry' ? 800 : 600,
                   fontSize: '0.85rem',
                   cursor: 'pointer',
@@ -294,18 +294,18 @@ export const Home: React.FC = () => {
                   className="glass-card"
                   style={{ padding: '24px', borderRadius: '20px' }}
                 >
-                  <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(41, 195, 190, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#29C3BE', marginBottom: '16px' }}>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(0, 122, 135, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#007A87', marginBottom: '16px' }}>
                     <HomeIcon size={26} />
                   </div>
-                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#29C3BE', letterSpacing: '0.05em' }}>SERVICE 01</div>
-                  <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#1C2677', marginBottom: '8px' }}>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#007A87', letterSpacing: '0.05em' }}>SERVICE 01</div>
+                  <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#03252A', marginBottom: '8px' }}>
                     House Cleaning
                   </h3>
                   <p style={{ color: '#64748B', fontSize: '0.9rem', lineHeight: 1.5, marginBottom: '16px' }}>
                     Comprehensive deep cleaning from 1 BHK compact flats to multi-floor luxury villas with single-disc floor scrubbers & steam.
                   </p>
                   <div style={{ background: '#F8FAFC', padding: '14px', borderRadius: '14px', marginBottom: '20px' }}>
-                    <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#1C2677', marginBottom: '6px' }}>Category Tiers & Rates:</div>
+                    <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#03252A', marginBottom: '6px' }}>Category Tiers & Rates:</div>
                     <div style={{ fontSize: '0.8rem', color: '#475569', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                       <div>• 1 BHK: Standard ₹{getHousePrice('1-bhk', 'standard', 1499).toLocaleString()} | Premium ₹{getHousePrice('1-bhk', 'premium', 2499).toLocaleString()}</div>
                       <div>• 2 BHK: Standard ₹{getHousePrice('2-bhk', 'standard', 1999).toLocaleString()} | Premium ₹{getHousePrice('2-bhk', 'premium', 3299).toLocaleString()}</div>
@@ -329,18 +329,18 @@ export const Home: React.FC = () => {
                   className="glass-card"
                   style={{ padding: '24px', borderRadius: '20px' }}
                 >
-                  <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(28, 38, 119, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1C2677', marginBottom: '16px' }}>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(3, 37, 42, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#03252A', marginBottom: '16px' }}>
                     <Car size={26} />
                   </div>
-                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#1C2677', letterSpacing: '0.05em' }}>SERVICE 02</div>
-                  <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#1C2677', marginBottom: '8px' }}>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#007A87', letterSpacing: '0.05em' }}>SERVICE 02</div>
+                  <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#03252A', marginBottom: '8px' }}>
                     Car Wash & Detailing
                   </h3>
                   <p style={{ color: '#64748B', fontSize: '0.9rem', lineHeight: 1.5, marginBottom: '16px' }}>
                     Doorstep mobile detailing for Hatchback, Sedan, SUV, Luxury SUV & Premium sports cars. Clay bar & ceramic polish available.
                   </p>
                   <div style={{ background: '#F8FAFC', padding: '14px', borderRadius: '14px', marginBottom: '20px' }}>
-                    <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#1C2677', marginBottom: '6px' }}>4 Service Packages:</div>
+                    <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#03252A', marginBottom: '6px' }}>4 Service Packages:</div>
                     <div style={{ fontSize: '0.8rem', color: '#475569', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                       <div>• Basic Wash (From ₹{getCarPrice('basic', 399).toLocaleString()})</div>
                       <div>• Premium Wash (From ₹{getCarPrice('premium', 699).toLocaleString()})</div>
@@ -368,7 +368,7 @@ export const Home: React.FC = () => {
                     <Shirt size={26} />
                   </div>
                   <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#F59E0B', letterSpacing: '0.05em' }}>SERVICE 03</div>
-                  <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#1C2677', marginBottom: '8px' }}>
+                  <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#03252A', marginBottom: '8px' }}>
                     Laundry & Garment Care
                   </h3>
                   {(() => {
@@ -381,7 +381,7 @@ export const Home: React.FC = () => {
                           Weight-based laundry starting from 1kg to 20kg loads. FREE pickup & delivery on orders {minW}kg or more!
                         </p>
                         <div style={{ background: '#F8FAFC', padding: '14px', borderRadius: '14px', marginBottom: '20px' }}>
-                          <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#1C2677', marginBottom: '6px' }}>Pickup Rules & Quality:</div>
+                          <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#03252A', marginBottom: '6px' }}>Pickup Rules & Quality:</div>
                           <div style={{ fontSize: '0.8rem', color: '#475569', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                             <div>• &lt; {minW}kg: ₹{feeAmt} Pickup Charge</div>
                             <div>• ≥ {minW}kg: FREE Pickup & Delivery</div>
@@ -406,12 +406,12 @@ export const Home: React.FC = () => {
             {/* Service 01: House Cleaning */}
             <div className="glass-card" style={{ padding: '36px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <div>
-                <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(41, 195, 190, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#29C3BE', marginBottom: '24px' }}>
+                <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(0, 122, 135, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#007A87', marginBottom: '24px' }}>
                   <HomeIcon size={30} />
                 </div>
 
-                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#29C3BE', letterSpacing: '0.05em' }}>SERVICE 01</div>
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#1C2677', marginBottom: '12px' }}>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#007A87', letterSpacing: '0.05em' }}>SERVICE 01</div>
+                <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#03252A', marginBottom: '12px' }}>
                   House Cleaning
                 </h3>
                 <p style={{ color: '#64748B', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '20px' }}>
@@ -419,7 +419,7 @@ export const Home: React.FC = () => {
                 </p>
 
                 <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '14px', marginBottom: '24px' }}>
-                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#1C2677', marginBottom: '6px' }}>Category Tiers & Rates:</div>
+                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#03252A', marginBottom: '6px' }}>Category Tiers & Rates:</div>
                   <div style={{ fontSize: '0.85rem', color: '#475569', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     <div>• 1 BHK: Standard ₹{getHousePrice('1-bhk', 'standard', 1499).toLocaleString()} | Premium ₹{getHousePrice('1-bhk', 'premium', 2499).toLocaleString()}</div>
                     <div>• 2 BHK: Standard ₹{getHousePrice('2-bhk', 'standard', 1999).toLocaleString()} | Premium ₹{getHousePrice('2-bhk', 'premium', 3299).toLocaleString()}</div>
@@ -437,12 +437,12 @@ export const Home: React.FC = () => {
             {/* Service 02: Car Wash */}
             <div className="glass-card" style={{ padding: '36px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <div>
-                <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(28, 38, 119, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1C2677', marginBottom: '24px' }}>
+                <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(3, 37, 42, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#03252A', marginBottom: '24px' }}>
                   <Car size={30} />
                 </div>
 
-                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#1C2677', letterSpacing: '0.05em' }}>SERVICE 02</div>
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#1C2677', marginBottom: '12px' }}>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#007A87', letterSpacing: '0.05em' }}>SERVICE 02</div>
+                <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#03252A', marginBottom: '12px' }}>
                   Car Wash & Detailing
                 </h3>
                 <p style={{ color: '#64748B', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '20px' }}>
@@ -450,7 +450,7 @@ export const Home: React.FC = () => {
                 </p>
 
                 <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '14px', marginBottom: '24px' }}>
-                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#1C2677', marginBottom: '6px' }}>4 Service Packages:</div>
+                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#03252A', marginBottom: '6px' }}>4 Service Packages:</div>
                   <div style={{ fontSize: '0.85rem', color: '#475569', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     <div>• Basic Wash (From ₹{getCarPrice('basic', 399).toLocaleString()})</div>
                     <div>• Premium Wash (From ₹{getCarPrice('premium', 699).toLocaleString()})</div>
@@ -478,7 +478,7 @@ export const Home: React.FC = () => {
                     </div>
 
                     <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#F59E0B', letterSpacing: '0.05em' }}>SERVICE 03</div>
-                    <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#1C2677', marginBottom: '12px' }}>
+                    <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#03252A', marginBottom: '12px' }}>
                       Laundry & Garment Care
                     </h3>
                     <p style={{ color: '#64748B', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '20px' }}>
@@ -486,7 +486,7 @@ export const Home: React.FC = () => {
                     </p>
 
                     <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '14px', marginBottom: '24px' }}>
-                      <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#1C2677', marginBottom: '6px' }}>Pickup Rules & Quality:</div>
+                      <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#03252A', marginBottom: '6px' }}>Pickup Rules & Quality:</div>
                       <div style={{ fontSize: '0.85rem', color: '#475569', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                         <div>• &lt; {minW}kg: ₹{feeAmt} Pickup Charge</div>
                         <div>• ≥ {minW}kg: FREE Pickup & Delivery</div>
@@ -518,7 +518,7 @@ export const Home: React.FC = () => {
         <div className="container">
           <div style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 40px auto' }}>
             <span className="badge-tag">INTERACTIVE CALCULATOR</span>
-            <h2 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#1C2677', marginTop: '8px' }}>
+            <h2 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#03252A', marginTop: '8px' }}>
               Compare House Cleaning Plans
             </h2>
             <p style={{ color: '#64748B', fontSize: '1rem', marginTop: '8px' }}>
@@ -535,7 +535,7 @@ export const Home: React.FC = () => {
         <div className="container">
           <div style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 48px auto' }}>
             <span className="badge-secondary">COVERAGE ZONES</span>
-            <h2 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#1C2677', marginTop: '8px' }}>
+            <h2 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#03252A', marginTop: '8px' }}>
               Primary Service Hubs
             </h2>
             <p style={{ color: '#64748B', fontSize: '1rem', marginTop: '8px' }}>
@@ -549,13 +549,13 @@ export const Home: React.FC = () => {
               adminData.locations.filter(l => l.status === 'active').map((area) => (
                 <div key={area.id} className="glass-card" style={{ padding: '28px', borderRadius: '20px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                    <span style={{ fontSize: '0.75rem', fontWeight: 700, background: 'rgba(16, 185, 129, 0.15)', color: '#065F46', padding: '4px 12px', borderRadius: '20px' }}>
+                    <span style={{ fontSize: '0.75rem', fontWeight: 700, background: 'rgba(155, 200, 59, 0.15)', color: '#3F6212', padding: '4px 12px', borderRadius: '20px' }}>
                       ACTIVE HUB ●
                     </span>
                     <span style={{ fontSize: '0.8rem', color: '#64748B' }}>{area.pincode}</span>
                   </div>
 
-                  <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#1C2677', marginBottom: '8px' }}>
+                  <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#03252A', marginBottom: '8px' }}>
                     {area.name} HQ Hub
                   </h3>
                   <p style={{ fontSize: '0.875rem', color: '#475569', lineHeight: 1.5, marginBottom: '16px' }}>
@@ -563,7 +563,7 @@ export const Home: React.FC = () => {
                   </p>
 
                   <div style={{ fontSize: '0.8rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Clock size={14} style={{ color: '#29C3BE' }} /> 15-30 Mins Express Dispatch
+                    <Clock size={14} style={{ color: '#007A87' }} /> 15-30 Mins Express Dispatch
                   </div>
                 </div>
               ))
@@ -571,13 +571,13 @@ export const Home: React.FC = () => {
               PRIMARY_SERVICE_AREAS.map((area) => (
                 <div key={area.id} className="glass-card" style={{ padding: '28px', borderRadius: '20px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                    <span style={{ fontSize: '0.75rem', fontWeight: 700, background: 'rgba(16, 185, 129, 0.15)', color: '#065F46', padding: '4px 12px', borderRadius: '20px' }}>
+                    <span style={{ fontSize: '0.75rem', fontWeight: 700, background: 'rgba(155, 200, 59, 0.15)', color: '#3F6212', padding: '4px 12px', borderRadius: '20px' }}>
                       ACTIVE HUB ●
                     </span>
                     <span style={{ fontSize: '0.8rem', color: '#64748B' }}>{area.pincode}</span>
                   </div>
 
-                  <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#1C2677', marginBottom: '8px' }}>
+                  <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#03252A', marginBottom: '8px' }}>
                     {area.name}
                   </h3>
                   <p style={{ fontSize: '0.875rem', color: '#475569', lineHeight: 1.5, marginBottom: '16px' }}>
@@ -585,7 +585,7 @@ export const Home: React.FC = () => {
                   </p>
 
                   <div style={{ fontSize: '0.8rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Clock size={14} style={{ color: '#29C3BE' }} /> {area.estimatedArrival}
+                    <Clock size={14} style={{ color: '#007A87' }} /> {area.estimatedArrival}
                   </div>
                 </div>
               ))
@@ -594,12 +594,12 @@ export const Home: React.FC = () => {
 
           {/* Coming Soon Suburb Banner */}
           <div style={{
-            background: 'linear-gradient(135deg, rgba(28, 38, 119, 0.04) 0%, rgba(41, 195, 190, 0.08) 100%)',
+            background: 'linear-gradient(135deg, rgba(3, 37, 42, 0.04) 0%, rgba(0, 122, 135, 0.08) 100%)',
             borderRadius: '20px',
             padding: '28px',
-            border: '1px dashed #29C3BE'
+            border: '1px dashed #007A87'
           }}>
-            <h4 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#1C2677', marginBottom: '12px' }}>
+            <h4 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#03252A', marginBottom: '12px' }}>
               🚀 Next Expansion Locations (Coming Soon):
             </h4>
             <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
@@ -618,7 +618,7 @@ export const Home: React.FC = () => {
         <div className="container">
           <div style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 48px auto' }}>
             <span className="badge-tag">CLIENT FEEDBACK</span>
-            <h2 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#1C2677', marginTop: '8px' }}>
+            <h2 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#03252A', marginTop: '8px' }}>
               Trusted by 15,000+ Homes & Auto Owners
             </h2>
           </div>
@@ -639,7 +639,7 @@ export const Home: React.FC = () => {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <img src={t.avatar} alt={t.name} style={{ width: '44px', height: '44px', borderRadius: '50%', objectFit: 'cover' }} />
                   <div>
-                    <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#1C2677' }}>{t.name}</div>
+                    <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#03252A' }}>{t.name}</div>
                     <div style={{ fontSize: '0.75rem', color: '#64748B' }}>{t.location} • {t.serviceUsed}</div>
                   </div>
                 </div>
@@ -654,7 +654,7 @@ export const Home: React.FC = () => {
         <div className="container" style={{ maxWidth: '800px' }}>
           <div style={{ textAlign: 'center', marginBottom: '40px' }}>
             <span className="badge-secondary">FREQUENTLY ASKED QUESTIONS</span>
-            <h2 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#1C2677', marginTop: '8px' }}>
+            <h2 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#03252A', marginTop: '8px' }}>
               Got Questions? We Have Answers.
             </h2>
           </div>
@@ -674,7 +674,7 @@ export const Home: React.FC = () => {
                   }}
                   onClick={() => setOpenFaq(isOpen ? null : faq.id)}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 700, color: '#1C2677', fontSize: '1rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 700, color: '#03252A', fontSize: '1rem' }}>
                     <span>{faq.question}</span>
                     <ChevronDown size={20} style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
                   </div>
@@ -691,7 +691,7 @@ export const Home: React.FC = () => {
       </section>
 
       {/* 8. FINAL CTA */}
-      <section style={{ padding: '80px 0', background: 'linear-gradient(135deg, #1C2677 0%, #151D5C 100%)', color: '#FFFFFF' }}>
+      <section style={{ padding: '80px 0', background: 'linear-gradient(135deg, #03252A 0%, #004D56 100%)', color: '#FFFFFF' }}>
         <div className="container" style={{ textAlign: 'center', maxWidth: '700px' }}>
           <h2 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '16px' }}>
             Ready to Experience Pristine Cleanliness?

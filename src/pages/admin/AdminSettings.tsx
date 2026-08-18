@@ -242,7 +242,7 @@ export const AdminSettings: React.FC = () => {
               gap: '10px'
             }}
           >
-            <Settings size={28} style={{ color: '#29C3BE' }} />
+            <Settings size={28} style={{ color: '#007A87' }} />
             Site Settings & Header Customization
           </h1>
           <p style={{ color: '#64748B', fontSize: '0.9rem', margin: '4px 0 0 0' }}>
@@ -303,9 +303,9 @@ export const AdminSettings: React.FC = () => {
                 padding: '12px 18px',
                 borderRadius: '12px 12px 0 0',
                 border: 'none',
-                borderBottom: isActive ? '3px solid #29C3BE' : '3px solid transparent',
+                borderBottom: isActive ? '3px solid #007A87' : '3px solid transparent',
                 background: isActive ? '#FFFFFF' : 'transparent',
-                color: isActive ? '#1C2677' : '#64748B',
+                color: isActive ? '#007A87' : '#64748B',
                 fontWeight: isActive ? 800 : 600,
                 fontSize: '0.88rem',
                 cursor: 'pointer',
@@ -313,7 +313,7 @@ export const AdminSettings: React.FC = () => {
                 whiteSpace: 'nowrap'
               }}
             >
-              <Icon size={18} color={isActive ? '#29C3BE' : '#94A3B8'} />
+              <Icon size={18} color={isActive ? '#007A87' : '#94A3B8'} />
               {tab.label}
             </button>
           );
@@ -369,7 +369,7 @@ export const AdminSettings: React.FC = () => {
                       width: '48px',
                       height: '48px',
                       borderRadius: '14px',
-                      background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+                      background: 'linear-gradient(135deg, #007A87, #9BC83B)',
                       color: '#FFF',
                       fontWeight: 900,
                       fontSize: '1.4rem',
@@ -399,16 +399,16 @@ export const AdminSettings: React.FC = () => {
                   gap: '8px',
                   padding: '12px',
                   borderRadius: '12px',
-                  background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+                  background: 'linear-gradient(135deg, #007A87, #0093A2)',
                   color: '#FFF',
                   fontWeight: 700,
                   fontSize: '0.88rem',
                   cursor: 'pointer',
-                  boxShadow: '0 4px 14px rgba(41, 195, 190, 0.3)'
+                  boxShadow: '0 4px 14px rgba(0, 122, 135, 0.3)'
                 }}
               >
                 <Upload size={16} /> Upload New Logo (PNG / JPG)
-                <input type="file" accept="image/png, image/jpeg, image/jpg, image/svg+xml" onChange={handleLogoUpload} style={{ display: 'none' }} />
+                <input type="file" accept="image/png, image/jpeg, image/webp" onChange={handleLogoUpload} style={{ display: 'none' }} />
               </label>
 
               {logoUrl && (
@@ -444,10 +444,10 @@ export const AdminSettings: React.FC = () => {
             }}
           >
             <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0F172A', marginTop: 0, marginBottom: '6px' }}>
-              Browser Tab Favicon Icon
+              Browser Tab Favicon (.ico / .png)
             </h3>
             <p style={{ fontSize: '0.82rem', color: '#64748B', marginBottom: '20px' }}>
-              Upload your PNG icon to automatically replace the browser address bar and bookmark tab icon.
+              Customize the tiny bookmark and browser tab icon that visitors see in their web browsers.
             </p>
 
             {/* Current Favicon Preview */}
@@ -466,7 +466,7 @@ export const AdminSettings: React.FC = () => {
                   <img
                     src={faviconUrl}
                     alt="Favicon"
-                    style={{ width: '48px', height: '48px', objectFit: 'contain', marginBottom: '12px', borderRadius: '8px' }}
+                    style={{ width: '36px', height: '36px', objectFit: 'contain', marginBottom: '12px' }}
                   />
                   <span style={{ display: 'block', fontSize: '0.75rem', color: '#059669', fontWeight: 700 }}>
                     ✓ Custom Tab Favicon Active
@@ -479,8 +479,8 @@ export const AdminSettings: React.FC = () => {
                       width: '40px',
                       height: '40px',
                       borderRadius: '10px',
-                      background: '#1C2677',
-                      color: '#29C3BE',
+                      background: '#007A87',
+                      color: '#9BC83B',
                       fontWeight: 800,
                       fontSize: '1rem',
                       display: 'flex',
@@ -508,12 +508,12 @@ export const AdminSettings: React.FC = () => {
                   gap: '8px',
                   padding: '12px',
                   borderRadius: '12px',
-                  background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+                  background: 'linear-gradient(135deg, #007A87, #0093A2)',
                   color: '#FFF',
                   fontWeight: 700,
                   fontSize: '0.88rem',
                   cursor: 'pointer',
-                  boxShadow: '0 4px 14px rgba(41, 195, 190, 0.3)'
+                  boxShadow: '0 4px 14px rgba(0, 122, 135, 0.3)'
                 }}
               >
                 <Upload size={16} /> Upload Favicon (PNG / ICO)
@@ -564,7 +564,7 @@ export const AdminSettings: React.FC = () => {
                 gap: '6px',
                 padding: '10px 18px',
                 borderRadius: '12px',
-                background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+                background: 'linear-gradient(135deg, #007A87, #0093A2)',
                 color: '#FFF',
                 fontWeight: 700,
                 fontSize: '0.85rem',
@@ -589,7 +589,7 @@ export const AdminSettings: React.FC = () => {
                 }}
               >
                 <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap', marginBottom: item.hasDropdown ? '14px' : 0 }}>
-                  <span style={{ fontWeight: 800, fontSize: '0.85rem', color: '#1C2677', width: '24px' }}>
+                  <span style={{ fontWeight: 800, fontSize: '0.85rem', color: '#007A87', width: '24px' }}>
                     #{idx + 1}
                   </span>
 
@@ -623,7 +623,7 @@ export const AdminSettings: React.FC = () => {
                         type="checkbox"
                         checked={!!item.hasDropdown}
                         onChange={(e) => handleUpdateMenuItem(item.id, { hasDropdown: e.target.checked })}
-                        style={{ accentColor: '#1C2677', width: '15px', height: '15px' }}
+                        style={{ accentColor: '#007A87', width: '15px', height: '15px' }}
                       />
                       <span>Dropdown Menu</span>
                     </label>
@@ -642,7 +642,7 @@ export const AdminSettings: React.FC = () => {
                 {item.hasDropdown && (
                   <div style={{ background: '#FFFFFF', borderRadius: '12px', border: '1px solid #E2E8F0', padding: '14px', marginTop: '10px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                      <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#1C2677' }}>
+                      <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#03252A' }}>
                         Dropdown Sub-Items ({item.dropdownItems?.length || 0})
                       </span>
                       <button
@@ -658,51 +658,37 @@ export const AdminSettings: React.FC = () => {
                         <div
                           key={sub.id}
                           style={{
-                            display: 'grid',
-                            gridTemplateColumns: '2fr 2fr 2fr 1fr auto',
-                            gap: '8px',
-                            alignItems: 'center',
-                            background: '#F8FAFC',
-                            padding: '8px 12px',
-                            borderRadius: '8px',
-                            border: '1px solid #E2E8F0'
+                            display: 'flex',
+                            gap: '10px',
+                            alignItems: 'center'
                           }}
                         >
                           <input
                             type="text"
-                            placeholder="Title (e.g. Move-In Cleaning)"
+                            placeholder="Sub-item title"
                             value={sub.title}
                             onChange={(e) => handleUpdateSubItem(item.id, sub.id, { title: e.target.value })}
-                            style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid #CBD5E1', fontSize: '0.8rem', fontWeight: 700 }}
+                            style={{ flex: 1, padding: '6px 10px', borderRadius: '6px', border: '1px solid #CBD5E1', fontSize: '0.82rem' }}
                           />
                           <input
                             type="text"
-                            placeholder="Subtitle (e.g. Starting at ₹1,999)"
-                            value={sub.sub}
-                            onChange={(e) => handleUpdateSubItem(item.id, sub.id, { sub: e.target.value })}
-                            style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid #CBD5E1', fontSize: '0.8rem' }}
-                          />
-                          <input
-                            type="text"
-                            placeholder="Target Path"
+                            placeholder="/route"
                             value={sub.path}
                             onChange={(e) => handleUpdateSubItem(item.id, sub.id, { path: e.target.value })}
-                            style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid #CBD5E1', fontSize: '0.8rem' }}
+                            style={{ flex: 1, padding: '6px 10px', borderRadius: '6px', border: '1px solid #CBD5E1', fontSize: '0.82rem' }}
                           />
-                          <select
-                            value={sub.iconType || 'house'}
-                            onChange={(e) => handleUpdateSubItem(item.id, sub.id, { iconType: e.target.value })}
-                            style={{ padding: '6px', borderRadius: '6px', border: '1px solid #CBD5E1', fontSize: '0.78rem' }}
-                          >
-                            <option value="house">House Icon</option>
-                            <option value="car">Car Icon</option>
-                            <option value="laundry">Laundry Icon</option>
-                          </select>
+                          <input
+                            type="text"
+                            placeholder="Sub-title / tagline"
+                            value={sub.sub || ''}
+                            onChange={(e) => handleUpdateSubItem(item.id, sub.id, { sub: e.target.value })}
+                            style={{ flex: 1.5, padding: '6px 10px', borderRadius: '6px', border: '1px solid #CBD5E1', fontSize: '0.82rem' }}
+                          />
                           <button
                             onClick={() => handleDeleteSubItem(item.id, sub.id)}
-                            style={{ background: 'transparent', border: 'none', color: '#EF4444', cursor: 'pointer' }}
+                            style={{ background: '#FEE2E2', border: 'none', color: '#DC2626', padding: '6px 8px', borderRadius: '6px', cursor: 'pointer' }}
                           >
-                            <Trash2 size={15} />
+                            <Trash2 size={14} />
                           </button>
                         </div>
                       ))}
@@ -715,56 +701,53 @@ export const AdminSettings: React.FC = () => {
         </div>
       )}
 
-      {/* TAB 3: INSTANT SUPPORT & HELPLINE (Screenshot 2) */}
+      {/* TAB 3: HELPLINE & PHONE MANAGER */}
       {activeTab === 'helpline' && (
-        <form onSubmit={handleSaveHelpline} style={{ background: '#FFFFFF', borderRadius: '20px', border: '1px solid #E2E8F0', padding: '24px', maxWidth: '680px' }}>
+        <form onSubmit={handleSaveHelpline} style={{ background: '#FFFFFF', borderRadius: '20px', border: '1px solid #E2E8F0', padding: '24px', maxWidth: '600px' }}>
           <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0F172A', marginTop: 0, marginBottom: '6px' }}>
-            Update Instant Support & Helpline
+            Emergency Support & Instant Helpline
           </h3>
           <p style={{ fontSize: '0.82rem', color: '#64748B', marginBottom: '20px' }}>
-            Customize customer care contact details shown on the website contact page, header, and footer.
+            Customize phone, email and working hours displayed across top bar and contact points.
           </p>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '24px' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
-                Customer Care Phone Number
+              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#475569', marginBottom: '4px' }}>
+                Helpline Phone Number (Formatted Display)
               </label>
               <input
                 type="text"
-                required
                 value={supportPhone}
                 onChange={(e) => setSupportPhone(e.target.value)}
                 placeholder="+91 98765 43210"
-                style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid #CBD5E1', fontSize: '0.9rem', fontWeight: 700 }}
+                style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '0.9rem', fontWeight: 700 }}
               />
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
-                Email Inquiry Address
+              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#475569', marginBottom: '4px' }}>
+                Support Email Address
               </label>
               <input
                 type="email"
-                required
                 value={supportEmail}
                 onChange={(e) => setSupportEmail(e.target.value)}
                 placeholder="support@nexdoorclean.com"
-                style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid #CBD5E1', fontSize: '0.9rem', fontWeight: 700 }}
+                style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '0.9rem', fontWeight: 700 }}
               />
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
-                Operations Hours
+              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#475569', marginBottom: '4px' }}>
+                Working Hours Tagline
               </label>
               <input
                 type="text"
-                required
                 value={operatingHours}
                 onChange={(e) => setOperatingHours(e.target.value)}
                 placeholder="Monday - Sunday: 07:00 AM - 09:00 PM"
-                style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid #CBD5E1', fontSize: '0.9rem', fontWeight: 700 }}
+                style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '0.85rem' }}
               />
             </div>
           </div>
@@ -774,13 +757,13 @@ export const AdminSettings: React.FC = () => {
             style={{
               padding: '12px 24px',
               borderRadius: '12px',
-              background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+              background: 'linear-gradient(135deg, #007A87, #0093A2)',
               color: '#FFF',
               fontWeight: 800,
               fontSize: '0.9rem',
               border: 'none',
               cursor: 'pointer',
-              boxShadow: '0 4px 14px rgba(41, 195, 190, 0.3)',
+              boxShadow: '0 4px 14px rgba(0, 122, 135, 0.3)',
               display: 'flex',
               alignItems: 'center',
               gap: '8px'
@@ -804,7 +787,7 @@ export const AdminSettings: React.FC = () => {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
             {/* Stat 1 */}
             <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '14px', border: '1px solid #E2E8F0' }}>
-              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#1C2677', marginBottom: '4px' }}>
+              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#03252A', marginBottom: '4px' }}>
                 Metric 1 (Value)
               </label>
               <input
@@ -826,7 +809,7 @@ export const AdminSettings: React.FC = () => {
 
             {/* Stat 2 */}
             <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '14px', border: '1px solid #E2E8F0' }}>
-              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#1C2677', marginBottom: '4px' }}>
+              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#03252A', marginBottom: '4px' }}>
                 Metric 2 (Value)
               </label>
               <input
@@ -848,7 +831,7 @@ export const AdminSettings: React.FC = () => {
 
             {/* Stat 3 */}
             <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '14px', border: '1px solid #E2E8F0' }}>
-              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#1C2677', marginBottom: '4px' }}>
+              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#03252A', marginBottom: '4px' }}>
                 Metric 3 (Value)
               </label>
               <input
@@ -870,7 +853,7 @@ export const AdminSettings: React.FC = () => {
 
             {/* Stat 4 */}
             <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '14px', border: '1px solid #E2E8F0' }}>
-              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#1C2677', marginBottom: '4px' }}>
+              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#03252A', marginBottom: '4px' }}>
                 Metric 4 (Value)
               </label>
               <input
@@ -896,13 +879,13 @@ export const AdminSettings: React.FC = () => {
             style={{
               padding: '12px 24px',
               borderRadius: '12px',
-              background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+              background: 'linear-gradient(135deg, #007A87, #0093A2)',
               color: '#FFF',
               fontWeight: 800,
               fontSize: '0.9rem',
               border: 'none',
               cursor: 'pointer',
-              boxShadow: '0 4px 14px rgba(41, 195, 190, 0.3)',
+              boxShadow: '0 4px 14px rgba(0, 122, 135, 0.3)',
               display: 'flex',
               alignItems: 'center',
               gap: '8px'
@@ -1027,13 +1010,13 @@ export const AdminSettings: React.FC = () => {
             style={{
               padding: '12px 24px',
               borderRadius: '12px',
-              background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+              background: 'linear-gradient(135deg, #007A87, #0093A2)',
               color: '#FFF',
               fontWeight: 800,
               fontSize: '0.9rem',
               border: 'none',
               cursor: isUpdatingAuth ? 'wait' : 'pointer',
-              boxShadow: '0 4px 14px rgba(41, 195, 190, 0.3)',
+              boxShadow: '0 4px 14px rgba(0, 122, 135, 0.3)',
               display: 'flex',
               alignItems: 'center',
               gap: '8px',

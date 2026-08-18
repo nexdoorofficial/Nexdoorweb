@@ -115,7 +115,7 @@ export const EditHousePlanModal: React.FC<Props> = ({
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid #F1F5F9' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: '#1C2677', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: '#007A87', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Home size={20} />
             </div>
             <div>
@@ -199,7 +199,7 @@ export const EditHousePlanModal: React.FC<Props> = ({
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
             <button type="button" onClick={onClose} style={{ padding: '10px 20px', borderRadius: '10px', border: '1px solid #CBD5E1', background: '#FFF' }}>Cancel</button>
-            <button type="submit" style={{ padding: '10px 24px', borderRadius: '10px', border: 'none', background: '#1C2677', color: '#FFF', fontWeight: 700 }}>Save Changes</button>
+            <button type="submit" style={{ padding: '10px 24px', borderRadius: '10px', border: 'none', background: '#007A87', color: '#FFF', fontWeight: 700 }}>Save Changes</button>
           </div>
         </form>
       </div>

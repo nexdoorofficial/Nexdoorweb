@@ -20,7 +20,7 @@ export const FAQPage: React.FC = () => {
       <div className="container" style={{ maxWidth: '850px' }}>
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
           <span className="badge-tag">HELP CENTER & FAQ</span>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#1C2677', marginTop: '8px' }}>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#03252A', marginTop: '8px' }}>
             Frequently Asked Questions
           </h1>
           <p style={{ color: '#64748B', fontSize: '1rem', marginTop: '8px' }}>
@@ -66,7 +66,7 @@ export const FAQPage: React.FC = () => {
                 borderRadius: '20px',
                 fontWeight: 600,
                 fontSize: '0.85rem',
-                background: selectedCat === cat.id ? '#1C2677' : '#F1F5F9',
+                background: selectedCat === cat.id ? '#007A87' : '#F1F5F9',
                 color: selectedCat === cat.id ? '#FFFFFF' : '#475569',
                 border: 'none',
                 cursor: 'pointer'
@@ -94,9 +94,9 @@ export const FAQPage: React.FC = () => {
                 }}
                 onClick={() => setOpenId(isOpen ? null : faq.id)}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 700, color: '#1C2677', fontSize: '1.05rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 700, color: '#03252A', fontSize: '1.05rem' }}>
                   <span>{faq.question}</span>
-                  <ChevronDown size={20} style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: '#29C3BE' }} />
+                  <ChevronDown size={20} style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: '#007A87' }} />
                 </div>
                 {isOpen && (
                   <div style={{ marginTop: '14px', fontSize: '0.95rem', color: '#475569', lineHeight: 1.6, borderTop: '1px solid #F1F5F9', paddingTop: '14px' }}>

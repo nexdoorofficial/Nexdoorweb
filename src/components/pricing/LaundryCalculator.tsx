@@ -136,10 +136,10 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
           {/* 1. Weight Selection */}
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-              <label style={{ fontWeight: 700, fontSize: '0.95rem', color: '#1C2677', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Scale size={18} style={{ color: '#29C3BE' }} /> Total Weight (Kg)
+              <label style={{ fontWeight: 700, fontSize: '0.95rem', color: '#03252A', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Scale size={18} style={{ color: '#007A87' }} /> Total Weight (Kg)
               </label>
-              <span style={{ fontSize: '1.2rem', fontWeight: 800, color: '#29C3BE' }}>
+              <span style={{ fontSize: '1.2rem', fontWeight: 800, color: '#007A87' }}>
                 {weightKg} Kg
               </span>
             </div>
@@ -153,7 +153,7 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
               onChange={(e) => setWeightKg(Number(e.target.value))}
               style={{
                 width: '100%',
-                accentColor: '#29C3BE',
+                accentColor: '#007A87',
                 height: '8px',
                 borderRadius: '4px',
                 cursor: 'pointer'
@@ -177,7 +177,7 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
                           borderRadius: '20px',
                           fontSize: '0.85rem',
                           fontWeight: 600,
-                          background: weightKg === w ? '#1C2677' : '#F1F5F9',
+                          background: weightKg === w ? '#007A87' : '#F1F5F9',
                           color: weightKg === w ? '#FFFFFF' : '#475569',
                           border: 'none',
                           transition: 'all 0.2s'
@@ -193,14 +193,14 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
                     marginTop: '12px',
                     padding: '10px 14px',
                     borderRadius: '12px',
-                    background: calculation.isPickupFree ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)',
-                    border: `1px solid ${calculation.isPickupFree ? '#10B981' : '#F59E0B'}`,
+                    background: calculation.isPickupFree ? 'rgba(155, 200, 59, 0.15)' : 'rgba(245, 158, 11, 0.1)',
+                    border: `1px solid ${calculation.isPickupFree ? '#9BC83B' : '#F59E0B'}`,
                     display: 'flex',
                     alignItems: 'center',
                     gap: '10px',
                     fontSize: '0.85rem',
                     fontWeight: 600,
-                    color: calculation.isPickupFree ? '#065F46' : '#92400E'
+                    color: calculation.isPickupFree ? '#03252A' : '#92400E'
                   }}>
                     <Truck size={18} />
                     {calculation.isPickupFree ? (
@@ -216,8 +216,8 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
 
           {/* 2. Location Selection */}
           <div>
-            <label style={{ fontWeight: 700, fontSize: '0.95rem', color: '#1C2677', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
-              <MapPin size={18} style={{ color: '#29C3BE' }} /> Select Pickup & Delivery Location
+            <label style={{ fontWeight: 700, fontSize: '0.95rem', color: '#03252A', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
+              <MapPin size={18} style={{ color: '#007A87' }} /> Select Pickup & Delivery Location
             </label>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '10px' }}>
               {availableLocationsList.map((loc) => {
@@ -230,13 +230,13 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
                       padding: '10px 14px',
                       borderRadius: '12px',
                       textAlign: 'left',
-                      background: isSelected ? 'rgba(41, 195, 190, 0.12)' : '#F8FAFC',
-                      border: `2px solid ${isSelected ? '#29C3BE' : '#E2E8F0'}`,
+                      background: isSelected ? 'rgba(0, 122, 135, 0.10)' : '#F8FAFC',
+                      border: `2px solid ${isSelected ? '#007A87' : '#E2E8F0'}`,
                       cursor: 'pointer',
                       transition: 'all 0.2s'
                     }}
                   >
-                    <div style={{ fontWeight: 700, fontSize: '0.85rem', color: isSelected ? '#1C2677' : '#1B2236' }}>
+                    <div style={{ fontWeight: 700, fontSize: '0.85rem', color: isSelected ? '#007A87' : '#1B2236' }}>
                       📍 {loc.name}
                     </div>
                     <div style={{ fontSize: '0.725rem', color: '#64748B' }}>{loc.zone || `Pincode: ${loc.pincode}`}</div>
@@ -248,7 +248,7 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
 
           {/* 3. Package Selection */}
           <div>
-            <label style={{ fontWeight: 700, fontSize: '0.95rem', color: '#1C2677', display: 'block', marginBottom: '10px' }}>
+            <label style={{ fontWeight: 700, fontSize: '0.95rem', color: '#03252A', display: 'block', marginBottom: '10px' }}>
               Select Service Package
             </label>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
@@ -265,13 +265,13 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
                     padding: '12px',
                     borderRadius: '14px',
                     textAlign: 'left',
-                    background: pkg === item.id ? 'rgba(41, 195, 190, 0.12)' : '#F8FAFC',
-                    border: `2px solid ${pkg === item.id ? '#29C3BE' : '#E2E8F0'}`,
+                    background: pkg === item.id ? 'rgba(0, 122, 135, 0.10)' : '#F8FAFC',
+                    border: `2px solid ${pkg === item.id ? '#007A87' : '#E2E8F0'}`,
                     cursor: 'pointer',
                     transition: 'all 0.2s'
                   }}
                 >
-                  <div style={{ fontWeight: 700, fontSize: '0.9rem', color: pkg === item.id ? '#1C2677' : '#1B2236' }}>
+                  <div style={{ fontWeight: 700, fontSize: '0.9rem', color: pkg === item.id ? '#007A87' : '#1B2236' }}>
                     {item.label}
                   </div>
                   <div style={{ fontSize: '0.75rem', color: '#64748B' }}>{item.desc}</div>
@@ -282,7 +282,7 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
 
           {/* 4. Delivery Speed */}
           <div>
-            <label style={{ fontWeight: 700, fontSize: '0.95rem', color: '#1C2677', display: 'block', marginBottom: '10px' }}>
+            <label style={{ fontWeight: 700, fontSize: '0.95rem', color: '#03252A', display: 'block', marginBottom: '10px' }}>
               Delivery Speed
             </label>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
@@ -292,12 +292,12 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
                   padding: '12px',
                   borderRadius: '14px',
                   textAlign: 'left',
-                  background: speed === 'normal' ? 'rgba(28, 38, 119, 0.08)' : '#F8FAFC',
-                  border: `2px solid ${speed === 'normal' ? '#1C2677' : '#E2E8F0'}`,
+                  background: speed === 'normal' ? 'rgba(3, 37, 42, 0.08)' : '#F8FAFC',
+                  border: `2px solid ${speed === 'normal' ? '#03252A' : '#E2E8F0'}`,
                   cursor: 'pointer'
                 }}
               >
-                <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#1C2677' }}>
+                <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#03252A' }}>
                   {laundryConfig?.standardSpeedLabel || 'Standard (2 Days)'}
                 </div>
                 <div style={{ fontSize: '0.75rem', color: '#64748B' }}>
@@ -328,7 +328,7 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
 
           {/* 5. Quality Package Tier */}
           <div>
-            <label style={{ fontWeight: 700, fontSize: '0.95rem', color: '#1C2677', display: 'block', marginBottom: '10px' }}>
+            <label style={{ fontWeight: 700, fontSize: '0.95rem', color: '#03252A', display: 'block', marginBottom: '10px' }}>
               Detergent & Care Quality
             </label>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
@@ -355,13 +355,13 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
                   padding: '14px',
                   borderRadius: '14px',
                   textAlign: 'left',
-                  background: quality === 'premium' ? 'rgba(41, 195, 190, 0.12)' : '#F8FAFC',
-                  border: `2px solid ${quality === 'premium' ? '#29C3BE' : '#E2E8F0'}`,
+                  background: quality === 'premium' ? 'rgba(0, 122, 135, 0.10)' : '#F8FAFC',
+                  border: `2px solid ${quality === 'premium' ? '#007A87' : '#E2E8F0'}`,
                   cursor: 'pointer'
                 }}
               >
-                <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#1C2677', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Sparkles size={16} style={{ color: '#29C3BE' }} /> Premium Luxury Care
+                <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#007A87', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Sparkles size={16} style={{ color: '#007A87' }} /> Premium Luxury Care
                 </div>
                 <div style={{ fontSize: '0.75rem', color: '#64748B', marginTop: '4px' }}>
                   {laundryConfig?.premiumCareDesc || 'Imported liquid, fabric conditioner, luxury fragrance (+₹35/kg)'}
@@ -372,7 +372,7 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
 
           {/* 6. Laundry Service Coverage Accordions (MIRRORING HOUSE CLEANING DESIGN PATTERN 100%) */}
           <div>
-            <label style={{ fontWeight: 700, fontSize: '0.95rem', color: '#1C2677', display: 'block', marginBottom: '10px' }}>
+            <label style={{ fontWeight: 700, fontSize: '0.95rem', color: '#03252A', display: 'block', marginBottom: '10px' }}>
               Service Coverage & Guarantees
             </label>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -416,7 +416,7 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
                       }}
                     >
                       <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <span style={{ width: '16px', height: '16px', borderRadius: '50%', background: '#10B981', color: '#FFF', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 800 }}>
+                        <span style={{ width: '16px', height: '16px', borderRadius: '50%', background: '#9BC83B', color: '#FFF', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 800 }}>
                           {laundryIncOpen ? '−' : '+'}
                         </span>
                         Included in Laundry Service ({includedItems.length})
@@ -436,7 +436,7 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
                           <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.8rem', padding: '10px 12px', background: '#F8FAFC', borderRadius: '10px', border: '1px solid #E2E8F0' }}>
                             {includedItems.map((inc: string, i: number) => (
                               <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', color: '#334155' }}>
-                                <CheckCircle2 size={14} style={{ color: '#10B981', flexShrink: 0, marginTop: '2px' }} />
+                                <CheckCircle2 size={14} style={{ color: '#9BC83B', flexShrink: 0, marginTop: '2px' }} />
                                 <span>{inc}</span>
                               </li>
                             ))}
@@ -503,17 +503,17 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
 
         {/* Right Column: Dynamic Invoice Summary */}
         <div style={{
-          background: 'linear-gradient(180deg, #1C2677 0%, #151D5C 100%)',
+          background: 'linear-gradient(180deg, #03252A 0%, #004D56 100%)',
           borderRadius: '20px',
           padding: '24px',
           color: '#FFFFFF',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          boxShadow: '0 12px 30px rgba(28, 38, 119, 0.25)'
+          boxShadow: '0 12px 30px rgba(3, 37, 42, 0.25)'
         }}>
           <div>
-            <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#29C3BE', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px' }}>
+            <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#9BC83B', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px' }}>
               Estimated Price Breakdown
             </div>
             <h4 style={{ fontSize: '1.4rem', fontWeight: 800, margin: 0, marginBottom: '20px', color: '#FFFFFF' }}>
@@ -523,7 +523,7 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.9rem', color: '#CBD5E1', marginBottom: '24px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>Location:</span>
-                <span style={{ fontWeight: 600, color: '#29C3BE' }}>{location}</span>
+                <span style={{ fontWeight: 600, color: '#9BC83B' }}>{location}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>Weight ({weightKg} kg):</span>
@@ -539,7 +539,7 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>Pickup & Delivery:</span>
-                <span style={{ fontWeight: 600, color: calculation.isPickupFree ? '#10B981' : '#FFFFFF' }}>
+                <span style={{ fontWeight: 600, color: calculation.isPickupFree ? '#9BC83B' : '#FFFFFF' }}>
                   {calculation.isPickupFree ? 'FREE' : `₹${calculation.pickupFee}`}
                 </span>
               </div>
@@ -548,7 +548,7 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                 <span style={{ fontSize: '1rem', fontWeight: 700, color: '#FFFFFF' }}>Estimated Total:</span>
-                <span style={{ fontSize: '1.75rem', fontWeight: 800, color: '#29C3BE' }}>
+                <span style={{ fontSize: '1.75rem', fontWeight: 800, color: '#9BC83B' }}>
                   ₹{calculation.total}
                 </span>
               </div>
@@ -563,7 +563,7 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
               lineHeight: 1.4,
               marginBottom: '20px'
             }}>
-              <ShieldCheck size={16} style={{ color: '#29C3BE', display: 'inline', marginRight: '4px' }} />
+              <ShieldCheck size={16} style={{ color: '#007A87', display: 'inline', marginRight: '4px' }} />
               Fully refundable booking deposit of ₹299 applies at checkout, adjustable against your final bill.
             </div>
           </div>

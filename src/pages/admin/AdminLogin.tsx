@@ -57,7 +57,7 @@ export const AdminLogin: React.FC = () => {
         {/* Header Banner */}
         <div
           style={{
-            background: 'linear-gradient(135deg, #1C2677 0%, #0F172A 100%)',
+            background: 'linear-gradient(135deg, #03252A 0%, #004D56 100%)',
             padding: '36px 32px 32px 32px',
             textAlign: 'center',
             color: '#FFFFFF',
@@ -69,12 +69,12 @@ export const AdminLogin: React.FC = () => {
               width: '64px',
               height: '64px',
               borderRadius: '20px',
-              background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+              background: 'linear-gradient(135deg, #007A87, #9BC83B)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               margin: '0 auto 16px auto',
-              boxShadow: '0 8px 24px rgba(41, 195, 190, 0.3)'
+              boxShadow: '0 8px 24px rgba(0, 122, 135, 0.3)'
             }}
           >
             {siteSettings?.logoUrl ? (
@@ -205,7 +205,7 @@ export const AdminLogin: React.FC = () => {
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  style={{ width: '16px', height: '16px', accentColor: '#1C2677', cursor: 'pointer' }}
+                  style={{ width: '16px', height: '16px', accentColor: '#007A87', cursor: 'pointer' }}
                 />
                 Remember me on this browser
               </label>
@@ -219,7 +219,7 @@ export const AdminLogin: React.FC = () => {
                 marginTop: '8px',
                 padding: '14px',
                 borderRadius: '14px',
-                background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+                background: 'linear-gradient(135deg, #007A87, #0093A2)',
                 color: '#FFFFFF',
                 fontWeight: 800,
                 fontSize: '0.95rem',
@@ -229,7 +229,7 @@ export const AdminLogin: React.FC = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
-                boxShadow: '0 4px 14px rgba(41, 195, 190, 0.3)',
+                boxShadow: '0 4px 14px rgba(0, 122, 135, 0.3)',
                 opacity: isLoading ? 0.7 : 1
               }}
             >

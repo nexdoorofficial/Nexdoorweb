@@ -74,7 +74,7 @@ export const ViewOffersModal: React.FC<ViewOffersModalProps> = ({
         <div
           style={{
             padding: '20px 24px',
-            background: 'linear-gradient(135deg, #1C2677 0%, #0F172A 100%)',
+            background: 'linear-gradient(135deg, #03252A 0%, #004D56 100%)',
             color: '#FFFFFF',
             display: 'flex',
             alignItems: 'center',
@@ -88,7 +88,7 @@ export const ViewOffersModal: React.FC<ViewOffersModalProps> = ({
                 width: '40px',
                 height: '40px',
                 borderRadius: '12px',
-                background: 'linear-gradient(135deg, #29C3BE, #1C2677)',
+                background: 'linear-gradient(135deg, #007A87, #9BC83B)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -151,9 +151,9 @@ export const ViewOffersModal: React.FC<ViewOffersModalProps> = ({
                     style={{
                       padding: '16px 18px',
                       borderRadius: '18px',
-                      border: `1.5px solid ${isSelected ? '#29C3BE' : validation.valid ? '#CBD5E1' : '#F1F5F9'}`,
+                      border: `1.5px solid ${isSelected ? '#007A87' : validation.valid ? '#CBD5E1' : '#F1F5F9'}`,
                       background: isSelected
-                        ? '#F0FDFA'
+                        ? '#F0F9FA'
                         : validation.valid
                         ? '#FFFFFF'
                         : '#F8FAFC',
@@ -169,7 +169,7 @@ export const ViewOffersModal: React.FC<ViewOffersModalProps> = ({
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', flexWrap: 'wrap' }}>
                         <span
                           style={{
-                            background: '#1C2677',
+                            background: '#007A87',
                             color: '#FFFFFF',
                             padding: '4px 10px',
                             borderRadius: '8px',
@@ -210,7 +210,7 @@ export const ViewOffersModal: React.FC<ViewOffersModalProps> = ({
                           </strong>
                         </span>
                         {coupon.oncePerCustomerPhone && (
-                          <span style={{ color: '#1E40AF', fontWeight: 700 }}>
+                          <span style={{ color: '#007A87', fontWeight: 700 }}>
                             📱 1 Use Per Mobile
                           </span>
                         )}
@@ -236,14 +236,14 @@ export const ViewOffersModal: React.FC<ViewOffersModalProps> = ({
                         background: isSelected
                           ? '#059669'
                           : validation.valid
-                          ? 'linear-gradient(135deg, #1C2677, #29C3BE)'
+                          ? 'linear-gradient(135deg, #007A87, #0093A2)'
                           : '#E2E8F0',
                         color: isSelected || validation.valid ? '#FFFFFF' : '#94A3B8',
                         fontWeight: 800,
                         fontSize: '0.82rem',
                         cursor: validation.valid || isSelected ? 'pointer' : 'not-allowed',
                         whiteSpace: 'nowrap',
-                        boxShadow: validation.valid ? '0 4px 12px rgba(41, 195, 190, 0.2)' : 'none'
+                        boxShadow: validation.valid ? '0 4px 12px rgba(0, 122, 135, 0.25)' : 'none'
                       }}
                     >
                       {isSelected ? 'Applied ✓' : validation.valid ? 'Apply Offer' : 'Ineligible'}

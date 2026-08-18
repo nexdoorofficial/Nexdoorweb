@@ -67,12 +67,12 @@ export const AdminCoupons: React.FC = () => {
             padding: '12px 20px',
             borderRadius: '14px',
             border: 'none',
-            background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+            background: 'linear-gradient(135deg, #007A87, #0093A2)',
             color: '#FFFFFF',
             fontWeight: 800,
             fontSize: '0.88rem',
             cursor: 'pointer',
-            boxShadow: '0 4px 14px rgba(41, 195, 190, 0.25)',
+            boxShadow: '0 4px 14px rgba(0, 122, 135, 0.25)',
             display: 'flex',
             alignItems: 'center',
             gap: '8px'
@@ -146,7 +146,7 @@ export const AdminCoupons: React.FC = () => {
                 padding: '8px 14px',
                 borderRadius: '10px',
                 border: filterType === f.id ? 'none' : '1px solid #E2E8F0',
-                background: filterType === f.id ? '#1C2677' : '#F8FAFC',
+                background: filterType === f.id ? '#007A87' : '#F8FAFC',
                 color: filterType === f.id ? '#FFFFFF' : '#475569',
                 fontWeight: 700,
                 fontSize: '0.8rem',
@@ -191,14 +191,14 @@ export const AdminCoupons: React.FC = () => {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                   <div
                     style={{
-                      background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+                      background: 'linear-gradient(135deg, #007A87, #0093A2)',
                       color: '#FFFFFF',
                       padding: '6px 14px',
                       borderRadius: '12px',
                       fontWeight: 900,
                       fontSize: '1rem',
                       letterSpacing: '0.05em',
-                      boxShadow: '0 2px 8px rgba(41, 195, 190, 0.25)'
+                      boxShadow: '0 2px 8px rgba(0, 122, 135, 0.25)'
                     }}
                   >
                     {coupon.code}
@@ -247,7 +247,7 @@ export const AdminCoupons: React.FC = () => {
 
                 {/* Title & Discount Value Highlight */}
                 <div style={{ marginBottom: '12px' }}>
-                  <div style={{ fontSize: '1.2rem', fontWeight: 900, color: '#1C2677', marginBottom: '2px' }}>
+                  <div style={{ fontSize: '1.2rem', fontWeight: 900, color: '#03252A', marginBottom: '2px' }}>
                     {isPercentage ? `${coupon.discountValue}% OFF` : `Flat ₹${coupon.discountValue} OFF`}
                     {isPercentage && coupon.maxDiscountAmount && (
                       <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#64748B', marginLeft: '6px' }}>
@@ -267,7 +267,7 @@ export const AdminCoupons: React.FC = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', background: '#F8FAFC', padding: '10px 12px', borderRadius: '12px', marginBottom: '14px' }}>
                   <div style={{ fontSize: '0.75rem', color: '#334155', display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <span>📍 <strong>Service Scope:</strong></span>
-                    <span style={{ textTransform: 'capitalize', fontWeight: 700, color: '#1C2677' }}>
+                    <span style={{ textTransform: 'capitalize', fontWeight: 700, color: '#007A87' }}>
                       {coupon.applicableServices === 'all' ? 'All Services' : coupon.applicableServices.replace('-', ' ')}
                     </span>
                   </div>

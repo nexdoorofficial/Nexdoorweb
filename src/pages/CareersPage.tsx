@@ -56,7 +56,7 @@ export const CareersPage: React.FC = () => {
       <div className="container">
         <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 48px auto' }}>
           <span className="badge-tag"><Briefcase size={14} /> JOIN OUR TEAM</span>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#1C2677', marginTop: '8px' }}>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#03252A', marginTop: '8px' }}>
             Build the Future of Home & Auto Care
           </h1>
           <p style={{ color: '#64748B', fontSize: '1rem', marginTop: '8px', lineHeight: 1.6 }}>
@@ -73,15 +73,15 @@ export const CareersPage: React.FC = () => {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                     <span className="badge-secondary">{job.type}</span>
                     <span style={{ fontSize: '0.8rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <MapPin size={14} style={{ color: '#29C3BE' }} /> {job.location}
+                      <MapPin size={14} style={{ color: '#007A87' }} /> {job.location}
                     </span>
                   </div>
 
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#1C2677', marginBottom: '8px' }}>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#03252A', marginBottom: '8px' }}>
                     {job.title}
                   </h3>
 
-                  <div style={{ fontSize: '0.9rem', fontWeight: 800, color: '#29C3BE', marginBottom: '12px' }}>
+                  <div style={{ fontSize: '0.9rem', fontWeight: 800, color: '#007A87', marginBottom: '12px' }}>
                     {job.salary}
                   </div>
 
@@ -91,13 +91,13 @@ export const CareersPage: React.FC = () => {
 
                   {job.requirements && job.requirements.length > 0 && (
                     <div style={{ marginBottom: '20px' }}>
-                      <h4 style={{ fontSize: '0.78rem', fontWeight: 800, color: '#1C2677', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.05em' }}>
+                      <h4 style={{ fontSize: '0.78rem', fontWeight: 800, color: '#03252A', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.05em' }}>
                         Requirements:
                       </h4>
                       <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.825rem', color: '#334155', padding: 0 }}>
                         {job.requirements.map((req, i) => (
                           <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <CheckCircle2 size={15} style={{ color: '#10B981', flexShrink: 0 }} />
+                            <CheckCircle2 size={15} style={{ color: '#9BC83B', flexShrink: 0 }} />
                             <span>{req}</span>
                           </li>
                         ))}
@@ -130,7 +130,7 @@ export const CareersPage: React.FC = () => {
             style={{
               position: 'fixed',
               inset: 0,
-              background: 'rgba(15, 23, 42, 0.65)',
+              background: 'rgba(3, 37, 42, 0.65)',
               backdropFilter: 'blur(6px)',
               display: 'flex',
               alignItems: 'center',
@@ -161,11 +161,11 @@ export const CareersPage: React.FC = () => {
 
               {submittedRefId ? (
                 <div style={{ textAlign: 'center', padding: '24px 0' }}>
-                  <CheckCircle2 size={54} style={{ color: '#10B981', margin: '0 auto 16px auto' }} />
-                  <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#1C2677' }}>
+                  <CheckCircle2 size={54} style={{ color: '#9BC83B', margin: '0 auto 16px auto' }} />
+                  <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#03252A' }}>
                     Application Received!
                   </h3>
-                  <div style={{ display: 'inline-block', background: '#F1F5F9', padding: '6px 16px', borderRadius: '12px', fontWeight: 800, color: '#29C3BE', margin: '12px 0', fontSize: '0.95rem' }}>
+                  <div style={{ display: 'inline-block', background: 'rgba(0, 122, 135, 0.1)', padding: '6px 16px', borderRadius: '12px', fontWeight: 800, color: '#007A87', margin: '12px 0', fontSize: '0.95rem' }}>
                     Reference ID: {submittedRefId}
                   </div>
                   <p style={{ color: '#64748B', fontSize: '0.9rem', lineHeight: 1.5, marginTop: '8px' }}>
@@ -181,7 +181,7 @@ export const CareersPage: React.FC = () => {
                 </div>
               ) : (
                 <form onSubmit={handleApplySubmit}>
-                  <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#1C2677', marginBottom: '4px' }}>
+                  <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#03252A', marginBottom: '4px' }}>
                     Apply for {selectedJob.title}
                   </h3>
                   <p style={{ fontSize: '0.85rem', color: '#64748B', marginBottom: '24px' }}>
@@ -206,7 +206,7 @@ export const CareersPage: React.FC = () => {
                           border: '1px solid #CBD5E1',
                           fontSize: '0.9rem',
                           fontWeight: 700,
-                          color: '#1C2677',
+                          color: '#03252A',
                           background: '#F8FAFC'
                         }}
                       />

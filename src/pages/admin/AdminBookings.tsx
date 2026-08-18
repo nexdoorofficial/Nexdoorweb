@@ -92,14 +92,14 @@ export const AdminBookings: React.FC = () => {
             padding: '12px 20px',
             borderRadius: '12px',
             border: 'none',
-            background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+            background: 'linear-gradient(135deg, #007A87, #0093A2)',
             color: '#FFFFFF',
             fontWeight: 700,
             fontSize: '0.88rem',
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            boxShadow: '0 8px 20px rgba(41, 195, 190, 0.3)',
+            boxShadow: '0 8px 20px rgba(0, 122, 135, 0.3)',
             cursor: 'pointer'
           }}
         >
@@ -188,7 +188,7 @@ export const AdminBookings: React.FC = () => {
                     fontSize: '0.82rem',
                     fontWeight: 700,
                     border: 'none',
-                    background: isActive ? '#1C2677' : '#F1F5F9',
+                    background: isActive ? '#007A87' : '#F1F5F9',
                     color: isActive ? '#FFFFFF' : '#64748B',
                     cursor: 'pointer',
                     display: 'flex',
@@ -254,7 +254,7 @@ export const AdminBookings: React.FC = () => {
                 const badge = getStatusBadge(b.status);
                 return (
                   <tr key={b.id} style={{ borderBottom: '1px solid #F1F5F9' }}>
-                    <td style={{ padding: '16px', fontWeight: 800, color: '#1C2677' }}>
+                    <td style={{ padding: '16px', fontWeight: 800, color: '#007A87' }}>
                       {b.referenceId}
                     </td>
 
@@ -355,7 +355,7 @@ export const AdminBookings: React.FC = () => {
                             borderRadius: '8px',
                             border: '1px solid #CBD5E1',
                             background: '#FFFFFF',
-                            color: '#1C2677',
+                            color: '#007A87',
                             fontWeight: 700,
                             fontSize: '0.8rem',
                             cursor: 'pointer',

@@ -93,7 +93,7 @@ export const ServiceLocationModal: React.FC<ServiceLocationModalProps> = ({
           <div
             style={{
               padding: '20px 24px',
-              background: 'linear-gradient(135deg, #1C2677 0%, #0F172A 100%)',
+              background: 'linear-gradient(135deg, #03252A 0%, #004D56 100%)',
               color: '#FFFFFF',
               display: 'flex',
               alignItems: 'center',
@@ -101,7 +101,7 @@ export const ServiceLocationModal: React.FC<ServiceLocationModalProps> = ({
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{ background: '#29C3BE', padding: '8px', borderRadius: '10px', color: '#FFF', display: 'flex' }}>
+              <div style={{ background: 'linear-gradient(135deg, #007A87, #9BC83B)', padding: '8px', borderRadius: '10px', color: '#FFF', display: 'flex' }}>
                 <MapPin size={20} />
               </div>
               <div>
@@ -136,7 +136,7 @@ export const ServiceLocationModal: React.FC<ServiceLocationModalProps> = ({
           {/* Modal Body */}
           <div style={{ padding: '24px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#1C2677' }}>
+              <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#007A87' }}>
                 Select Active Areas ({selectedLocations.length} of {allLocations.length} active)
               </span>
 
@@ -202,10 +202,10 @@ export const ServiceLocationModal: React.FC<ServiceLocationModalProps> = ({
                           setSelectedLocations(selectedLocations.filter((l) => l !== loc.name));
                         }
                       }}
-                      style={{ width: '18px', height: '18px', accentColor: '#1C2677', cursor: 'pointer' }}
+                      style={{ width: '18px', height: '18px', accentColor: '#007A87', cursor: 'pointer' }}
                     />
                     <div>
-                      <strong style={{ fontSize: '0.9rem', color: isChecked ? '#1C2677' : '#334155', display: 'block' }}>
+                      <strong style={{ fontSize: '0.9rem', color: isChecked ? '#007A87' : '#334155', display: 'block' }}>
                         {loc.name}
                       </strong>
                       <span style={{ fontSize: '0.75rem', color: '#64748B' }}>
@@ -240,7 +240,7 @@ export const ServiceLocationModal: React.FC<ServiceLocationModalProps> = ({
                   padding: '10px 24px',
                   borderRadius: '12px',
                   border: 'none',
-                  background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+                  background: 'linear-gradient(135deg, #007A87, #0093A2)',
                   color: '#FFF',
                   fontWeight: 800,
                   fontSize: '0.85rem',

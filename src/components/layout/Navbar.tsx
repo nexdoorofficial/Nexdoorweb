@@ -80,11 +80,11 @@ export const Navbar: React.FC = () => {
                 width: '38px',
                 height: '38px',
                 borderRadius: '12px',
-                background: 'linear-gradient(135deg, #1C2677 0%, #29C3BE 100%)',
+                background: 'linear-gradient(135deg, #007A87 0%, #9BC83B 100%)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 4px 12px rgba(41, 195, 190, 0.3)',
+                boxShadow: '0 4px 12px rgba(0, 122, 135, 0.25)',
                 flexShrink: 0
               }}>
                 <Sparkles size={20} style={{ color: '#FFFFFF' }} />
@@ -95,13 +95,13 @@ export const Navbar: React.FC = () => {
                   fontSize: '1.25rem',
                   fontWeight: 800,
                   letterSpacing: '-0.03em',
-                  color: '#1C2677',
+                  color: '#03252A',
                   lineHeight: 1
                 }}>
                   NEXDOOR
                 </span>
-                <span className="logo-subtext" style={{ fontSize: '0.6rem', fontWeight: 700, color: '#29C3BE', letterSpacing: '0.15em', marginTop: '2px' }}>
-                  CLEANING SOLUTIONS
+                <span className="logo-subtext" style={{ fontSize: '0.6rem', fontWeight: 800, color: '#007A87', letterSpacing: '0.15em', marginTop: '2px' }}>
+                  INSTA SERVICES
                 </span>
               </div>
             </>
@@ -130,7 +130,7 @@ export const Navbar: React.FC = () => {
                       alignItems: 'center',
                       gap: '6px',
                       fontWeight: location.pathname.startsWith('/services') ? 700 : 500,
-                      color: location.pathname.startsWith('/services') ? '#29C3BE' : '#1B2236',
+                      color: location.pathname.startsWith('/services') ? '#007A87' : '#0F172A',
                       fontSize: '0.95rem',
                       padding: '8px 0',
                       border: 'none',
@@ -161,7 +161,7 @@ export const Navbar: React.FC = () => {
                           width: '340px',
                           background: '#FFFFFF',
                           borderRadius: '16px',
-                          boxShadow: '0 16px 40px rgba(27, 34, 54, 0.12)',
+                          boxShadow: '0 16px 40px rgba(3, 37, 42, 0.12)',
                           border: '1px solid #E2E8F0',
                           padding: '12px',
                           zIndex: 110
@@ -194,12 +194,12 @@ export const Navbar: React.FC = () => {
                                     height: '38px',
                                     borderRadius: '10px',
                                     background: isHouse
-                                      ? 'rgba(41, 195, 190, 0.15)'
+                                      ? 'rgba(0, 122, 135, 0.12)'
                                       : isCar
-                                      ? 'rgba(28, 38, 119, 0.1)'
+                                      ? 'rgba(3, 37, 42, 0.08)'
                                       : isLaundry
-                                      ? 'rgba(245, 158, 11, 0.15)'
-                                      : 'rgba(16, 185, 129, 0.15)',
+                                      ? 'rgba(245, 158, 11, 0.12)'
+                                      : 'rgba(155, 200, 59, 0.18)',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
@@ -207,17 +207,17 @@ export const Navbar: React.FC = () => {
                                   }}
                                 >
                                   {isHouse ? (
-                                    <HomeIcon size={20} style={{ color: '#29C3BE' }} />
+                                    <HomeIcon size={20} style={{ color: '#007A87' }} />
                                   ) : isCar ? (
-                                    <Car size={20} style={{ color: '#1C2677' }} />
+                                    <Car size={20} style={{ color: '#03252A' }} />
                                   ) : isLaundry ? (
                                     <Shirt size={20} style={{ color: '#F59E0B' }} />
                                   ) : (
-                                    <Sparkles size={20} style={{ color: '#10B981' }} />
+                                    <Sparkles size={20} style={{ color: '#9BC83B' }} />
                                   )}
                                 </div>
                                 <div>
-                                  <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#1B2236' }}>
+                                  <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0F172A' }}>
                                     {sub.title}
                                   </div>
                                   <div style={{ fontSize: '0.75rem', color: '#64748B' }}>
@@ -245,7 +245,7 @@ export const Navbar: React.FC = () => {
                 to={item.path}
                 style={{
                   fontWeight: location.pathname === item.path ? 700 : 500,
-                  color: location.pathname === item.path ? '#29C3BE' : '#1B2236',
+                  color: location.pathname === item.path ? '#007A87' : '#0F172A',
                   fontSize: '0.95rem',
                   textDecoration: 'none'
                 }}
@@ -275,7 +275,7 @@ export const Navbar: React.FC = () => {
               whiteSpace: 'nowrap'
             }}
           >
-            <PackageCheck size={17} style={{ color: '#29C3BE' }} />
+            <PackageCheck size={17} style={{ color: '#007A87' }} />
             Track Order
           </button>
 
@@ -295,8 +295,8 @@ export const Navbar: React.FC = () => {
             className="mobile-book-btn"
             style={{
               textDecoration: 'none',
-              background: '#29C3BE',
-              color: '#1C2677',
+              background: 'linear-gradient(135deg, #007A87 0%, #0093A2 100%)',
+              color: '#FFFFFF',
               fontWeight: 800,
               fontSize: '0.8rem',
               padding: '7px 14px',
@@ -305,7 +305,7 @@ export const Navbar: React.FC = () => {
               display: 'none',
               alignItems: 'center',
               gap: '4px',
-              boxShadow: '0 2px 10px rgba(41, 195, 190, 0.3)'
+              boxShadow: '0 2px 10px rgba(0, 122, 135, 0.3)'
             }}
           >
             <CalendarCheck size={14} /> Book
@@ -316,10 +316,10 @@ export const Navbar: React.FC = () => {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="mobile-toggle"
             style={{
-              background: mobileMenuOpen ? 'rgba(28, 38, 119, 0.08)' : 'transparent',
+              background: mobileMenuOpen ? 'rgba(0, 122, 135, 0.10)' : 'transparent',
               border: 'none',
               padding: '6px',
-              color: '#1C2677',
+              color: '#03252A',
               borderRadius: '8px',
               cursor: 'pointer',
               display: 'none',
@@ -370,16 +370,16 @@ export const Navbar: React.FC = () => {
                             key={sub.id}
                             to={sub.path || '/services/house-cleaning'}
                             onClick={() => setMobileMenuOpen(false)}
-                            style={{ display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 600, color: '#1B2236', textDecoration: 'none' }}
+                            style={{ display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 600, color: '#0F172A', textDecoration: 'none' }}
                           >
                             {isHouse ? (
-                              <HomeIcon size={18} style={{ color: '#29C3BE' }} />
+                              <HomeIcon size={18} style={{ color: '#007A87' }} />
                             ) : isCar ? (
-                              <Car size={18} style={{ color: '#1C2677' }} />
+                              <Car size={18} style={{ color: '#03252A' }} />
                             ) : isLaundry ? (
                               <Shirt size={18} style={{ color: '#F59E0B' }} />
                             ) : (
-                              <Sparkles size={18} style={{ color: '#10B981' }} />
+                              <Sparkles size={18} style={{ color: '#9BC83B' }} />
                             )}
                             <span>{sub.title}</span>
                             <span style={{ fontSize: '0.75rem', color: '#64748B', marginLeft: 'auto' }}>
@@ -399,7 +399,7 @@ export const Navbar: React.FC = () => {
                     onClick={() => setMobileMenuOpen(false)}
                     style={{
                       fontWeight: location.pathname === item.path ? 700 : 500,
-                      color: location.pathname === item.path ? '#29C3BE' : '#1B2236',
+                      color: location.pathname === item.path ? '#007A87' : '#0F172A',
                       fontSize: '0.95rem',
                       textDecoration: 'none'
                     }}
@@ -420,9 +420,9 @@ export const Navbar: React.FC = () => {
                     width: '100%',
                     padding: '12px',
                     borderRadius: '14px',
-                    border: '1.5px solid #29C3BE',
-                    background: '#F0FDF4',
-                    color: '#1C2677',
+                    border: '1.5px solid #007A87',
+                    background: '#F0FDFA',
+                    color: '#03252A',
                     fontWeight: 800,
                     fontSize: '0.9rem',
                     cursor: 'pointer',
@@ -432,7 +432,7 @@ export const Navbar: React.FC = () => {
                     gap: '8px'
                   }}
                 >
-                  <PackageCheck size={18} style={{ color: '#29C3BE' }} /> Track Order Status
+                  <PackageCheck size={18} style={{ color: '#007A87' }} /> Track Order Status
                 </button>
 
                 <Link to="/book" className="btn-primary" style={{ width: '100%', justifyContent: 'center' }}>

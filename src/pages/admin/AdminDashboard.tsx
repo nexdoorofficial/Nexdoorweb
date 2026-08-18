@@ -66,7 +66,7 @@ export const AdminDashboard: React.FC = () => {
         <div style={{ background: '#FFFFFF', padding: '24px', borderRadius: '20px', border: '1px solid #E2E8F0', boxShadow: '0 4px 12px rgba(0,0,0,0.03)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
             <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#64748B' }}>Total Bookings</span>
-            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'linear-gradient(135deg, #1C2677, #2563EB)', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'linear-gradient(135deg, #03252A, #007A87)', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <CalendarCheck size={22} />
             </div>
           </div>
@@ -101,7 +101,7 @@ export const AdminDashboard: React.FC = () => {
         <div style={{ background: '#FFFFFF', padding: '24px', borderRadius: '20px', border: '1px solid #E2E8F0', boxShadow: '0 4px 12px rgba(0,0,0,0.03)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
             <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#64748B' }}>Active Service Catalog</span>
-            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'linear-gradient(135deg, #29C3BE, #0D9488)', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'linear-gradient(135deg, #007A87, #9BC83B)', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Sparkles size={22} />
             </div>
           </div>
@@ -132,7 +132,7 @@ export const AdminDashboard: React.FC = () => {
                 borderRadius: '10px',
                 fontSize: '0.82rem',
                 fontWeight: 700,
-                color: '#1C2677',
+                color: '#007A87',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
@@ -170,7 +170,7 @@ export const AdminDashboard: React.FC = () => {
                   const badge = getStatusBadge(b.status);
                   return (
                     <tr key={b.id} style={{ borderBottom: '1px solid #F8FAFC' }}>
-                      <td style={{ padding: '14px 10px', fontWeight: 800, color: '#1C2677' }}>
+                      <td style={{ padding: '14px 10px', fontWeight: 800, color: '#007A87' }}>
                         {b.referenceId}
                       </td>
                       <td style={{ padding: '14px 10px' }}>
@@ -222,7 +222,7 @@ export const AdminDashboard: React.FC = () => {
           {/* Technicians Roster */}
           <div style={{ background: '#FFFFFF', borderRadius: '20px', border: '1px solid #E2E8F0', padding: '20px', boxShadow: '0 4px 12px rgba(0,0,0,0.03)' }}>
             <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#1E293B', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <UserCheck size={18} color="#1C2677" /> Field Technicians ({technicians.length})
+              <UserCheck size={18} color="#007A87" /> Field Technicians ({technicians.length})
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {technicians.map((t) => (
@@ -251,7 +251,7 @@ export const AdminDashboard: React.FC = () => {
           </div>
 
           {/* Service Catalog Quick Switch */}
-          <div style={{ background: 'linear-gradient(135deg, #0F172A, #1C2677)', color: '#FFFFFF', borderRadius: '20px', padding: '20px' }}>
+          <div style={{ background: 'linear-gradient(135deg, #03252A, #004D56)', color: '#FFFFFF', borderRadius: '20px', padding: '20px' }}>
             <h4 style={{ fontSize: '0.95rem', fontWeight: 800, marginBottom: '6px' }}>Service Catalog Management</h4>
             <p style={{ fontSize: '0.8rem', color: '#94A3B8', marginBottom: '16px' }}>Add new pricing plans, customize specs, or toggle service status.</p>
             <button
@@ -261,8 +261,8 @@ export const AdminDashboard: React.FC = () => {
                 padding: '10px',
                 borderRadius: '10px',
                 border: 'none',
-                background: '#29C3BE',
-                color: '#0F172A',
+                background: '#007A87',
+                color: '#FFFFFF',
                 fontWeight: 700,
                 fontSize: '0.85rem',
                 cursor: 'pointer',

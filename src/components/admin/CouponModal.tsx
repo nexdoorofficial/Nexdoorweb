@@ -146,7 +146,7 @@ export const CouponModal: React.FC<CouponModalProps> = ({
           <div
             style={{
               padding: '20px 24px',
-              background: 'linear-gradient(135deg, #1C2677 0%, #0F172A 100%)',
+              background: 'linear-gradient(135deg, #03252A 0%, #004D56 100%)',
               color: '#FFFFFF',
               display: 'flex',
               alignItems: 'center',
@@ -159,14 +159,14 @@ export const CouponModal: React.FC<CouponModalProps> = ({
                   width: '42px',
                   height: '42px',
                   borderRadius: '12px',
-                  background: 'rgba(41, 195, 190, 0.2)',
+                  background: 'rgba(0, 122, 135, 0.25)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  border: '1px solid rgba(41, 195, 190, 0.4)'
+                  border: '1px solid rgba(0, 122, 135, 0.4)'
                 }}
               >
-                <Tag size={22} style={{ color: '#29C3BE' }} />
+                <Tag size={22} style={{ color: '#9BC83B' }} />
               </div>
               <div>
                 <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 800 }}>
@@ -224,7 +224,7 @@ export const CouponModal: React.FC<CouponModalProps> = ({
                     border: '1px solid #CBD5E1',
                     fontSize: '0.95rem',
                     fontWeight: 800,
-                    color: '#1C2677',
+                    color: '#007A87',
                     letterSpacing: '0.05em'
                   }}
                 />
@@ -397,7 +397,7 @@ export const CouponModal: React.FC<CouponModalProps> = ({
                       if (!e.target.checked) setExpiryDate('');
                       else if (!expiryDate) setExpiryDate('2026-12-31');
                     }}
-                    style={{ width: '16px', height: '16px', accentColor: '#1C2677', cursor: 'pointer' }}
+                    style={{ width: '16px', height: '16px', accentColor: '#007A87', cursor: 'pointer' }}
                   />
                   Set Expiry Date for this Coupon
                 </label>
@@ -507,12 +507,12 @@ export const CouponModal: React.FC<CouponModalProps> = ({
                   padding: '12px 24px',
                   borderRadius: '12px',
                   border: 'none',
-                  background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+                  background: 'linear-gradient(135deg, #007A87, #0093A2)',
                   color: '#FFFFFF',
                   fontWeight: 800,
                   fontSize: '0.88rem',
                   cursor: 'pointer',
-                  boxShadow: '0 4px 14px rgba(41, 195, 190, 0.25)',
+                  boxShadow: '0 4px 14px rgba(0, 122, 135, 0.25)',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px'

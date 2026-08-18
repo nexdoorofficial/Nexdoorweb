@@ -164,7 +164,7 @@ export const AdminCareers: React.FC = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#1E293B', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <Briefcase size={24} style={{ color: '#29C3BE' }} />
+            <Briefcase size={24} style={{ color: '#007A87' }} />
             Careers & HR Management
           </h2>
           <p style={{ fontSize: '0.85rem', color: '#64748B', margin: '4px 0 0 0' }}>
@@ -214,7 +214,7 @@ export const AdminCareers: React.FC = () => {
               padding: '9px 18px',
               borderRadius: '10px',
               border: activeTab === 'applications' ? 'none' : '1px solid #E2E8F0',
-              background: activeTab === 'applications' ? '#1C2677' : '#F8FAFC',
+              background: activeTab === 'applications' ? '#007A87' : '#F8FAFC',
               color: activeTab === 'applications' ? '#FFFFFF' : '#475569',
               fontWeight: 800,
               fontSize: '0.85rem',
@@ -233,7 +233,7 @@ export const AdminCareers: React.FC = () => {
               padding: '9px 18px',
               borderRadius: '10px',
               border: activeTab === 'requirements' ? 'none' : '1px solid #E2E8F0',
-              background: activeTab === 'requirements' ? '#1C2677' : '#F8FAFC',
+              background: activeTab === 'requirements' ? '#007A87' : '#F8FAFC',
               color: activeTab === 'requirements' ? '#FFFFFF' : '#475569',
               fontWeight: 800,
               fontSize: '0.85rem',
@@ -253,13 +253,13 @@ export const AdminCareers: React.FC = () => {
               gap: '6px',
               padding: '9px 18px',
               borderRadius: '10px',
-              background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+              background: 'linear-gradient(135deg, #007A87, #0093A2)',
               color: '#FFFFFF',
               fontWeight: 800,
               fontSize: '0.82rem',
               border: 'none',
               cursor: 'pointer',
-              boxShadow: '0 4px 12px rgba(41, 195, 190, 0.3)'
+              boxShadow: '0 4px 12px rgba(0, 122, 135, 0.3)'
             }}
           >
             <Plus size={16} /> Add Job Requirement
@@ -325,7 +325,7 @@ export const AdminCareers: React.FC = () => {
                     padding: '7px 12px',
                     borderRadius: '8px',
                     border: filterStatus === f.id ? 'none' : '1px solid #E2E8F0',
-                    background: filterStatus === f.id ? '#1C2677' : '#F8FAFC',
+                    background: filterStatus === f.id ? '#007A87' : '#F8FAFC',
                     color: filterStatus === f.id ? '#FFFFFF' : '#475569',
                     fontWeight: 700,
                     fontSize: '0.78rem',
@@ -414,7 +414,7 @@ export const AdminCareers: React.FC = () => {
 
                         {/* Reference ID */}
                         <td style={{ padding: '14px 18px' }} onClick={() => handleOpenDetail(app)}>
-                          <span style={{ fontWeight: 800, color: '#1C2677', background: '#EEF2FF', padding: '4px 8px', borderRadius: '6px', fontSize: '0.8rem' }}>
+                          <span style={{ fontWeight: 800, color: '#007A87', background: '#EEF2FF', padding: '4px 8px', borderRadius: '6px', fontSize: '0.8rem' }}>
                             {app.referenceId}
                           </span>
                         </td>
@@ -429,9 +429,9 @@ export const AdminCareers: React.FC = () => {
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                             <a
                               href={`tel:${app.phone}`}
-                              style={{ color: '#1C2677', fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                              style={{ color: '#007A87', fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                             >
-                              <Phone size={12} style={{ color: '#29C3BE' }} /> {app.phone}
+                              <Phone size={12} style={{ color: '#007A87' }} /> {app.phone}
                             </a>
                             {app.email && (
                               <a
@@ -477,7 +477,7 @@ export const AdminCareers: React.FC = () => {
                                 padding: '6px 12px',
                                 borderRadius: '8px',
                                 border: 'none',
-                                background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+                                background: 'linear-gradient(135deg, #007A87, #0093A2)',
                                 color: '#FFFFFF',
                                 fontWeight: 800,
                                 fontSize: '0.78rem',
@@ -531,7 +531,7 @@ export const AdminCareers: React.FC = () => {
                 style={{
                   background: '#FFFFFF',
                   borderRadius: '16px',
-                  border: isClosed ? '1px solid #E2E8F0' : '2px solid #29C3BE',
+                  border: isClosed ? '1px solid #E2E8F0' : '2px solid #007A87',
                   padding: '24px',
                   display: 'flex',
                   flexDirection: 'column',
@@ -571,13 +571,13 @@ export const AdminCareers: React.FC = () => {
                     </button>
                   </div>
 
-                  <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#1C2677', marginBottom: '6px' }}>
+                  <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#03252A', marginBottom: '6px' }}>
                     {job.title}
                   </h3>
                   <div style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 700, marginBottom: '10px' }}>
                     {job.department} • {job.location}
                   </div>
-                  <div style={{ fontSize: '0.9rem', fontWeight: 800, color: '#29C3BE', marginBottom: '14px' }}>
+                  <div style={{ fontSize: '0.9rem', fontWeight: 800, color: '#007A87', marginBottom: '14px' }}>
                     {job.salary}
                   </div>
 
@@ -586,13 +586,13 @@ export const AdminCareers: React.FC = () => {
                   </p>
 
                   <div style={{ marginBottom: '20px' }}>
-                    <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#1C2677', textTransform: 'uppercase', marginBottom: '6px' }}>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#03252A', textTransform: 'uppercase', marginBottom: '6px' }}>
                       Key Requirements:
                     </div>
                     <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '0.8rem', color: '#334155', padding: 0 }}>
                       {job.requirements?.map((req, i) => (
                         <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <CheckCircle2 size={14} style={{ color: '#10B981', flexShrink: 0 }} />
+                          <CheckCircle2 size={14} style={{ color: '#9BC83B', flexShrink: 0 }} />
                           <span>{req}</span>
                         </li>
                       ))}
@@ -744,7 +744,7 @@ export const AdminCareers: React.FC = () => {
                 <button type="button" onClick={() => setIsJobModalOpen(false)} style={{ padding: '12px 20px', borderRadius: '12px', background: '#FFFFFF', border: '1px solid #CBD5E1', color: '#475569', fontWeight: 700, cursor: 'pointer' }}>
                   Cancel
                 </button>
-                <button type="submit" style={{ padding: '12px 24px', borderRadius: '12px', background: 'linear-gradient(135deg, #1C2677, #29C3BE)', color: '#FFF', fontWeight: 800, border: 'none', cursor: 'pointer' }}>
+                <button type="submit" style={{ padding: '12px 24px', borderRadius: '12px', background: 'linear-gradient(135deg, #007A87, #0093A2)', color: '#FFF', fontWeight: 800, border: 'none', cursor: 'pointer' }}>
                   {editingJob ? 'Save Changes' : 'Publish Job Requirement'}
                 </button>
               </div>

@@ -137,7 +137,7 @@ export const AdminAvailability: React.FC = () => {
               gap: '10px'
             }}
           >
-            <Calendar size={28} style={{ color: '#29C3BE' }} />
+            <Calendar size={28} style={{ color: '#007A87' }} />
             Availability & Slot Blocking Calendar
           </h1>
           <p style={{ color: '#64748B', fontSize: '0.9rem', margin: '4px 0 0 0' }}>
@@ -202,15 +202,15 @@ export const AdminAvailability: React.FC = () => {
                   fontWeight: 700,
                   fontSize: '0.85rem',
                   border: isActive ? 'none' : '1px solid #E2E8F0',
-                  background: isActive ? '#1C2677' : '#FFFFFF',
+                  background: isActive ? '#007A87' : '#FFFFFF',
                   color: isActive ? '#FFFFFF' : '#475569',
                   cursor: 'pointer',
                   transition: 'all 0.15s ease',
                   whiteSpace: 'nowrap',
-                  boxShadow: isActive ? '0 4px 12px rgba(28, 38, 119, 0.2)' : 'none'
+                  boxShadow: isActive ? '0 4px 12px rgba(0, 122, 135, 0.25)' : 'none'
                 }}
               >
-                <IconComp size={15} style={{ color: isActive ? '#29C3BE' : '#64748B' }} />
+                <IconComp size={15} style={{ color: isActive ? '#9BC83B' : '#64748B' }} />
                 {tab.label}
               </button>
             );
@@ -219,11 +219,11 @@ export const AdminAvailability: React.FC = () => {
 
         {/* Location Filter Select */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#FFFFFF', padding: '6px 12px', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
-          <span style={{ fontSize: '0.825rem', fontWeight: 800, color: '#1C2677' }}>📍 Location:</span>
+          <span style={{ fontSize: '0.825rem', fontWeight: 800, color: '#03252A' }}>📍 Location:</span>
           <select
             value={selectedLocationFilter}
             onChange={(e) => setSelectedLocationFilter(e.target.value)}
-            style={{ padding: '6px 10px', borderRadius: '8px', border: '1px solid #CBD5E1', background: '#FFF', fontSize: '0.825rem', fontWeight: 800, color: '#1C2677', cursor: 'pointer', outline: 'none' }}
+            style={{ padding: '6px 10px', borderRadius: '8px', border: '1px solid #CBD5E1', background: '#FFF', fontSize: '0.825rem', fontWeight: 800, color: '#03252A', cursor: 'pointer', outline: 'none' }}
           >
             <option value="all">All Locations (System-wide)</option>
             {locations.map((loc) => (
@@ -239,7 +239,7 @@ export const AdminAvailability: React.FC = () => {
       <div style={{ marginBottom: '24px', background: '#FFFFFF', borderRadius: '20px', border: '1px solid #E2E8F0', padding: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
           <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Users size={18} style={{ color: '#29C3BE' }} />
+            <Users size={18} style={{ color: '#007A87' }} />
             Standing Location Team Defaults
           </h4>
           <span style={{ fontSize: '0.72rem', color: '#64748B', fontWeight: 600 }}>
@@ -281,7 +281,7 @@ export const AdminAvailability: React.FC = () => {
                   </button>
                   <span style={{
                     minWidth: '42px', textAlign: 'center', fontSize: '0.85rem', fontWeight: 800,
-                    color: currentTeams === 0 ? '#DC2626' : '#1C2677',
+                    color: currentTeams === 0 ? '#DC2626' : '#007A87',
                     background: currentTeams === 0 ? '#FEE2E2' : '#EEF2FF',
                     padding: '4px 8px', borderRadius: '8px'
                   }}>
@@ -496,7 +496,7 @@ export const AdminAvailability: React.FC = () => {
                     <div>
                       <div style={{ marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
                         {formatServiceBadge(slot.serviceCategory)}
-                        <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#1C2677', background: '#EEF2FF', border: '1px solid #C7D2FE', padding: '2px 8px', borderRadius: '12px' }}>
+                        <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#007A87', background: '#EEF2FF', border: '1px solid #C7D2FE', padding: '2px 8px', borderRadius: '12px' }}>
                           📍 {slot.location && slot.location !== 'all' ? slot.location : 'All Areas'}
                         </span>
                         {/* Show team capacity badge if a capacity override exists for this slot */}
@@ -569,7 +569,7 @@ export const AdminAvailability: React.FC = () => {
             return (
               <div style={{ background: '#FFFFFF', borderRadius: '20px', border: '1px solid #E2E8F0', padding: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
                 <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#0F172A', margin: '0 0 14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Users size={18} style={{ color: '#29C3BE' }} />
+                  <Users size={18} style={{ color: '#007A87' }} />
                   Team Capacity Overrides ({dateCapacities.length})
                 </h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '320px', overflowY: 'auto' }}>
@@ -577,7 +577,7 @@ export const AdminAvailability: React.FC = () => {
                     <div key={cap.id} style={{ padding: '10px 12px', borderRadius: '12px', background: '#F8FAFC', border: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                       <div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap', marginBottom: '4px' }}>
-                          <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#1C2677', background: '#EEF2FF', border: '1px solid #C7D2FE', padding: '2px 8px', borderRadius: '12px' }}>
+                          <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#007A87', background: '#EEF2FF', border: '1px solid #C7D2FE', padding: '2px 8px', borderRadius: '12px' }}>
                             📍 {cap.location && cap.location !== 'all' ? cap.location : 'All Areas'}
                           </span>
                           <span style={{

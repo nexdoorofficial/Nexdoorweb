@@ -208,3 +208,32 @@ export interface JobApplication {
   notes?: string;
   submittedAt: string;
 }
+
+export interface RecentWork {
+  id: string;
+  title: string;
+  category: string;
+  location: string;
+  image: string;
+  highlight: string;
+  summary: string;
+  status: 'active' | 'hidden';
+  orderIndex: number;
+  createdAt: string;
+}
+
+export interface GallerySettings {
+  badgeText: string;
+  headline: string;
+  description: string;
+  slideIntervalSeconds: number;
+  autoPlay: boolean;
+  pauseOnHover: boolean;
+  statJobsCount: string;
+  statJobsLabel: string;
+  statRating: string;
+  statRatingLabel: string;
+  statEcoPercent: string;
+  statEcoLabel: string;
+}
+

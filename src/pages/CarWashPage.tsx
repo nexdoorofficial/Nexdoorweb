@@ -17,11 +17,11 @@ export const CarWashPage: React.FC = () => {
   return (
     <div>
       {/* Hero */}
-      <section style={{ padding: '60px 0', background: 'linear-gradient(180deg, rgba(28, 38, 119, 0.08) 0%, rgba(248, 250, 252, 0) 100%)' }}>
+      <section style={{ padding: '60px 0', background: 'linear-gradient(180deg, rgba(3, 37, 42, 0.08) 0%, rgba(248, 250, 252, 0) 100%)' }}>
         <div className="container">
           <div style={{ maxWidth: '750px' }}>
             <span className="badge-secondary"><Car size={14} /> SERVICE 02</span>
-            <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#1C2677', marginTop: '12px', marginBottom: '16px' }}>
+            <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#03252A', marginTop: '12px', marginBottom: '16px' }}>
               Mobile Doorstep Car Wash & Detailing
             </h1>
             <p style={{ fontSize: '1.1rem', color: '#475569', lineHeight: 1.6, marginBottom: '24px' }}>
@@ -36,7 +36,7 @@ export const CarWashPage: React.FC = () => {
       <section className="section-padding" style={{ background: '#FFFFFF' }}>
         <div className="container">
           <div style={{ textAlign: 'center', maxWidth: '650px', margin: '0 auto 40px auto' }}>
-            <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#1C2677' }}>
+            <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#03252A' }}>
               Vehicle Pricing & Package Matrix
             </h2>
             <p style={{ color: '#64748B' }}>
@@ -53,7 +53,7 @@ export const CarWashPage: React.FC = () => {
         <div className="container">
           <div style={{ textAlign: 'center', maxWidth: '650px', margin: '0 auto 48px auto' }}>
             <span className="badge-tag">DETAILED SERVICES</span>
-            <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#1C2677', marginTop: '8px' }}>
+            <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#03252A', marginTop: '8px' }}>
               3 Signature Detailing Protocols
             </h2>
           </div>
@@ -69,10 +69,10 @@ export const CarWashPage: React.FC = () => {
                   borderRadius: '16px',
                   fontWeight: 700,
                   fontSize: '0.95rem',
-                  background: activeCarServiceId === feat.id ? '#29C3BE' : '#FFFFFF',
+                  background: activeCarServiceId === feat.id ? '#007A87' : '#FFFFFF',
                   color: activeCarServiceId === feat.id ? '#FFFFFF' : '#475569',
                   border: '1px solid #E2E8F0',
-                  boxShadow: activeCarServiceId === feat.id ? '0 6px 20px rgba(41, 195, 190, 0.3)' : 'none',
+                  boxShadow: activeCarServiceId === feat.id ? '0 6px 20px rgba(0, 122, 135, 0.25)' : 'none',
                   cursor: 'pointer'
                 }}
               >
@@ -86,7 +86,7 @@ export const CarWashPage: React.FC = () => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }} className="car-detail-grid">
               <div>
                 <span className="badge-secondary">From {activeService.startingPrice}</span>
-                <h3 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1C2677', marginTop: '12px', marginBottom: '8px' }}>
+                <h3 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#03252A', marginTop: '12px', marginBottom: '8px' }}>
                   {activeService.title}
                 </h3>
                 <p style={{ fontSize: '0.95rem', color: '#64748B', fontStyle: 'italic', marginBottom: '16px' }}>
@@ -97,7 +97,7 @@ export const CarWashPage: React.FC = () => {
                 </p>
 
                 <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '16px', marginBottom: '24px' }}>
-                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#1C2677', marginBottom: '6px' }}>Key Benefits:</div>
+                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#03252A', marginBottom: '6px' }}>Key Benefits:</div>
                   <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.85rem', color: '#475569' }}>
                     {activeService.benefits.map((b, i) => (
                       <li key={i}>• {b}</li>
@@ -111,19 +111,19 @@ export const CarWashPage: React.FC = () => {
               </div>
 
               <div>
-                <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#1C2677', marginBottom: '16px' }}>
+                <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#03252A', marginBottom: '16px' }}>
                   What's Included:
                 </h4>
                 <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.875rem', marginBottom: '24px' }}>
                   {activeService.included.map((inc, i) => (
                     <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#334155' }}>
-                      <CheckCircle2 size={16} style={{ color: '#10B981', flexShrink: 0 }} />
+                      <CheckCircle2 size={16} style={{ color: '#9BC83B', flexShrink: 0 }} />
                       <span>{inc}</span>
                     </li>
                   ))}
                 </ul>
 
-                <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#1C2677', marginBottom: '12px' }}>
+                <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#03252A', marginBottom: '12px' }}>
                   Gallery & FAQs:
                 </h4>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>

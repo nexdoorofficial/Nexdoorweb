@@ -146,14 +146,14 @@ export const AdminServices: React.FC = () => {
               padding: '10px 18px',
               borderRadius: '12px',
               border: 'none',
-              background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+              background: 'linear-gradient(135deg, #007A87, #0093A2)',
               color: '#FFFFFF',
               fontWeight: 700,
               fontSize: '0.85rem',
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              boxShadow: '0 8px 20px rgba(41, 195, 190, 0.3)',
+              boxShadow: '0 8px 20px rgba(0, 122, 135, 0.3)',
               cursor: 'pointer'
             }}
           >
@@ -169,9 +169,9 @@ export const AdminServices: React.FC = () => {
           style={{
             padding: '12px 20px',
             border: 'none',
-            borderBottom: activeTab === 'house' ? '3px solid #1C2677' : '3px solid transparent',
+            borderBottom: activeTab === 'house' ? '3px solid #007A87' : '3px solid transparent',
             background: activeTab === 'house' ? '#FFFFFF' : 'transparent',
-            color: activeTab === 'house' ? '#1C2677' : '#64748B',
+            color: activeTab === 'house' ? '#007A87' : '#64748B',
             fontWeight: 800,
             fontSize: '0.92rem',
             cursor: 'pointer',
@@ -189,9 +189,9 @@ export const AdminServices: React.FC = () => {
           style={{
             padding: '12px 20px',
             border: 'none',
-            borderBottom: activeTab === 'car' ? '3px solid #2563EB' : '3px solid transparent',
+            borderBottom: activeTab === 'car' ? '3px solid #007A87' : '3px solid transparent',
             background: activeTab === 'car' ? '#FFFFFF' : 'transparent',
-            color: activeTab === 'car' ? '#2563EB' : '#64748B',
+            color: activeTab === 'car' ? '#007A87' : '#64748B',
             fontWeight: 800,
             fontSize: '0.92rem',
             cursor: 'pointer',
@@ -261,7 +261,7 @@ export const AdminServices: React.FC = () => {
                     fontSize: '0.85rem',
                     fontWeight: 800,
                     border: 'none',
-                    background: selectedHouseCategory === c.id ? '#1C2677' : '#F1F5F9',
+                    background: selectedHouseCategory === c.id ? '#007A87' : '#F1F5F9',
                     color: selectedHouseCategory === c.id ? '#FFFFFF' : '#475569',
                     cursor: 'pointer',
                     whiteSpace: 'nowrap'
@@ -282,9 +282,9 @@ export const AdminServices: React.FC = () => {
                     onSave: (locs) => updateHouseCategoryLocations(currentHouseCategoryData.id, locs)
                   })
                 }
-                style={{ background: '#EEF2FF', color: '#1C2677', border: '1px solid #818CF8', padding: '8px 14px', borderRadius: '10px', fontWeight: 800, fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
+                style={{ background: '#EEF2FF', color: '#007A87', border: '1px solid #818CF8', padding: '8px 14px', borderRadius: '10px', fontWeight: 800, fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
               >
-                <MapPin size={16} style={{ color: '#29C3BE' }} />
+                <MapPin size={16} style={{ color: '#007A87' }} />
                 {currentHouseCategoryData.availableLocations && currentHouseCategoryData.availableLocations.length > 0
                   ? `${currentHouseCategoryData.availableLocations.length} Areas Active`
                   : 'All Areas Active'}
@@ -298,14 +298,14 @@ export const AdminServices: React.FC = () => {
                     label: currentHouseCategoryData.label
                   })
                 }
-                style={{ background: 'linear-gradient(135deg, #1C2677, #29C3BE)', color: '#FFF', border: 'none', padding: '8px 16px', borderRadius: '10px', fontWeight: 800, fontSize: '0.82rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(41,195,190,0.25)' }}
+                style={{ background: 'linear-gradient(135deg, #007A87, #0093A2)', color: '#FFF', border: 'none', padding: '8px 16px', borderRadius: '10px', fontWeight: 800, fontSize: '0.82rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(0,122,135,0.25)' }}
               >
                 <Plus size={16} /> Add New Plan Tier
               </button>
 
               <button
                 onClick={() => setVariationModalType('house')}
-                style={{ background: '#1C2677', color: '#FFF', border: 'none', padding: '8px 14px', borderRadius: '10px', fontWeight: 800, fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+                style={{ background: '#007A87', color: '#FFF', border: 'none', padding: '8px 14px', borderRadius: '10px', fontWeight: 800, fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
               >
                 <Plus size={14} /> Add Variation
               </button>
@@ -339,7 +339,7 @@ export const AdminServices: React.FC = () => {
                     <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#1E293B', marginTop: '6px', marginBottom: '4px' }}>
                       {currentHouseCategoryData.standard.name}
                     </h3>
-                    <div style={{ fontSize: '1.6rem', fontWeight: 900, color: '#1C2677' }}>
+                    <div style={{ fontSize: '1.6rem', fontWeight: 900, color: '#03252A' }}>
                       {currentHouseCategoryData.standard.priceDisplay}
                     </div>
                   </div>
@@ -354,7 +354,7 @@ export const AdminServices: React.FC = () => {
                           planData: currentHouseCategoryData.standard
                         })
                       }
-                      style={{ background: '#F1F5F9', border: '1px solid #CBD5E1', padding: '8px 12px', borderRadius: '10px', fontWeight: 700, fontSize: '0.8rem', color: '#1C2677', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+                      style={{ background: '#F1F5F9', border: '1px solid #CBD5E1', padding: '8px 12px', borderRadius: '10px', fontWeight: 700, fontSize: '0.8rem', color: '#007A87', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
                     >
                       <Edit2 size={14} /> Edit Plan
                     </button>
@@ -391,16 +391,16 @@ export const AdminServices: React.FC = () => {
 
             {/* Premium Plan Card */}
             {currentHouseCategoryData.premium && (
-              <div style={{ background: '#FFFFFF', borderRadius: '20px', border: '2px solid #29C3BE', padding: '24px', boxShadow: '0 8px 24px rgba(41, 195, 190, 0.15)' }}>
+              <div style={{ background: '#FFFFFF', borderRadius: '20px', border: '2px solid #007A87', padding: '24px', boxShadow: '0 8px 24px rgba(0, 122, 135, 0.15)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
                   <div>
-                    <span style={{ padding: '4px 10px', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 800, background: '#29C3BE', color: '#0F172A' }}>
+                    <span style={{ padding: '4px 10px', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 800, background: '#007A87', color: '#FFFFFF' }}>
                       PREMIUM ULTRA PLAN ★ RECOMMENDED
                     </span>
                     <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#1E293B', marginTop: '6px', marginBottom: '4px' }}>
                       {currentHouseCategoryData.premium.name}
                     </h3>
-                    <div style={{ fontSize: '1.6rem', fontWeight: 900, color: '#0D9488' }}>
+                    <div style={{ fontSize: '1.6rem', fontWeight: 900, color: '#007A87' }}>
                       {currentHouseCategoryData.premium.priceDisplay}
                     </div>
                   </div>
@@ -415,7 +415,7 @@ export const AdminServices: React.FC = () => {
                           planData: currentHouseCategoryData.premium
                         })
                       }
-                      style={{ background: '#29C3BE', border: 'none', padding: '8px 12px', borderRadius: '10px', fontWeight: 800, fontSize: '0.8rem', color: '#0F172A', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+                      style={{ background: '#007A87', border: 'none', padding: '8px 12px', borderRadius: '10px', fontWeight: 800, fontSize: '0.8rem', color: '#FFFFFF', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
                     >
                       <Edit2 size={14} /> Edit Plan
                     </button>
@@ -441,7 +441,7 @@ export const AdminServices: React.FC = () => {
                   {currentHouseCategoryData.premium.description}
                 </p>
 
-                <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#166534', marginBottom: '8px' }}>Included Features:</h4>
+                <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#166534', marginBottom: '8px' }}>Premium Inclusions:</h4>
                 <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '0.82rem', color: '#334155', marginBottom: '16px' }}>
                   {currentHouseCategoryData.premium.included.map((item, i) => (
                     <li key={i} style={{ marginBottom: '4px' }}>{item}</li>
@@ -682,9 +682,9 @@ export const AdminServices: React.FC = () => {
                     onSave: (locs) => updateLaundryLocations(locs)
                   })
                 }
-                style={{ background: '#EEF2FF', color: '#1C2677', border: '1px solid #818CF8', padding: '10px 16px', borderRadius: '12px', fontWeight: 800, fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
+                style={{ background: '#EEF2FF', color: '#007A87', border: '1px solid #818CF8', padding: '10px 16px', borderRadius: '12px', fontWeight: 800, fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
               >
-                <MapPin size={16} style={{ color: '#29C3BE' }} />
+                <MapPin size={16} style={{ color: '#007A87' }} />
                 {laundryConfig.availableLocations && laundryConfig.availableLocations.length > 0
                   ? `${laundryConfig.availableLocations.length} Areas Active`
                   : 'All Areas Active'}
@@ -700,8 +700,8 @@ export const AdminServices: React.FC = () => {
           </div>
 
           {/* 1. Package Per Kg Base Rates & Descriptions */}
-          <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#1C2677', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Shirt size={18} style={{ color: '#29C3BE' }} /> Package Rates (₹ / Kg) & Subtext Descriptions
+          <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#03252A', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Shirt size={18} style={{ color: '#007A87' }} /> Package Rates (₹ / Kg) & Subtext Descriptions
           </h4>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '28px' }}>
             {(Object.keys(editingLaundry.packages || {}) as (keyof typeof editingLaundry.packages)[]).map((pkgKey) => {
@@ -759,7 +759,7 @@ export const AdminServices: React.FC = () => {
           </div>
 
           {/* 2. Doorstep Pickup & Delivery Rules */}
-          <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#1C2677', marginBottom: '14px' }}>
+          <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#03252A', marginBottom: '14px' }}>
             Doorstep Pickup & Delivery Rules
           </h4>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '28px' }}>
@@ -795,7 +795,7 @@ export const AdminServices: React.FC = () => {
           </div>
 
           {/* 3. Delivery Speed & Care Surcharges & Subtexts */}
-          <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#1C2677', marginBottom: '14px' }}>
+          <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#03252A', marginBottom: '14px' }}>
             Delivery Speed & Care Quality Surcharges
           </h4>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '28px' }}>
@@ -980,7 +980,7 @@ export const AdminServices: React.FC = () => {
                     </div>
 
                     <h4 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#1E293B', margin: 0 }}>{s.title}</h4>
-                    <div style={{ fontSize: '1.2rem', fontWeight: 900, color: '#1C2677', margin: '4px 0 8px 0' }}>{s.startingPrice}</div>
+                    <div style={{ fontSize: '1.2rem', fontWeight: 900, color: '#03252A', margin: '4px 0 8px 0' }}>{s.startingPrice}</div>
                     
                     {/* Plan Tiers Preview */}
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '10px' }}>
@@ -1004,9 +1004,9 @@ export const AdminServices: React.FC = () => {
                     <p style={{ fontSize: '0.8rem', color: '#64748B', marginBottom: '12px' }}>{s.overview}</p>
 
                     {/* Location Availability Badge & Configurator Trigger */}
-                    <div style={{ margin: '8px 0 12px 0', fontSize: '0.78rem', color: '#1C2677', background: '#F8FAFC', padding: '8px 12px', borderRadius: '10px', border: '1px solid #CBD5E1', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ margin: '8px 0 12px 0', fontSize: '0.78rem', color: '#007A87', background: '#F8FAFC', padding: '8px 12px', borderRadius: '10px', border: '1px solid #CBD5E1', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                       <span style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        <MapPin size={14} style={{ color: '#29C3BE' }} />
+                        <MapPin size={14} style={{ color: '#007A87' }} />
                         {s.availableLocations && s.availableLocations.length > 0
                           ? `${s.availableLocations.length} Area(s) Active`
                           : 'Active in All Areas'}
@@ -1021,7 +1021,7 @@ export const AdminServices: React.FC = () => {
                             onSave: (locs) => updateService(s.id, { availableLocations: locs })
                           })
                         }
-                        style={{ background: '#1C2677', color: '#FFF', border: 'none', padding: '4px 10px', borderRadius: '6px', fontSize: '0.72rem', fontWeight: 800, cursor: 'pointer' }}
+                        style={{ background: '#007A87', color: '#FFF', border: 'none', padding: '4px 10px', borderRadius: '6px', fontSize: '0.72rem', fontWeight: 800, cursor: 'pointer' }}
                       >
                         Manage Areas
                       </button>

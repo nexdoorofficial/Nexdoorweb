@@ -132,11 +132,11 @@ export const NewLocationModal: React.FC<Props> = ({ locationToEdit, isOpen, onCl
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid #F1F5F9' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'linear-gradient(135deg, #1C2677, #29C3BE)', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'linear-gradient(135deg, #007A87, #0093A2)', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <MapPin size={20} />
             </div>
             <div>
-              <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#1E293B', margin: 0 }}>
+              <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#03252A', margin: 0 }}>
                 {locationToEdit ? 'Edit Service Location' : 'Add New Service Location'}
               </h2>
               <p style={{ fontSize: '0.85rem', color: '#64748B', margin: 0 }}>
@@ -183,7 +183,7 @@ export const NewLocationModal: React.FC<Props> = ({ locationToEdit, isOpen, onCl
               <button
                 type="button"
                 onClick={toggleAllServices}
-                style={{ background: 'none', border: 'none', color: '#1C2677', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
+                style={{ background: 'none', border: 'none', color: '#007A87', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
               >
                 {selectedServices.length === allServiceOptions.length ? 'Deselect All' : 'Select All'}
               </button>
@@ -213,11 +213,11 @@ export const NewLocationModal: React.FC<Props> = ({ locationToEdit, isOpen, onCl
                       userSelect: 'none',
                       transition: 'all 0.15s ease',
                       background: isChecked
-                        ? 'linear-gradient(135deg, #1C2677, #29C3BE)'
+                        ? 'linear-gradient(135deg, #007A87, #0093A2)'
                         : '#FFFFFF',
                       color: isChecked ? '#FFFFFF' : '#475569',
                       border: isChecked ? '1px solid transparent' : '1px solid #CBD5E1',
-                      boxShadow: isChecked ? '0 4px 12px rgba(41, 195, 190, 0.25)' : 'none'
+                      boxShadow: isChecked ? '0 4px 12px rgba(0, 122, 135, 0.25)' : 'none'
                     }}
                   >
                     <span>{srv.icon}</span>
@@ -231,7 +231,7 @@ export const NewLocationModal: React.FC<Props> = ({ locationToEdit, isOpen, onCl
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
             <button type="button" onClick={onClose} style={{ padding: '10px 20px', borderRadius: '10px', border: '1px solid #CBD5E1', background: '#FFF' }}>Cancel</button>
-            <button type="submit" style={{ padding: '10px 24px', borderRadius: '10px', border: 'none', background: 'linear-gradient(135deg, #1C2677, #29C3BE)', color: '#FFF', fontWeight: 700 }}>
+            <button type="submit" style={{ padding: '10px 24px', borderRadius: '10px', border: 'none', background: 'linear-gradient(135deg, #007A87, #0093A2)', color: '#FFF', fontWeight: 700 }}>
               {locationToEdit ? 'Save Changes' : 'Add Location'}
             </button>
           </div>

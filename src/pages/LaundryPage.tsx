@@ -25,7 +25,7 @@ export const LaundryPage: React.FC = () => {
             <span className="badge-tag" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#B45309', borderColor: '#F59E0B' }}>
               <Shirt size={14} /> SERVICE 03
             </span>
-            <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#1C2677', marginTop: '12px', marginBottom: '16px' }}>
+            <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#03252A', marginTop: '12px', marginBottom: '16px' }}>
               Weight-Based Laundry & Garment Care
             </h1>
             {(() => {
@@ -51,7 +51,7 @@ export const LaundryPage: React.FC = () => {
       <section className="section-padding" style={{ background: '#FFFFFF' }}>
         <div className="container">
           <div style={{ textAlign: 'center', maxWidth: '650px', margin: '0 auto 40px auto' }}>
-            <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#1C2677' }}>
+            <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#03252A' }}>
               Interactive Weight & Service Configurator
             </h2>
             <p style={{ color: '#64748B' }}>
@@ -68,7 +68,7 @@ export const LaundryPage: React.FC = () => {
         <div className="container">
           <div style={{ textAlign: 'center', maxWidth: '650px', margin: '0 auto 40px auto' }}>
             <span className="badge-secondary">TRANSPARENT RATES</span>
-            <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#1C2677', marginTop: '8px' }}>
+            <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#03252A', marginTop: '8px' }}>
               Weight Tier Rate Card
             </h2>
           </div>
@@ -76,7 +76,7 @@ export const LaundryPage: React.FC = () => {
           <div className="glass-card" style={{ padding: '32px', overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.95rem' }}>
               <thead>
-                <tr style={{ borderBottom: '2px solid #CBD5E1', color: '#1C2677' }}>
+                <tr style={{ borderBottom: '2px solid #CBD5E1', color: '#03252A' }}>
                   <th style={{ padding: '12px 16px' }}>Weight Bracket</th>
                   <th style={{ padding: '12px 16px' }}>Estimated Load Items</th>
                   <th style={{ padding: '12px 16px' }}>Base Rate / Kg</th>
@@ -88,8 +88,8 @@ export const LaundryPage: React.FC = () => {
                   <tr key={tier.weightKg} style={{ borderBottom: '1px solid #E2E8F0' }}>
                     <td style={{ padding: '16px', fontWeight: 700, color: '#1B2236' }}>{tier.label}</td>
                     <td style={{ padding: '16px', color: '#64748B' }}>{tier.estItems}</td>
-                    <td style={{ padding: '16px', fontWeight: 700, color: '#29C3BE' }}>₹{tier.basePricePerKg} / kg</td>
-                    <td style={{ padding: '16px', fontWeight: 600, color: tier.weightKg >= 2 ? '#10B981' : '#F59E0B' }}>
+                    <td style={{ padding: '16px', fontWeight: 700, color: '#007A87' }}>₹{tier.basePricePerKg} / kg</td>
+                    <td style={{ padding: '16px', fontWeight: 600, color: tier.weightKg >= 2 ? '#9BC83B' : '#F59E0B' }}>
                       {tier.weightKg >= 2 ? '🎉 FREE PICKUP' : '₹80 Charge'}
                     </td>
                   </tr>
@@ -105,7 +105,7 @@ export const LaundryPage: React.FC = () => {
         <div className="container">
           <div style={{ textAlign: 'center', maxWidth: '650px', margin: '0 auto 48px auto' }}>
             <span className="badge-tag">SPECIALIZED CARE</span>
-            <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#1C2677', marginTop: '8px' }}>
+            <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#03252A', marginTop: '8px' }}>
               Curtains, Blankets & Footwear Spa
             </h2>
           </div>
@@ -120,10 +120,10 @@ export const LaundryPage: React.FC = () => {
                   borderRadius: '16px',
                   fontWeight: 700,
                   fontSize: '0.95rem',
-                  background: activeLaundryServiceId === feat.id ? '#1C2677' : '#FFFFFF',
+                  background: activeLaundryServiceId === feat.id ? '#007A87' : '#FFFFFF',
                   color: activeLaundryServiceId === feat.id ? '#FFFFFF' : '#475569',
                   border: '1px solid #E2E8F0',
-                  boxShadow: activeLaundryServiceId === feat.id ? '0 6px 20px rgba(28, 38, 119, 0.2)' : 'none',
+                  boxShadow: activeLaundryServiceId === feat.id ? '0 6px 20px rgba(0, 122, 135, 0.25)' : 'none',
                   cursor: 'pointer'
                 }}
               >
@@ -136,7 +136,7 @@ export const LaundryPage: React.FC = () => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }} className="laundry-spec-grid">
               <div>
                 <span className="badge-tag">Starting from {activeService.startingPrice}</span>
-                <h3 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1C2677', marginTop: '12px', marginBottom: '8px' }}>
+                <h3 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#03252A', marginTop: '12px', marginBottom: '8px' }}>
                   {activeService.title}
                 </h3>
                 <p style={{ fontSize: '0.95rem', color: '#64748B', fontStyle: 'italic', marginBottom: '16px' }}>
@@ -152,13 +152,13 @@ export const LaundryPage: React.FC = () => {
               </div>
 
               <div>
-                <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#1C2677', marginBottom: '16px' }}>
+                <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#03252A', marginBottom: '16px' }}>
                   What's Included:
                 </h4>
                 <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.875rem', marginBottom: '24px' }}>
                   {activeService.included.map((inc, i) => (
                     <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#334155' }}>
-                      <CheckCircle2 size={16} style={{ color: '#10B981', flexShrink: 0 }} />
+                      <CheckCircle2 size={16} style={{ color: '#9BC83B', flexShrink: 0 }} />
                       <span>{inc}</span>
                     </li>
                   ))}

@@ -10,10 +10,10 @@ export const AboutPage: React.FC = () => {
   return (
     <div>
       {/* Hero */}
-      <section style={{ padding: '80px 0', background: 'radial-gradient(100% 100% at 50% 0%, rgba(41, 195, 190, 0.12) 0%, rgba(248, 250, 252, 0) 100%)' }}>
+      <section style={{ padding: '80px 0', background: 'radial-gradient(100% 100% at 50% 0%, rgba(0, 122, 135, 0.12) 0%, rgba(248, 250, 252, 0) 100%)' }}>
         <div className="container" style={{ textAlign: 'center', maxWidth: '800px' }}>
           <span className="badge-tag">ABOUT NEXDOOR</span>
-          <h1 style={{ fontSize: '2.75rem', fontWeight: 800, color: '#1C2677', marginTop: '16px', marginBottom: '20px' }}>
+          <h1 style={{ fontSize: '2.75rem', fontWeight: 800, color: '#03252A', marginTop: '16px', marginBottom: '20px' }}>
             Reinventing Home & Auto Cleaning with Technology & Trust
           </h1>
           <p style={{ fontSize: '1.15rem', color: '#475569', lineHeight: 1.6 }}>
@@ -27,8 +27,8 @@ export const AboutPage: React.FC = () => {
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '32px' }}>
             <div className="glass-card" style={{ padding: '32px' }}>
-              <ShieldCheck size={36} style={{ color: '#29C3BE', marginBottom: '16px' }} />
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#1C2677', marginBottom: '8px' }}>
+              <ShieldCheck size={36} style={{ color: '#007A87', marginBottom: '16px' }} />
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#03252A', marginBottom: '8px' }}>
                 100% Verified Specialists
               </h3>
               <p style={{ color: '#64748B', fontSize: '0.9rem', lineHeight: 1.6 }}>
@@ -37,8 +37,8 @@ export const AboutPage: React.FC = () => {
             </div>
 
             <div className="glass-card" style={{ padding: '32px' }}>
-              <Award size={36} style={{ color: '#1C2677', marginBottom: '16px' }} />
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#1C2677', marginBottom: '8px' }}>
+              <Award size={36} style={{ color: '#007A87', marginBottom: '16px' }} />
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#03252A', marginBottom: '8px' }}>
                 German Machinery & Eco-Chemicals
               </h3>
               <p style={{ color: '#64748B', fontSize: '0.9rem', lineHeight: 1.6 }}>
@@ -47,8 +47,8 @@ export const AboutPage: React.FC = () => {
             </div>
 
             <div className="glass-card" style={{ padding: '32px' }}>
-              <Sparkles size={36} style={{ color: '#F59E0B', marginBottom: '16px' }} />
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#1C2677', marginBottom: '8px' }}>
+              <Sparkles size={36} style={{ color: '#9BC83B', marginBottom: '16px' }} />
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#03252A', marginBottom: '8px' }}>
                 Refundable Deposit Guarantee
               </h3>
               <p style={{ color: '#64748B', fontSize: '0.9rem', lineHeight: 1.6 }}>
@@ -64,7 +64,7 @@ export const AboutPage: React.FC = () => {
         <div className="container">
           <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto 48px auto' }}>
             <span className="badge-secondary">LEADERSHIP TEAM</span>
-            <h2 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#1C2677', marginTop: '8px' }}>
+            <h2 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#03252A', marginTop: '8px' }}>
               Meet the Minds Behind NEXDOOR
             </h2>
           </div>
@@ -73,8 +73,8 @@ export const AboutPage: React.FC = () => {
             {TEAM_MEMBERS.map((member) => (
               <div key={member.id} className="glass-card" style={{ padding: '24px', textAlign: 'center' }}>
                 <img src={member.image} alt={member.name} style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', margin: '0 auto 16px auto' }} />
-                <h4 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#1C2677', marginBottom: '4px' }}>{member.name}</h4>
-                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#29C3BE', marginBottom: '8px' }}>{member.role}</div>
+                <h4 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#03252A', marginBottom: '4px' }}>{member.name}</h4>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#007A87', marginBottom: '8px' }}>{member.role}</div>
                 <p style={{ fontSize: '0.85rem', color: '#64748B', lineHeight: 1.5, marginBottom: '12px' }}>{member.bio}</p>
                 <span style={{ fontSize: '0.75rem', fontWeight: 600, background: '#F1F5F9', color: '#475569', padding: '4px 10px', borderRadius: '12px' }}>
                   {member.experience}

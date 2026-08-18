@@ -14,7 +14,7 @@ export const BlogPage: React.FC = () => {
       <div className="container">
         <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto 48px auto' }}>
           <span className="badge-tag"><BookOpen size={14} /> KNOWLEDGE BASE & INSIGHTS</span>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#1C2677', marginTop: '8px' }}>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#03252A', marginTop: '8px' }}>
             NEXDOOR Cleaning Journal
           </h1>
           <p style={{ color: '#64748B', fontSize: '1rem', marginTop: '8px' }}>
@@ -36,7 +36,7 @@ export const BlogPage: React.FC = () => {
                     </span>
                   </div>
 
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#1C2677', marginBottom: '10px', lineHeight: 1.4 }}>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#03252A', marginBottom: '10px', lineHeight: 1.4 }}>
                     <Link to={`/blog/${post.slug}`} style={{ color: 'inherit' }}>{post.title}</Link>
                   </h3>
 

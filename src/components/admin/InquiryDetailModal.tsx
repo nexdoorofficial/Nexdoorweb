@@ -92,7 +92,7 @@ export const InquiryDetailModal: React.FC<InquiryDetailModalProps> = ({
           <div
             style={{
               padding: '20px 24px',
-              background: 'linear-gradient(135deg, #1C2677 0%, #0F172A 100%)',
+              background: 'linear-gradient(135deg, #03252A 0%, #004D56 100%)',
               color: '#FFFFFF',
               display: 'flex',
               alignItems: 'center',
@@ -103,7 +103,7 @@ export const InquiryDetailModal: React.FC<InquiryDetailModalProps> = ({
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <div
                 style={{
-                  background: '#29C3BE',
+                  background: 'linear-gradient(135deg, #007A87, #9BC83B)',
                   color: '#FFFFFF',
                   padding: '6px 12px',
                   borderRadius: '10px',
@@ -178,7 +178,7 @@ export const InquiryDetailModal: React.FC<InquiryDetailModalProps> = ({
                     style={{
                       padding: '8px 16px',
                       borderRadius: '10px',
-                      background: '#1C2677',
+                      background: '#007A87',
                       color: '#FFFFFF',
                       fontWeight: 800,
                       fontSize: '0.85rem',
@@ -223,7 +223,7 @@ export const InquiryDetailModal: React.FC<InquiryDetailModalProps> = ({
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div style={{ background: '#FFFFFF', padding: '12px 16px', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
                 <span style={{ fontSize: '0.75rem', color: '#64748B', fontWeight: 700, display: 'block', textTransform: 'uppercase' }}>Service Category</span>
-                <strong style={{ fontSize: '0.95rem', color: '#1C2677', fontWeight: 800 }}>{inquiry.serviceInterest}</strong>
+                <strong style={{ fontSize: '0.95rem', color: '#007A87', fontWeight: 800 }}>{inquiry.serviceInterest}</strong>
               </div>
 
               <div style={{ background: '#FFFFFF', padding: '12px 16px', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
@@ -236,8 +236,8 @@ export const InquiryDetailModal: React.FC<InquiryDetailModalProps> = ({
 
             {/* Customer Message Box */}
             <div>
-              <label style={{ fontSize: '0.82rem', fontWeight: 800, color: '#1C2677', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
-                <MessageSquare size={16} style={{ color: '#29C3BE' }} /> Customer Inquiry Message:
+              <label style={{ fontSize: '0.82rem', fontWeight: 800, color: '#007A87', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+                <MessageSquare size={16} style={{ color: '#007A87' }} /> Customer Inquiry Message:
               </label>
               <div
                 style={{

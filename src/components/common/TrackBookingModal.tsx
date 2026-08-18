@@ -4,7 +4,6 @@ import {
   Search,
   X,
   PackageCheck,
-  CheckCircle2,
   MapPin,
   Calendar,
   UserCheck,
@@ -236,7 +235,7 @@ export const TrackBookingModal: React.FC<TrackBookingModalProps> = ({ isOpen, on
           className="track-modal-header"
           style={{
             padding: '24px 28px',
-            background: 'linear-gradient(135deg, #1C2677 0%, #0F172A 100%)',
+            background: 'linear-gradient(135deg, #03252A 0%, #004D56 100%)',
             color: '#FFFFFF',
             display: 'flex',
             alignItems: 'center',
@@ -251,12 +250,12 @@ export const TrackBookingModal: React.FC<TrackBookingModalProps> = ({ isOpen, on
                 width: '44px',
                 height: '44px',
                 borderRadius: '14px',
-                background: 'linear-gradient(135deg, #29C3BE, #1C2677)',
+                background: 'linear-gradient(135deg, #007A87, #9BC83B)',
                 color: '#FFFFFF',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 4px 14px rgba(41, 195, 190, 0.3)',
+                boxShadow: '0 4px 14px rgba(0, 122, 135, 0.3)',
                 flexShrink: 0
               }}
             >
@@ -352,12 +351,12 @@ export const TrackBookingModal: React.FC<TrackBookingModalProps> = ({ isOpen, on
                   padding: '10px 20px',
                   borderRadius: '14px',
                   border: 'none',
-                  background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+                  background: 'linear-gradient(135deg, #007A87, #0093A2)',
                   color: '#FFFFFF',
                   fontWeight: 800,
                   fontSize: '0.88rem',
                   cursor: 'pointer',
-                  boxShadow: '0 4px 14px rgba(41, 195, 190, 0.25)',
+                  boxShadow: '0 4px 14px rgba(0, 122, 135, 0.25)',
                   whiteSpace: 'nowrap'
                 }}
               >
@@ -371,120 +370,122 @@ export const TrackBookingModal: React.FC<TrackBookingModalProps> = ({ isOpen, on
             </div>
           </form>
 
-          {/* Results Area */}
+          {/* Results Render */}
           {hasSearched && (
             <div>
-              {/* Back to List Button if inside single booking view from multiple results */}
-              {selectedBooking && matchedBookings.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => setSelectedBooking(null)}
+              {matchedBookings.length === 0 ? (
+                <div
                   style={{
-                    background: 'transparent',
-                    border: 'none',
-                    color: '#1C2677',
-                    fontWeight: 700,
-                    fontSize: '0.85rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px',
-                    cursor: 'pointer',
-                    marginBottom: '16px',
-                    padding: 0
+                    background: '#FEF2F2',
+                    border: '1px solid #FECACA',
+                    borderRadius: '16px',
+                    padding: '24px',
+                    textAlign: 'center'
                   }}
                 >
-                  <ArrowLeft size={16} /> Back to all results ({matchedBookings.length})
-                </button>
-              )}
-
-              {/* VIEW 1: Multiple Results Card List */}
-              {!selectedBooking && matchedBookings.length > 1 && (
-                <div>
-                  <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#1C2677', marginBottom: '12px' }}>
-                    Found {matchedBookings.length} bookings for "{searchInput}":
-                  </h4>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    {matchedBookings.map((b) => (
-                      <div
-                        key={b.id}
-                        onClick={() => setSelectedBooking(b)}
-                        style={{
-                          padding: '14px 16px',
-                          borderRadius: '16px',
-                          border: '1px solid #E2E8F0',
-                          background: '#F8FAFC',
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          transition: 'all 0.2s ease'
-                        }}
-                      >
-                        <div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', flexWrap: 'wrap' }}>
-                            <span style={{ fontWeight: 800, fontSize: '0.9rem', color: '#0F172A' }}>
-                              {b.referenceId || b.id}
-                            </span>
-                            {getStatusBadge(b.status)}
-                          </div>
-                          <div style={{ fontSize: '0.825rem', fontWeight: 700, color: '#1C2677' }}>
-                            {b.serviceName} • {b.categoryOrPackage}
-                          </div>
-                          <div style={{ fontSize: '0.75rem', color: '#64748B', marginTop: '2px' }}>
-                            📅 {b.scheduledDate} ({b.scheduledTime}) • 📍 {b.area}
-                          </div>
-                        </div>
-
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <span style={{ fontWeight: 900, fontSize: '0.95rem', color: '#1C2677' }}>
-                            ₹{b.estimatedTotal}
-                          </span>
-                          <ChevronRight size={16} color="#94A3B8" />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  <AlertCircle size={32} style={{ color: '#DC2626', margin: '0 auto 8px auto' }} />
+                  <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#991B1B', margin: '0 0 4px 0' }}>
+                    No Active Booking Found
+                  </h3>
+                  <p style={{ fontSize: '0.825rem', color: '#B91C1C', margin: 0, lineHeight: 1.5 }}>
+                    We could not find any order with phone number or ID "{searchInput}". Please double check your 10-digit number or contact support.
+                  </p>
                 </div>
-              )}
-
-              {/* VIEW 2: Single Booking Detailed View */}
-              {selectedBooking && (
+              ) : selectedBooking ? (
+                /* Single Booking Detail View */
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  
-                  {/* Order Status Banner */}
+                  {/* Top Reference & Status */}
                   <div
                     style={{
                       background: '#F8FAFC',
-                      padding: '16px',
-                      borderRadius: '16px',
-                      border: '1px solid #E2E8F0'
+                      border: '1px solid #E2E8F0',
+                      borderRadius: '18px',
+                      padding: '16px 20px',
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      gap: '12px'
                     }}
                   >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
-                      <div>
-                        <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                          ORDER REFERENCE ID
-                        </div>
-                        <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#1C2677', marginTop: '2px' }}>
-                          {selectedBooking.referenceId || selectedBooking.id}
-                        </div>
+                    <div>
+                      {matchedBookings.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => setSelectedBooking(null)}
+                          style={{
+                            background: 'transparent',
+                            border: 'none',
+                            color: '#007A87',
+                            fontWeight: 700,
+                            fontSize: '0.78rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            cursor: 'pointer',
+                            padding: '0 0 6px 0'
+                          }}
+                        >
+                          <ArrowLeft size={14} /> Back to all orders
+                        </button>
+                      )}
+                      <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748B' }}>
+                        ORDER REFERENCE
                       </div>
-                      {getStatusBadge(selectedBooking.status)}
+                      <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#03252A', marginTop: '2px' }}>
+                        {selectedBooking.referenceId || selectedBooking.id}
+                      </div>
                     </div>
 
-                    {/* Progress Timeline Tracker (4 Steps) */}
+                    <div style={{ textAlign: 'right' }}>
+                      {getStatusBadge(selectedBooking.status)}
+                      <div style={{ fontSize: '0.75rem', color: '#64748B', marginTop: '4px' }}>
+                        Booked: {selectedBooking.createdAt?.slice(0, 10) || 'Recent'}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Visual Progress Timeline Tracker */}
+                  <div
+                    style={{
+                      background: '#FFFFFF',
+                      border: '1px solid #E2E8F0',
+                      borderRadius: '18px',
+                      padding: '20px',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
+                    }}
+                  >
+                    <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '16px' }}>
+                      Live Fulfillment Timeline
+                    </div>
+
                     {selectedBooking.status !== 'cancelled' ? (
-                      <div>
-                        <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#334155', marginBottom: '10px' }}>
-                          Live Progress Tracker
-                        </div>
-                        
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '4px', position: 'relative' }}>
+                      <div style={{ position: 'relative' }}>
+                        <div
+                          style={{
+                            position: 'absolute',
+                            top: '15px',
+                            left: '5%',
+                            right: '5%',
+                            height: '3px',
+                            background: '#E2E8F0',
+                            zIndex: 0
+                          }}
+                        />
+
+                        <div
+                          style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(4, 1fr)',
+                            position: 'relative',
+                            zIndex: 1
+                          }}
+                        >
                           {[
-                            { step: 0, label: 'Placed', icon: CheckCircle2 },
-                            { step: 1, label: 'Confirmed', icon: Sparkles },
-                            { step: 2, label: 'On Way', icon: UserCheck },
-                            { step: 3, label: 'Completed', icon: PackageCheck }
+                            { label: 'Booking Placed', step: 0 },
+                            { label: 'Confirmed', step: 1 },
+                            { label: 'Crew On Way', step: 2 },
+                            { label: 'Completed', step: 3 }
                           ].map((s) => {
                             const curStep = getStepIndex(selectedBooking.status);
                             const isDone = curStep >= s.step;
@@ -498,20 +499,20 @@ export const TrackBookingModal: React.FC<TrackBookingModalProps> = ({ isOpen, on
                                     height: '30px',
                                     borderRadius: '50%',
                                     margin: '0 auto 4px auto',
-                                    background: isDone ? '#29C3BE' : '#E2E8F0',
-                                    color: isDone ? '#FFFFFF' : '#94A3B8',
+                                    background: isDone ? '#9BC83B' : '#E2E8F0',
+                                    color: isDone ? '#03252A' : '#94A3B8',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     fontWeight: 800,
                                     fontSize: '0.75rem',
-                                    boxShadow: isCurrent ? '0 0 0 3px rgba(41, 195, 190, 0.25)' : 'none',
+                                    boxShadow: isCurrent ? '0 0 0 3px rgba(155, 200, 59, 0.35)' : 'none',
                                     transition: 'all 0.2s'
                                   }}
                                 >
                                   {isDone ? '✓' : s.step + 1}
                                 </div>
-                                <div style={{ fontSize: '0.68rem', fontWeight: isCurrent ? 800 : 600, color: isDone ? '#1C2677' : '#94A3B8' }}>
+                                <div style={{ fontSize: '0.68rem', fontWeight: isCurrent ? 800 : 600, color: isDone ? '#03252A' : '#94A3B8' }}>
                                   {s.label}
                                 </div>
                               </div>
@@ -532,8 +533,8 @@ export const TrackBookingModal: React.FC<TrackBookingModalProps> = ({ isOpen, on
                       style={{
                         padding: '14px',
                         borderRadius: '16px',
-                        background: '#EFF6FF',
-                        border: '1px solid #BFDBFE',
+                        background: '#F0F9FA',
+                        border: '1px solid #CCFBF1',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '12px'
@@ -544,7 +545,7 @@ export const TrackBookingModal: React.FC<TrackBookingModalProps> = ({ isOpen, on
                           width: '38px',
                           height: '38px',
                           borderRadius: '12px',
-                          background: '#1C2677',
+                          background: '#007A87',
                           color: '#FFFFFF',
                           display: 'flex',
                           alignItems: 'center',
@@ -555,10 +556,10 @@ export const TrackBookingModal: React.FC<TrackBookingModalProps> = ({ isOpen, on
                         <UserCheck size={18} />
                       </div>
                       <div>
-                        <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#1E40AF', textTransform: 'uppercase' }}>
+                        <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#007A87', textTransform: 'uppercase' }}>
                           ASSIGNED FIELD CREW
                         </div>
-                        <div style={{ fontSize: '0.9rem', fontWeight: 800, color: '#1E293B' }}>
+                        <div style={{ fontSize: '0.9rem', fontWeight: 800, color: '#0F172A' }}>
                           {selectedBooking.assignedStaff}
                         </div>
                       </div>
@@ -568,8 +569,8 @@ export const TrackBookingModal: React.FC<TrackBookingModalProps> = ({ isOpen, on
                   {/* Service & Schedule Details */}
                   <div className="track-modal-grid-2col">
                     <div style={{ background: '#F8FAFC', padding: '14px', borderRadius: '14px', border: '1px solid #E2E8F0' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#1C2677', fontWeight: 700, fontSize: '0.78rem', marginBottom: '4px' }}>
-                        <Sparkles size={13} style={{ color: '#29C3BE' }} /> Service & Plan
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#03252A', fontWeight: 700, fontSize: '0.78rem', marginBottom: '4px' }}>
+                        <Sparkles size={13} style={{ color: '#007A87' }} /> Service & Plan
                       </div>
                       <div style={{ fontSize: '0.88rem', fontWeight: 800, color: '#0F172A' }}>
                         {selectedBooking.serviceName}
@@ -580,8 +581,8 @@ export const TrackBookingModal: React.FC<TrackBookingModalProps> = ({ isOpen, on
                     </div>
 
                     <div style={{ background: '#F8FAFC', padding: '14px', borderRadius: '14px', border: '1px solid #E2E8F0' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#1C2677', fontWeight: 700, fontSize: '0.78rem', marginBottom: '4px' }}>
-                        <Calendar size={13} style={{ color: '#29C3BE' }} /> Schedule Slot
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#03252A', fontWeight: 700, fontSize: '0.78rem', marginBottom: '4px' }}>
+                        <Calendar size={13} style={{ color: '#007A87' }} /> Schedule Slot
                       </div>
                       <div style={{ fontSize: '0.88rem', fontWeight: 800, color: '#0F172A' }}>
                         {selectedBooking.scheduledDate}
@@ -594,8 +595,8 @@ export const TrackBookingModal: React.FC<TrackBookingModalProps> = ({ isOpen, on
 
                   {/* Address & Customer Details */}
                   <div style={{ background: '#F8FAFC', padding: '14px', borderRadius: '14px', border: '1px solid #E2E8F0' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#1C2677', fontWeight: 700, fontSize: '0.78rem', marginBottom: '4px' }}>
-                      <MapPin size={13} style={{ color: '#29C3BE' }} /> Service Address ({selectedBooking.area})
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#03252A', fontWeight: 700, fontSize: '0.78rem', marginBottom: '4px' }}>
+                      <MapPin size={13} style={{ color: '#007A87' }} /> Service Address ({selectedBooking.area})
                     </div>
                     <div style={{ fontSize: '0.85rem', color: '#0F172A', fontWeight: 700, lineHeight: 1.3 }}>
                       {selectedBooking.customerName} • {selectedBooking.customerPhone}
@@ -607,8 +608,8 @@ export const TrackBookingModal: React.FC<TrackBookingModalProps> = ({ isOpen, on
 
                   {/* Pricing Breakdown */}
                   <div style={{ background: '#F8FAFC', padding: '14px', borderRadius: '14px', border: '1px solid #E2E8F0' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#1C2677', fontWeight: 700, fontSize: '0.78rem', marginBottom: '8px' }}>
-                      <CreditCard size={13} style={{ color: '#29C3BE' }} /> Payment Summary
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#03252A', fontWeight: 700, fontSize: '0.78rem', marginBottom: '8px' }}>
+                      <CreditCard size={13} style={{ color: '#007A87' }} /> Payment Summary
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: '#475569', marginBottom: '4px' }}>
                       <span>Estimated Total:</span>
@@ -618,7 +619,7 @@ export const TrackBookingModal: React.FC<TrackBookingModalProps> = ({ isOpen, on
                       <span>Advance Deposit Paid:</span>
                       <span style={{ fontWeight: 700, color: '#059669' }}>- ₹{selectedBooking.depositPaid}</span>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.88rem', fontWeight: 800, color: '#1C2677', borderTop: '1px dashed #CBD5E1', paddingTop: '6px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.88rem', fontWeight: 800, color: '#03252A', borderTop: '1px dashed #CBD5E1', paddingTop: '6px' }}>
                       <span>Balance Payable at Doorstep:</span>
                       <span>₹{Math.max(0, selectedBooking.estimatedTotal - selectedBooking.depositPaid)}</span>
                     </div>
@@ -660,7 +661,7 @@ export const TrackBookingModal: React.FC<TrackBookingModalProps> = ({ isOpen, on
                         flex: '1 1 140px',
                         padding: '10px 14px',
                         borderRadius: '12px',
-                        background: '#1C2677',
+                        background: '#007A87',
                         color: '#FFFFFF',
                         fontWeight: 700,
                         fontSize: '0.82rem',
@@ -671,24 +672,57 @@ export const TrackBookingModal: React.FC<TrackBookingModalProps> = ({ isOpen, on
                         gap: '6px'
                       }}
                     >
-                      <PhoneCall size={15} /> Call Dispatch Team
+                      <PhoneCall size={15} /> Call Helpdesk
                     </a>
                   </div>
-
                 </div>
-              )}
-
-              {/* VIEW 3: Empty Not Found State */}
-              {matchedBookings.length === 0 && (
-                <div style={{ textAlign: 'center', padding: '30px 16px', background: '#FEF2F2', borderRadius: '16px', border: '1px solid #FECACA' }}>
-                  <AlertCircle size={38} style={{ color: '#EF4444', marginBottom: '10px' }} />
-                  <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#991B1B', margin: '0 0 6px 0' }}>
-                    No Booking Found
+              ) : (
+                /* Multiple Bookings Found - List View */
+                <div>
+                  <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#03252A', marginBottom: '12px' }}>
+                    Found {matchedBookings.length} bookings for "{searchInput}":
                   </h4>
-                  <p style={{ fontSize: '0.825rem', color: '#7F1D1D', margin: 0, lineHeight: 1.5 }}>
-                    No active booking matches <strong>"{searchInput}"</strong>.<br />
-                    For privacy & security, please enter your complete 10-digit mobile number or exact Order Reference ID (e.g. <strong>NEX-894210</strong>).
-                  </p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {matchedBookings.map((b) => (
+                      <div
+                        key={b.id}
+                        onClick={() => setSelectedBooking(b)}
+                        style={{
+                          padding: '14px 16px',
+                          borderRadius: '16px',
+                          border: '1px solid #E2E8F0',
+                          background: '#F8FAFC',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          transition: 'all 0.2s ease'
+                        }}
+                      >
+                        <div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', flexWrap: 'wrap' }}>
+                            <span style={{ fontWeight: 800, fontSize: '0.9rem', color: '#0F172A' }}>
+                              {b.referenceId || b.id}
+                            </span>
+                            {getStatusBadge(b.status)}
+                          </div>
+                          <div style={{ fontSize: '0.825rem', fontWeight: 700, color: '#007A87' }}>
+                            {b.serviceName} • {b.categoryOrPackage}
+                          </div>
+                          <div style={{ fontSize: '0.75rem', color: '#64748B', marginTop: '2px' }}>
+                            📅 {b.scheduledDate} ({b.scheduledTime}) • 📍 {b.area}
+                          </div>
+                        </div>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ fontWeight: 900, fontSize: '0.95rem', color: '#03252A' }}>
+                            ₹{b.estimatedTotal}
+                          </span>
+                          <ChevronRight size={16} color="#94A3B8" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>

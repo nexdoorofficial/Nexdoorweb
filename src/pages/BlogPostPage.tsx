@@ -83,7 +83,7 @@ export const BlogPostPage: React.FC = () => {
 
         <span className="badge-tag" style={{ marginBottom: '16px' }}>{post.category}</span>
         
-        <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#1C2677', marginBottom: '16px', lineHeight: 1.2 }}>
+        <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#03252A', marginBottom: '16px', lineHeight: 1.2 }}>
           {post.title}
         </h1>
 

@@ -147,7 +147,7 @@ export interface MorphingDialogTitleProps {
 
 export const MorphingDialogTitle: React.FC<MorphingDialogTitleProps> = ({ children, className, style }) => {
   return (
-    <div className={className} style={{ fontWeight: 800, color: '#1C2677', fontSize: '1.15rem', paddingRight: '28px', ...style }}>
+    <div className={className} style={{ fontWeight: 800, color: '#03252A', fontSize: '1.15rem', paddingRight: '28px', ...style }}>
       {children}
     </div>
   );

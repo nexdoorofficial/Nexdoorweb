@@ -77,7 +77,7 @@ export const CandidateDetailModal: React.FC<CandidateDetailModalProps> = ({
           <div
             style={{
               padding: '20px 24px',
-              background: 'linear-gradient(135deg, #1C2677 0%, #0F172A 100%)',
+              background: 'linear-gradient(135deg, #03252A 0%, #004D56 100%)',
               color: '#FFFFFF',
               display: 'flex',
               alignItems: 'center',
@@ -88,7 +88,7 @@ export const CandidateDetailModal: React.FC<CandidateDetailModalProps> = ({
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <div
                 style={{
-                  background: '#29C3BE',
+                  background: 'linear-gradient(135deg, #007A87, #9BC83B)',
                   color: '#FFFFFF',
                   padding: '6px 12px',
                   borderRadius: '10px',
@@ -164,7 +164,7 @@ export const CandidateDetailModal: React.FC<CandidateDetailModalProps> = ({
                         fontSize: '0.78rem',
                         fontWeight: 800,
                         border: application.status === st ? 'none' : '1px solid #CBD5E1',
-                        background: application.status === st ? '#1C2677' : '#FFFFFF',
+                        background: application.status === st ? '#007A87' : '#FFFFFF',
                         color: application.status === st ? '#FFFFFF' : '#475569',
                         cursor: 'pointer'
                       }}
@@ -191,8 +191,8 @@ export const CandidateDetailModal: React.FC<CandidateDetailModalProps> = ({
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div style={{ background: '#FFFFFF', padding: '14px', borderRadius: '14px', border: '1px solid #E2E8F0' }}>
                 <div style={{ fontSize: '0.75rem', color: '#64748B', fontWeight: 700 }}>POSITION APPLIED FOR</div>
-                <div style={{ fontWeight: 800, color: '#1C2677', fontSize: '0.95rem', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Briefcase size={16} style={{ color: '#29C3BE' }} /> {application.positionApplied}
+                <div style={{ fontWeight: 800, color: '#007A87', fontSize: '0.95rem', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Briefcase size={16} style={{ color: '#007A87' }} /> {application.positionApplied}
                 </div>
               </div>
 
@@ -213,8 +213,8 @@ export const CandidateDetailModal: React.FC<CandidateDetailModalProps> = ({
               <div style={{ background: '#FFFFFF', padding: '14px', borderRadius: '14px', border: '1px solid #E2E8F0' }}>
                 <div style={{ fontSize: '0.75rem', color: '#64748B', fontWeight: 700 }}>CONTACT DETAILS</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginTop: '4px' }}>
-                  <a href={`tel:${application.phone}`} style={{ color: '#1C2677', fontWeight: 800, fontSize: '0.9rem', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Phone size={14} style={{ color: '#29C3BE' }} /> {application.phone}
+                  <a href={`tel:${application.phone}`} style={{ color: '#007A87', fontWeight: 800, fontSize: '0.9rem', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Phone size={14} style={{ color: '#007A87' }} /> {application.phone}
                   </a>
                   <a href={`mailto:${application.email}`} style={{ color: '#64748B', fontSize: '0.82rem', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <Mail size={14} /> {application.email}
@@ -235,12 +235,12 @@ export const CandidateDetailModal: React.FC<CandidateDetailModalProps> = ({
                   gap: '8px',
                   padding: '12px',
                   borderRadius: '12px',
-                  background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+                  background: 'linear-gradient(135deg, #007A87, #0093A2)',
                   color: '#FFFFFF',
                   fontWeight: 800,
                   fontSize: '0.88rem',
                   textDecoration: 'none',
-                  boxShadow: '0 4px 14px rgba(41, 195, 190, 0.3)'
+                  boxShadow: '0 4px 14px rgba(0, 122, 135, 0.3)'
                 }}
               >
                 <Phone size={16} /> Call Candidate ({application.phone})
@@ -258,7 +258,7 @@ export const CandidateDetailModal: React.FC<CandidateDetailModalProps> = ({
                   borderRadius: '12px',
                   background: '#F1F5F9',
                   border: '1px solid #CBD5E1',
-                  color: '#1C2677',
+                  color: '#007A87',
                   fontWeight: 800,
                   fontSize: '0.88rem',
                   textDecoration: 'none'
@@ -298,7 +298,7 @@ export const CandidateDetailModal: React.FC<CandidateDetailModalProps> = ({
                     gap: '6px',
                     padding: '8px 16px',
                     borderRadius: '10px',
-                    background: isSavedNotes ? '#10B981' : '#1C2677',
+                    background: isSavedNotes ? '#10B981' : '#007A87',
                     color: '#FFFFFF',
                     fontWeight: 800,
                     fontSize: '0.82rem',

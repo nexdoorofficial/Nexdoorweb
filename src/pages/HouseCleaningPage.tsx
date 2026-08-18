@@ -19,11 +19,11 @@ export const HouseCleaningPage: React.FC = () => {
   return (
     <div>
       {/* Hero */}
-      <section style={{ padding: '60px 0', background: 'linear-gradient(180deg, rgba(41, 195, 190, 0.12) 0%, rgba(248, 250, 252, 0) 100%)' }}>
+      <section style={{ padding: '60px 0', background: 'linear-gradient(180deg, rgba(0, 122, 135, 0.12) 0%, rgba(248, 250, 252, 0) 100%)' }}>
         <div className="container">
           <div style={{ maxWidth: '750px' }}>
             <span className="badge-tag"><HomeIcon size={14} /> SERVICE 01</span>
-            <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#1C2677', marginTop: '12px', marginBottom: '16px' }}>
+            <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#03252A', marginTop: '12px', marginBottom: '16px' }}>
               Professional House Cleaning Solutions
             </h1>
             <p style={{ fontSize: '1.1rem', color: '#475569', lineHeight: 1.6, marginBottom: '24px' }}>
@@ -38,7 +38,7 @@ export const HouseCleaningPage: React.FC = () => {
       <section className="section-padding" style={{ background: '#FFFFFF' }}>
         <div className="container">
           <div style={{ textAlign: 'center', maxWidth: '650px', margin: '0 auto 40px auto' }}>
-            <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#1C2677' }}>
+            <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#03252A' }}>
               House Category Pricing & Plans
             </h2>
             <p style={{ color: '#64748B' }}>
@@ -55,7 +55,7 @@ export const HouseCleaningPage: React.FC = () => {
         <div className="container">
           <div style={{ textAlign: 'center', maxWidth: '650px', margin: '0 auto 48px auto' }}>
             <span className="badge-secondary">FEATURED DEEP SERVICES</span>
-            <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#1C2677', marginTop: '8px' }}>
+            <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#03252A', marginTop: '8px' }}>
               Specialized Deep Cleaning Solutions
             </h2>
             <p style={{ color: '#64748B' }}>
@@ -74,10 +74,10 @@ export const HouseCleaningPage: React.FC = () => {
                   borderRadius: '16px',
                   fontWeight: 700,
                   fontSize: '0.95rem',
-                  background: activeFeaturedId === feat.id ? '#1C2677' : '#FFFFFF',
+                  background: activeFeaturedId === feat.id ? '#007A87' : '#FFFFFF',
                   color: activeFeaturedId === feat.id ? '#FFFFFF' : '#475569',
                   border: '1px solid #E2E8F0',
-                  boxShadow: activeFeaturedId === feat.id ? '0 6px 20px rgba(28, 38, 119, 0.2)' : 'none',
+                  boxShadow: activeFeaturedId === feat.id ? '0 6px 20px rgba(0, 122, 135, 0.25)' : 'none',
                   cursor: 'pointer'
                 }}
               >
@@ -91,7 +91,7 @@ export const HouseCleaningPage: React.FC = () => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }} className="featured-grid">
               <div>
                 <span className="badge-tag">Starting from {activeFeatured.startingPrice}</span>
-                <h3 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1C2677', marginTop: '12px', marginBottom: '8px' }}>
+                <h3 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#03252A', marginTop: '12px', marginBottom: '8px' }}>
                   {activeFeatured.title}
                 </h3>
                 <p style={{ fontSize: '0.95rem', color: '#64748B', fontStyle: 'italic', marginBottom: '16px' }}>
@@ -102,18 +102,18 @@ export const HouseCleaningPage: React.FC = () => {
                 </p>
 
                 <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '16px', marginBottom: '24px' }}>
-                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#1C2677', marginBottom: '6px' }}>Recommended For:</div>
+                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#03252A', marginBottom: '6px' }}>Recommended For:</div>
                   <div style={{ fontSize: '0.875rem', color: '#475569' }}>{activeFeatured.recommendedFor}</div>
                 </div>
 
                 <div style={{ marginBottom: '24px' }}>
-                  <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#1C2677', textTransform: 'uppercase', marginBottom: '12px' }}>
+                  <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#03252A', textTransform: 'uppercase', marginBottom: '12px' }}>
                     What's Included:
                   </h4>
                   <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.875rem' }}>
                     {activeFeatured.included.map((inc, i) => (
                       <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#334155' }}>
-                        <CheckCircle2 size={16} style={{ color: '#10B981', flexShrink: 0 }} />
+                        <CheckCircle2 size={16} style={{ color: '#9BC83B', flexShrink: 0 }} />
                         <span>{inc}</span>
                       </li>
                     ))}
@@ -127,8 +127,8 @@ export const HouseCleaningPage: React.FC = () => {
 
               {/* Gallery & FAQ Column */}
               <div>
-                <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#1C2677', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <ImageIcon size={18} style={{ color: '#29C3BE' }} /> Demo Gallery & Results
+                <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#03252A', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <ImageIcon size={18} style={{ color: '#007A87' }} /> Demo Gallery & Results
                 </h4>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '24px' }}>
                   {activeFeatured.gallery.map((img, i) => (
@@ -136,13 +136,13 @@ export const HouseCleaningPage: React.FC = () => {
                   ))}
                 </div>
 
-                <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#1C2677', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <HelpCircle size={18} style={{ color: '#29C3BE' }} /> Service FAQ
+                <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#03252A', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <HelpCircle size={18} style={{ color: '#007A87' }} /> Service FAQ
                 </h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   {activeFeatured.faq.map((f, i) => (
                     <div key={i} style={{ background: '#F8FAFC', padding: '12px 16px', borderRadius: '12px', fontSize: '0.85rem' }}>
-                      <strong style={{ color: '#1C2677', display: 'block', marginBottom: '4px' }}>Q: {f.question}</strong>
+                      <strong style={{ color: '#03252A', display: 'block', marginBottom: '4px' }}>Q: {f.question}</strong>
                       <span style={{ color: '#475569' }}>{f.answer}</span>
                     </div>
                   ))}

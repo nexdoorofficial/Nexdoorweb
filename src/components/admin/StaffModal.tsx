@@ -204,7 +204,7 @@ export const StaffModal: React.FC<StaffModalProps> = ({
                 width: '40px',
                 height: '40px',
                 borderRadius: '12px',
-                background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+                background: 'linear-gradient(135deg, #007A87, #0093A2)',
                 color: '#FFF',
                 display: 'flex',
                 alignItems: 'center',
@@ -214,7 +214,7 @@ export const StaffModal: React.FC<StaffModalProps> = ({
               {editingStaff ? <Users size={20} /> : <UserPlus size={20} />}
             </div>
             <div>
-              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#1E293B', margin: 0 }}>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#03252A', margin: 0 }}>
                 {editingStaff ? 'Edit Staff Member' : 'Add New Staff Member'}
               </h2>
               <p style={{ fontSize: '0.825rem', color: '#64748B', margin: 0 }}>
@@ -325,7 +325,7 @@ export const StaffModal: React.FC<StaffModalProps> = ({
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   cursor: 'pointer',
-                  boxShadow: isZoneDropdownOpen ? '0 0 0 2px rgba(41, 195, 190, 0.3)' : 'none'
+                  boxShadow: isZoneDropdownOpen ? '0 0 0 2px rgba(0, 122, 135, 0.3)' : 'none'
                 }}
               >
                 <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -344,7 +344,7 @@ export const StaffModal: React.FC<StaffModalProps> = ({
                     right: 0,
                     marginTop: '4px',
                     background: '#FFFFFF',
-                    border: '1.5px solid #29C3BE',
+                    border: '1.5px solid #007A87',
                     borderRadius: '12px',
                     padding: '10px',
                     boxShadow: '0 10px 25px rgba(0,0,0,0.15)',
@@ -375,14 +375,14 @@ export const StaffModal: React.FC<StaffModalProps> = ({
                         cursor: 'pointer',
                         fontSize: '0.8rem',
                         fontWeight: 700,
-                        color: selectedZones.includes('All Locations') ? '#1C2677' : '#334155'
+                        color: selectedZones.includes('All Locations') ? '#007A87' : '#334155'
                       }}
                     >
                       <input
                         type="checkbox"
                         checked={selectedZones.includes('All Locations')}
                         onChange={() => handleZoneToggle('All Locations')}
-                        style={{ accentColor: '#1C2677', width: '14px', height: '14px', cursor: 'pointer' }}
+                        style={{ accentColor: '#007A87', width: '14px', height: '14px', cursor: 'pointer' }}
                       />
                       <span>📍 All Locations (Global)</span>
                     </label>
@@ -402,14 +402,14 @@ export const StaffModal: React.FC<StaffModalProps> = ({
                             cursor: 'pointer',
                             fontSize: '0.8rem',
                             fontWeight: 600,
-                            color: isChecked ? '#1C2677' : '#334155'
+                            color: isChecked ? '#007A87' : '#334155'
                           }}
                         >
                           <input
                             type="checkbox"
                             checked={isChecked}
                             onChange={() => handleZoneToggle(loc.name)}
-                            style={{ accentColor: '#1C2677', width: '14px', height: '14px', cursor: 'pointer' }}
+                            style={{ accentColor: '#007A87', width: '14px', height: '14px', cursor: 'pointer' }}
                           />
                           <span>📍 {loc.name}</span>
                         </label>
@@ -538,7 +538,7 @@ export const StaffModal: React.FC<StaffModalProps> = ({
                   <button
                     type="button"
                     onClick={() => handleAddSpec()}
-                    style={{ background: '#1C2677', color: '#FFF', border: 'none', borderRadius: '6px', padding: '2px 6px', fontSize: '0.7rem', cursor: 'pointer' }}
+                    style={{ background: '#007A87', color: '#FFF', border: 'none', borderRadius: '6px', padding: '2px 6px', fontSize: '0.7rem', cursor: 'pointer' }}
                   >
                     <Plus size={12} />
                   </button>
@@ -570,11 +570,11 @@ export const StaffModal: React.FC<StaffModalProps> = ({
                 padding: '10px 24px',
                 borderRadius: '12px',
                 border: 'none',
-                background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+                background: 'linear-gradient(135deg, #007A87, #0093A2)',
                 color: '#FFFFFF',
                 fontWeight: 700,
                 cursor: 'pointer',
-                boxShadow: '0 4px 12px rgba(41, 195, 190, 0.25)'
+                boxShadow: '0 4px 12px rgba(0, 122, 135, 0.25)'
               }}
             >
               {editingStaff ? 'Save Changes' : 'Add Staff Member'}

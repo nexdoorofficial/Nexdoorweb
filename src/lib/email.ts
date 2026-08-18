@@ -41,20 +41,20 @@ export async function sendNewOrderNotification(booking: Partial<BookingRecord>):
         <style>
           body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; margin: 0; padding: 20px; color: #1e293b; }
           .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
-          .header { background: linear-gradient(135deg, #1C2677 0%, #29C3BE 100%); color: #ffffff; padding: 28px 24px; text-align: center; }
+          .header { background: linear-gradient(135deg, #03252A 0%, #007A87 100%); color: #ffffff; padding: 28px 24px; text-align: center; }
           .header h1 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: 0.5px; }
           .header p { margin: 6px 0 0 0; font-size: 14px; opacity: 0.9; }
           .content { padding: 24px; }
-          .ref-badge { display: inline-block; background: #ccfbf1; color: #0f766e; font-weight: 800; font-size: 14px; padding: 6px 14px; border-radius: 20px; margin-bottom: 20px; }
+          .ref-badge { display: inline-block; background: #ccfbf1; color: #007A87; font-weight: 800; font-size: 14px; padding: 6px 14px; border-radius: 20px; margin-bottom: 20px; }
           .section { margin-bottom: 22px; padding: 16px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; }
-          .section-title { font-size: 13px; font-weight: 800; color: #1C2677; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; }
+          .section-title { font-size: 13px; font-weight: 800; color: #03252A; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; }
           .row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
           .label { color: #64748b; font-weight: 600; }
           .value { font-weight: 700; color: #0f172a; text-align: right; }
-          .spec-pill { background: #ffffff; border: 1px solid #cbd5e1; padding: 6px 10px; border-radius: 8px; font-size: 13px; font-weight: 700; color: #1C2677; margin-top: 4px; }
-          .total-box { background: #1C2677; color: #ffffff; padding: 18px; border-radius: 12px; margin-top: 20px; }
+          .spec-pill { background: #ffffff; border: 1px solid #cbd5e1; padding: 6px 10px; border-radius: 8px; font-size: 13px; font-weight: 700; color: #03252A; margin-top: 4px; }
+          .total-box { background: #03252A; color: #ffffff; padding: 18px; border-radius: 12px; margin-top: 20px; }
           .total-row { display: flex; justify-content: space-between; align-items: center; }
-          .total-price { font-size: 24px; font-weight: 900; color: #29C3BE; }
+          .total-price { font-size: 24px; font-weight: 900; color: #9BC83B; }
           .footer { background: #f1f5f9; text-align: center; padding: 16px; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0; }
         </style>
       </head>
@@ -110,7 +110,7 @@ export async function sendNewOrderNotification(booking: Partial<BookingRecord>):
               </div>
               <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.15); display: flex; justify-content: space-between; font-size: 13px; opacity: 0.9;">
                 <span>Deposit Paid Online:</span>
-                <strong style="color: #29C3BE;">₹${booking.depositPaid || 199}</strong>
+                <strong style="color: #9BC83B;">₹${booking.depositPaid || 199}</strong>
               </div>
             </div>
           </div>

@@ -238,8 +238,8 @@ export const EditServiceModal: React.FC<Props> = ({ service, isOpen, onClose }) 
             {/* Service Location Availability Checkboxes */}
             <div style={{ marginTop: '14px', background: '#FFFFFF', padding: '14px', borderRadius: '12px', border: '1px solid #CBD5E1' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                <label style={{ fontSize: '0.82rem', fontWeight: 800, color: '#1C2677', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <MapPin size={14} style={{ color: '#29C3BE' }} /> Service Location Availability (Areas where active)
+                <label style={{ fontSize: '0.82rem', fontWeight: 800, color: '#007A87', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <MapPin size={14} style={{ color: '#007A87' }} /> Service Location Availability (Areas where active)
                 </label>
                 <div style={{ display: 'flex', gap: '8px' }}>
                   <button
@@ -277,7 +277,7 @@ export const EditServiceModal: React.FC<Props> = ({ service, isOpen, onClose }) 
                         cursor: 'pointer',
                         fontSize: '0.78rem',
                         fontWeight: isChecked ? 700 : 500,
-                        color: isChecked ? '#1C2677' : '#475569'
+                        color: isChecked ? '#007A87' : '#475569'
                       }}
                     >
                       <input
@@ -290,7 +290,7 @@ export const EditServiceModal: React.FC<Props> = ({ service, isOpen, onClose }) 
                             setSelectedLocations(selectedLocations.filter((l) => l !== locName));
                           }
                         }}
-                        style={{ accentColor: '#1C2677' }}
+                        style={{ accentColor: '#007A87' }}
                       />
                       {locName}
                     </label>
@@ -301,8 +301,8 @@ export const EditServiceModal: React.FC<Props> = ({ service, isOpen, onClose }) 
           </div>
 
           {/* Standard & Premium Tier Editors */}
-          <div style={{ background: '#FFFFFF', padding: '18px', borderRadius: '16px', marginBottom: '20px', border: '2px solid #1C2677' }}>
-            <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#1C2677', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ background: '#FFFFFF', padding: '18px', borderRadius: '16px', marginBottom: '20px', border: '2px solid #007A87' }}>
+            <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#007A87', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <ShieldCheck size={18} /> Standard vs Premium Tier Configurator
             </h4>
 
@@ -310,7 +310,7 @@ export const EditServiceModal: React.FC<Props> = ({ service, isOpen, onClose }) 
             <div style={{ background: '#F8FAFC', padding: '14px', borderRadius: '12px', border: '1px solid #CBD5E1', marginBottom: '16px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
                 <span style={{ fontWeight: 800, color: '#1E293B', fontSize: '0.85rem' }}>Standard Plan Tier</span>
-                <label style={{ cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700, color: '#1C2677' }}>
+                <label style={{ cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700, color: '#007A87' }}>
                   <input type="checkbox" checked={enableStandardPlan} onChange={(e) => setEnableStandardPlan(e.target.checked)} /> Enable Standard Plan
                 </label>
               </div>
@@ -452,7 +452,7 @@ export const EditServiceModal: React.FC<Props> = ({ service, isOpen, onClose }) 
             <button type="button" onClick={onClose} style={{ padding: '12px 20px', borderRadius: '12px', border: '1px solid #CBD5E1', background: '#FFF' }}>
               Cancel
             </button>
-            <button type="submit" style={{ padding: '12px 24px', borderRadius: '12px', border: 'none', background: '#1C2677', color: '#FFF', fontWeight: 700 }}>
+            <button type="submit" style={{ padding: '12px 24px', borderRadius: '12px', border: 'none', background: '#007A87', color: '#FFF', fontWeight: 700 }}>
               Save Changes
             </button>
           </div>

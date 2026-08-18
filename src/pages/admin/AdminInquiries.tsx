@@ -118,7 +118,7 @@ export const AdminInquiries: React.FC = () => {
                 padding: '7px 12px',
                 borderRadius: '8px',
                 border: filterStatus === f.id ? 'none' : '1px solid #E2E8F0',
-                background: filterStatus === f.id ? '#1C2677' : '#F8FAFC',
+                background: filterStatus === f.id ? '#007A87' : '#F8FAFC',
                 color: filterStatus === f.id ? '#FFFFFF' : '#475569',
                 fontWeight: 700,
                 fontSize: '0.78rem',
@@ -187,7 +187,7 @@ export const AdminInquiries: React.FC = () => {
 
                     {/* Reference ID */}
                     <td style={{ padding: '14px 18px' }} onClick={() => handleOpenDetail(inq)}>
-                      <span style={{ fontWeight: 800, color: '#1C2677', background: '#EEF2FF', padding: '4px 8px', borderRadius: '6px', fontSize: '0.8rem' }}>
+                      <span style={{ fontWeight: 800, color: '#007A87', background: '#EEF2FF', padding: '4px 8px', borderRadius: '6px', fontSize: '0.8rem' }}>
                         {inq.referenceId}
                       </span>
                     </td>
@@ -202,9 +202,9 @@ export const AdminInquiries: React.FC = () => {
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                         <a
                           href={`tel:${inq.phone}`}
-                          style={{ color: '#1C2677', fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                          style={{ color: '#007A87', fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                         >
-                          <Phone size={12} style={{ color: '#29C3BE' }} /> {inq.phone}
+                          <Phone size={12} style={{ color: '#007A87' }} /> {inq.phone}
                         </a>
                         {inq.email && (
                           <a
@@ -238,7 +238,7 @@ export const AdminInquiries: React.FC = () => {
                             padding: '6px 12px',
                             borderRadius: '8px',
                             border: 'none',
-                            background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+                            background: 'linear-gradient(135deg, #007A87, #0093A2)',
                             color: '#FFFFFF',
                             fontWeight: 800,
                             fontSize: '0.78rem',

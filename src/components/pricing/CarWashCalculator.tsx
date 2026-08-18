@@ -153,7 +153,7 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
                   borderRadius: '12px',
                   fontWeight: 700,
                   fontSize: '0.875rem',
-                  background: selectedVehicle === v.id ? '#1C2677' : 'transparent',
+                  background: selectedVehicle === v.id ? '#007A87' : 'transparent',
                   color: selectedVehicle === v.id ? '#FFFFFF' : '#475569',
                   border: 'none',
                   cursor: 'pointer',
@@ -187,7 +187,7 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'nowrap', flexShrink: 0 }}>
-              <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#1C2677', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#03252A', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 📍 Service Area:
               </span>
               <span style={{ fontSize: '0.725rem', fontWeight: 800, color: '#059669', background: '#D1FAE5', border: '1px solid #6EE7B7', padding: '3px 9px', borderRadius: '10px', whiteSpace: 'nowrap', flexShrink: 0 }}>
@@ -201,16 +201,16 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
               style={{
                 padding: '8px 14px',
                 borderRadius: '12px',
-                border: '1.5px solid #29C3BE',
+                border: '1.5px solid #007A87',
                 background: '#FFFFFF',
                 fontWeight: 800,
                 fontSize: '0.85rem',
-                color: '#1C2677',
+                color: '#03252A',
                 cursor: 'pointer',
                 outline: 'none',
                 flex: '1 1 200px',
                 maxWidth: '100%',
-                boxShadow: '0 2px 8px rgba(41, 195, 190, 0.12)'
+                boxShadow: '0 2px 8px rgba(0, 122, 135, 0.12)'
               }}
             >
               {availableLocationsList.map((loc) => (
@@ -222,7 +222,7 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
           </div>
 
           <div style={{ textAlign: 'center', margin: '0' }}>
-            <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#1C2677', margin: 0 }}>
+            <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#03252A', margin: 0 }}>
               {activeVehicle?.label} Car Wash & Detailing
             </h3>
             <p style={{ fontSize: '0.875rem', color: '#64748B', margin: '4px 0 0 0' }}>
@@ -249,8 +249,8 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
               style={{
                 padding: '16px 14px',
                 cursor: 'pointer',
-                border: isSelected ? '2px solid #29C3BE' : '1px solid #E2E8F0',
-                background: isSelected ? 'rgba(41, 195, 190, 0.06)' : '#FFFFFF',
+                border: isSelected ? '2px solid #007A87' : '1px solid #E2E8F0',
+                background: isSelected ? 'rgba(0, 122, 135, 0.06)' : '#FFFFFF',
                 borderRadius: '18px',
                 display: 'flex',
                 flexDirection: 'column',
@@ -264,7 +264,7 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
                     fontSize: '0.75rem',
                     fontWeight: 800,
                     textTransform: 'uppercase',
-                    color: isSelected ? '#1C2677' : '#64748B',
+                    color: isSelected ? '#03252A' : '#64748B',
                     letterSpacing: '0.03em'
                   }}>
                     {pkg.name}
@@ -276,7 +276,7 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
                   )}
                 </div>
 
-                <div className="pkg-price-text" style={{ fontSize: '1.6rem', fontWeight: 800, color: isSelected ? '#29C3BE' : '#1C2677', marginBottom: '2px', lineHeight: 1 }}>
+                <div className="pkg-price-text" style={{ fontSize: '1.6rem', fontWeight: 800, color: isSelected ? '#007A87' : '#03252A', marginBottom: '2px', lineHeight: 1 }}>
                   ₹{pkg.price}
                 </div>
                 
@@ -286,17 +286,17 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
                 </div>
 
                 <div className="pkg-duration-text" style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.75rem', color: '#475569', marginBottom: '10px', fontWeight: 600 }}>
-                  <Clock size={13} style={{ color: '#29C3BE' }} /> {pkg.duration}
+                  <Clock size={13} style={{ color: '#007A87' }} /> {pkg.duration}
                 </div>
 
                 {/* DESKTOP ONLY INLINE CHECKLIST (INCLUDED & EXCLUDED) */}
                 <div className="desktop-features-list">
                   <div style={{ marginBottom: '10px' }}>
-                    <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#1C2677', textTransform: 'uppercase', marginBottom: '4px' }}>What's Included:</div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#03252A', textTransform: 'uppercase', marginBottom: '4px' }}>What's Included:</div>
                     <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '0.8rem', color: '#334155' }}>
                       {pkg.included.map((inc: string, i: number) => (
                         <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
-                          <CheckCircle2 size={13} style={{ color: '#10B981', flexShrink: 0, marginTop: '2px' }} />
+                          <CheckCircle2 size={13} style={{ color: '#9BC83B', flexShrink: 0, marginTop: '2px' }} />
                           <span>{inc}</span>
                         </li>
                       ))}
@@ -340,7 +340,7 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
                     }}
                   >
                     <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                      <span style={{ width: '15px', height: '15px', borderRadius: '50%', background: '#10B981', color: '#FFF', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 800 }}>
+                      <span style={{ width: '15px', height: '15px', borderRadius: '50%', background: '#9BC83B', color: '#FFF', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 800 }}>
                         {isAccordionOpen ? '−' : '+'}
                       </span>
                       Included ({pkg.included.length})
@@ -360,7 +360,7 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
                         <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '5px', fontSize: '0.725rem', padding: '8px', background: '#F8FAFC', borderRadius: '8px' }}>
                           {pkg.included.map((inc: string, i: number) => (
                             <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '5px', color: '#334155' }}>
-                              <CheckCircle2 size={12} style={{ color: '#10B981', flexShrink: 0, marginTop: '2px' }} />
+                              <CheckCircle2 size={12} style={{ color: '#9BC83B', flexShrink: 0, marginTop: '2px' }} />
                               <span style={{ lineHeight: 1.35 }}>{inc}</span>
                             </li>
                           ))}
@@ -431,10 +431,10 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
                     borderRadius: '10px',
                     fontWeight: 700,
                     fontSize: '0.8rem',
-                    background: isSelected ? '#29C3BE' : 'transparent',
-                    color: isSelected ? '#FFFFFF' : '#1C2677',
-                    border: isSelected ? 'none' : '1px solid #1C2677',
-                    boxShadow: isSelected ? '0 4px 12px rgba(41, 195, 190, 0.3)' : 'none',
+                    background: isSelected ? '#007A87' : 'transparent',
+                    color: isSelected ? '#FFFFFF' : '#03252A',
+                    border: isSelected ? 'none' : '1px solid #007A87',
+                    boxShadow: isSelected ? '0 4px 12px rgba(0, 122, 135, 0.3)' : 'none',
                     transition: 'all 0.2s'
                   }}
                 >
@@ -454,7 +454,7 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
             ref={continueBtnRef}
             style={{
               marginTop: '24px',
-              background: 'linear-gradient(135deg, #1C2677 0%, #0F172A 100%)',
+              background: 'linear-gradient(135deg, #03252A 0%, #004D56 100%)',
               borderRadius: '20px',
               padding: '22px 28px',
               color: '#FFFFFF',
@@ -463,13 +463,13 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
               justifyContent: 'space-between',
               gap: '16px',
               flexWrap: 'wrap',
-              boxShadow: '0 8px 30px rgba(28, 38, 119, 0.25)',
-              border: '1px solid rgba(41, 195, 190, 0.2)'
+              boxShadow: '0 8px 30px rgba(3, 37, 42, 0.25)',
+              border: '1px solid rgba(0, 122, 135, 0.3)'
             }}
           >
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', flexWrap: 'wrap' }}>
-                <span style={{ fontSize: '0.725rem', fontWeight: 800, textTransform: 'uppercase', background: '#29C3BE', color: '#1C2677', padding: '3px 9px', borderRadius: '8px', letterSpacing: '0.04em' }}>
+                <span style={{ fontSize: '0.725rem', fontWeight: 800, textTransform: 'uppercase', background: '#9BC83B', color: '#03252A', padding: '3px 9px', borderRadius: '8px', letterSpacing: '0.04em' }}>
                   {activeVehicle?.label}
                 </span>
                 <span style={{ fontSize: '0.825rem', color: '#CBD5E1', fontWeight: 700 }}>
@@ -493,12 +493,12 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
                 gap: '10px',
                 padding: '14px 28px',
                 borderRadius: '14px',
-                background: 'linear-gradient(135deg, #29C3BE 0%, #00B4D8 100%)',
+                background: 'linear-gradient(135deg, #007A87 0%, #0093A2 100%)',
                 color: '#FFFFFF',
                 fontWeight: 800,
                 fontSize: '0.95rem',
                 textDecoration: 'none',
-                boxShadow: '0 4px 16px rgba(41, 195, 190, 0.4)',
+                boxShadow: '0 4px 16px rgba(0, 122, 135, 0.4)',
                 transition: 'all 0.2s ease',
                 whiteSpace: 'nowrap',
                 width: '100%',

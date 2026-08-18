@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import type { BookingRecord, AdminService, Technician, ServiceAreaAdmin, BookingStatus, LaundryConfig, BlockedSlot, Coupon, InquiryRecord, InquiryStatus, SiteSettings, JobApplication, ApplicationStatus, SlotCapacity } from '../types/admin';
+import type { BookingRecord, AdminService, Technician, ServiceAreaAdmin, BookingStatus, LaundryConfig, BlockedSlot, Coupon, InquiryRecord, InquiryStatus, SiteSettings, JobApplication, ApplicationStatus, SlotCapacity, RecentWork, GallerySettings } from '../types/admin';
 import type { HouseCategoryData, HouseCategoryKey, HousePlanDetails, VehicleCategoryData, VehicleCategoryKey, CarPackageItem, BlogPost, CareerPosition } from '../types';
 import { HOUSE_CATEGORIES, VEHICLE_CATEGORIES } from '../data/categories';
 import { BLOG_POSTS } from '../data/blogs';
@@ -11,6 +11,96 @@ interface Toast {
   type: 'success' | 'error' | 'info';
   message: string;
 }
+
+const DEFAULT_RECENT_WORKS: RecentWork[] = [
+  {
+    id: 'work-1',
+    title: 'Luxury Villa Deep Cleaning & Floor Buffing',
+    category: 'House Cleaning',
+    location: 'Kakkanad, Kochi',
+    image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80',
+    highlight: 'Polished Marble & Upholstery',
+    summary: 'Restored floor gloss and deep vacuumed multi-level villa.',
+    status: 'active',
+    orderIndex: 0,
+    createdAt: '2026-08-10T10:00:00.000Z'
+  },
+  {
+    id: 'work-2',
+    title: 'Premium Exterior Foam & Ceramic Detailing',
+    category: 'Car Detailing',
+    location: 'Marine Drive, Kochi',
+    image: 'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?auto=format&fit=crop&w=1200&q=80',
+    highlight: 'High-Gloss Ceramic Finish',
+    summary: 'Decontaminated paintwork with hydrophobic coating protection.',
+    status: 'active',
+    orderIndex: 1,
+    createdAt: '2026-08-11T11:00:00.000Z'
+  },
+  {
+    id: 'work-3',
+    title: 'Modern Bathroom Descaling & Glass Polishing',
+    category: 'Sanitization Care',
+    location: 'Panampilly Nagar, Kochi',
+    image: 'https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80',
+    highlight: 'Acid-Free Tile Scrub',
+    summary: 'Removed mineral water stains & treated glass partition.',
+    status: 'active',
+    orderIndex: 2,
+    createdAt: '2026-08-12T12:00:00.000Z'
+  },
+  {
+    id: 'work-4',
+    title: 'Fabric Sofa & Carpet Deep Stain Extraction',
+    category: 'Upholstery Care',
+    location: 'Edappally, Kochi',
+    image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80',
+    highlight: 'UV Sanitized & Extracted',
+    summary: 'Deep-fibre dirt extraction with fabric-safe disinfectant.',
+    status: 'active',
+    orderIndex: 3,
+    createdAt: '2026-08-13T13:00:00.000Z'
+  },
+  {
+    id: 'work-5',
+    title: 'Kitchen Chimney & Thermal Stove Degreasing',
+    category: 'Kitchen Deep Clean',
+    location: 'Aluva, Kochi',
+    image: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80',
+    highlight: '140°C Steam Treatment',
+    summary: 'Full grease extraction across hood, ducting, and cooking zones.',
+    status: 'active',
+    orderIndex: 4,
+    createdAt: '2026-08-14T14:00:00.000Z'
+  },
+  {
+    id: 'work-6',
+    title: 'Delicate Garment Care & Steam Pressing',
+    category: 'Laundry & Fabric Care',
+    location: 'Vyttila, Kochi',
+    image: 'https://images.unsplash.com/photo-1545173168-9f1947eebb7f?auto=format&fit=crop&w=1200&q=80',
+    highlight: 'Anti-Bacterial Wash',
+    summary: 'Gentle organic wash with crisp industrial steam finishing.',
+    status: 'active',
+    orderIndex: 5,
+    createdAt: '2026-08-15T15:00:00.000Z'
+  }
+];
+
+const DEFAULT_GALLERY_SETTINGS: GallerySettings = {
+  badgeText: 'OUR RECENT WORKS',
+  headline: 'See Our Recent Works in Action',
+  description: 'Explore real results from our recent cleaning, sanitization, and detailing projects. From luxury villas and vehicles to delicate fabrics, our certified crew delivers flawless hygiene every time.',
+  slideIntervalSeconds: 4,
+  autoPlay: true,
+  pauseOnHover: true,
+  statJobsCount: '15k+',
+  statJobsLabel: 'Completed Jobs',
+  statRating: '4.9 ★',
+  statRatingLabel: 'Customer Rating',
+  statEcoPercent: '100%',
+  statEcoLabel: 'Eco Chemicals'
+};
 
 const SEED_JOB_APPLICATIONS: JobApplication[] = [
   {
@@ -139,6 +229,17 @@ interface AdminContextType {
   siteSettings: SiteSettings;
   updateSiteSettings: (settings: Partial<SiteSettings>) => void;
   resetSiteSettings: () => void;
+
+  // Recent Works Gallery Management
+  recentWorks: RecentWork[];
+  gallerySettings: GallerySettings;
+  addRecentWork: (item: Omit<RecentWork, 'id' | 'createdAt'>) => RecentWork;
+  updateRecentWork: (id: string, updates: Partial<RecentWork>) => void;
+  deleteRecentWork: (id: string) => void;
+  toggleRecentWorkStatus: (id: string) => void;
+  reorderRecentWorks: (newOrder: RecentWork[]) => void;
+  updateGallerySettings: (updates: Partial<GallerySettings>) => void;
+  resetGallerySettings: () => void;
   
   // Booking actions
   addBooking: (booking: Omit<BookingRecord, 'id' | 'createdAt'>) => BookingRecord;
@@ -478,6 +579,87 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     CAREER_POSITIONS.map((p) => ({ ...p, status: 'active' as const }))
   );
   const [jobApplications, setJobApplications] = useState<JobApplication[]>(SEED_JOB_APPLICATIONS);
+
+  // Recent Works Gallery State (Local Storage Persistence)
+  const [recentWorks, setRecentWorks] = useState<RecentWork[]>(() => {
+    try {
+      const saved = localStorage.getItem('nexdoor_recent_works_v1');
+      return saved ? JSON.parse(saved) : DEFAULT_RECENT_WORKS;
+    } catch (e) {
+      return DEFAULT_RECENT_WORKS;
+    }
+  });
+
+  const [gallerySettings, setGallerySettings] = useState<GallerySettings>(() => {
+    try {
+      const saved = localStorage.getItem('nexdoor_gallery_settings_v1');
+      return saved ? JSON.parse(saved) : DEFAULT_GALLERY_SETTINGS;
+    } catch (e) {
+      return DEFAULT_GALLERY_SETTINGS;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('nexdoor_recent_works_v1', JSON.stringify(recentWorks));
+    } catch (e) {}
+  }, [recentWorks]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('nexdoor_gallery_settings_v1', JSON.stringify(gallerySettings));
+    } catch (e) {}
+  }, [gallerySettings]);
+
+  const addRecentWork = (item: Omit<RecentWork, 'id' | 'createdAt'>): RecentWork => {
+    const newItem: RecentWork = {
+      ...item,
+      id: 'work-' + Date.now(),
+      createdAt: new Date().toISOString()
+    };
+    setRecentWorks((prev) => [newItem, ...prev]);
+    showToast('New recent project added to gallery!', 'success');
+    return newItem;
+  };
+
+  const updateRecentWork = (id: string, updates: Partial<RecentWork>) => {
+    setRecentWorks((prev) =>
+      prev.map((work) => (work.id === id ? { ...work, ...updates } : work))
+    );
+    showToast('Gallery project updated successfully!', 'success');
+  };
+
+  const deleteRecentWork = (id: string) => {
+    setRecentWorks((prev) => prev.filter((work) => work.id !== id));
+    showToast('Project removed from gallery', 'info');
+  };
+
+  const toggleRecentWorkStatus = (id: string) => {
+    setRecentWorks((prev) =>
+      prev.map((work) =>
+        work.id === id
+          ? { ...work, status: work.status === 'active' ? 'hidden' : 'active' }
+          : work
+      )
+    );
+  };
+
+  const reorderRecentWorks = (newOrder: RecentWork[]) => {
+    const indexed = newOrder.map((item, idx) => ({ ...item, orderIndex: idx }));
+    setRecentWorks(indexed);
+    showToast('Gallery order updated!', 'success');
+  };
+
+  const updateGallerySettings = (updates: Partial<GallerySettings>) => {
+    setGallerySettings((prev) => ({ ...prev, ...updates }));
+    showToast('Gallery slide settings saved!', 'success');
+  };
+
+  const resetGallerySettings = () => {
+    setGallerySettings(DEFAULT_GALLERY_SETTINGS);
+    setRecentWorks(DEFAULT_RECENT_WORKS);
+    showToast('Gallery reset to default projects & timing', 'info');
+  };
 
   // Admin Session State (Kept in Local Browser Storage as requested)
   const [adminEmail, setAdminEmail] = useState<string>(() => {
@@ -3074,6 +3256,15 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         siteSettings,
         updateSiteSettings,
         resetSiteSettings,
+        recentWorks,
+        gallerySettings,
+        addRecentWork,
+        updateRecentWork,
+        deleteRecentWork,
+        toggleRecentWorkStatus,
+        reorderRecentWorks,
+        updateGallerySettings,
+        resetGallerySettings,
         careerPositions,
         addCareerPosition,
         updateCareerPosition,

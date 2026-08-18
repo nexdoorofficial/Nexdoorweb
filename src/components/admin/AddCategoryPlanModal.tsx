@@ -132,11 +132,11 @@ export const AddCategoryPlanModal: React.FC<Props> = ({
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid #F1F5F9' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'linear-gradient(135deg, #1C2677, #29C3BE)', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'linear-gradient(135deg, #007A87, #0093A2)', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               {categoryType === 'house' ? <Home size={20} /> : <Car size={20} />}
             </div>
             <div>
-              <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#1E293B', margin: 0 }}>
+              <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#03252A', margin: 0 }}>
                 Add New Plan Tier to {categoryLabel}
               </h2>
               <p style={{ fontSize: '0.85rem', color: '#64748B', margin: 0 }}>
@@ -157,7 +157,7 @@ export const AddCategoryPlanModal: React.FC<Props> = ({
             </div>
             <div>
               <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>Price (₹) *</label>
-              <input type="number" required value={priceNumeric} onChange={(e) => setPriceNumeric(Number(e.target.value))} style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #CBD5E1', fontWeight: 800, color: '#1C2677' }} />
+              <input type="number" required value={priceNumeric} onChange={(e) => setPriceNumeric(Number(e.target.value))} style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #CBD5E1', fontWeight: 800, color: '#007A87' }} />
             </div>
           </div>
 
@@ -221,7 +221,7 @@ export const AddCategoryPlanModal: React.FC<Props> = ({
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
             <button type="button" onClick={onClose} style={{ padding: '10px 20px', borderRadius: '10px', border: '1px solid #CBD5E1', background: '#FFF' }}>Cancel</button>
-            <button type="submit" style={{ padding: '10px 24px', borderRadius: '10px', border: 'none', background: 'linear-gradient(135deg, #1C2677, #29C3BE)', color: '#FFF', fontWeight: 700 }}>
+            <button type="submit" style={{ padding: '10px 24px', borderRadius: '10px', border: 'none', background: 'linear-gradient(135deg, #007A87, #0093A2)', color: '#FFF', fontWeight: 700 }}>
               Add Plan Tier
             </button>
           </div>

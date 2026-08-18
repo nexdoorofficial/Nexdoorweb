@@ -256,7 +256,7 @@ export const BlogModal: React.FC<BlogModalProps> = ({
           <div
             style={{
               padding: '20px 24px',
-              background: 'linear-gradient(135deg, #1C2677 0%, #0F172A 100%)',
+              background: 'linear-gradient(135deg, #03252A 0%, #004D56 100%)',
               color: '#FFFFFF',
               display: 'flex',
               alignItems: 'center',
@@ -265,7 +265,7 @@ export const BlogModal: React.FC<BlogModalProps> = ({
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{ background: '#29C3BE', color: '#FFF', padding: '8px', borderRadius: '12px', display: 'flex' }}>
+              <div style={{ background: 'linear-gradient(135deg, #007A87, #9BC83B)', color: '#FFF', padding: '8px', borderRadius: '12px', display: 'flex' }}>
                 <BookOpen size={20} />
               </div>
               <div>
@@ -297,8 +297,8 @@ export const BlogModal: React.FC<BlogModalProps> = ({
                 fontSize: '0.88rem',
                 border: 'none',
                 background: 'transparent',
-                borderBottom: activeTab === 'content' ? '3px solid #1C2677' : '3px solid transparent',
-                color: activeTab === 'content' ? '#1C2677' : '#64748B',
+                borderBottom: activeTab === 'content' ? '3px solid #007A87' : '3px solid transparent',
+                color: activeTab === 'content' ? '#007A87' : '#64748B',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
@@ -317,15 +317,15 @@ export const BlogModal: React.FC<BlogModalProps> = ({
                 fontSize: '0.88rem',
                 border: 'none',
                 background: 'transparent',
-                borderBottom: activeTab === 'seo' ? '3px solid #29C3BE' : '3px solid transparent',
-                color: activeTab === 'seo' ? '#1C2677' : '#64748B',
+                borderBottom: activeTab === 'seo' ? '3px solid #007A87' : '3px solid transparent',
+                color: activeTab === 'seo' ? '#007A87' : '#64748B',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px'
               }}
             >
-              <Globe size={16} style={{ color: '#29C3BE' }} /> SEO Settings & Google SERP Preview
+              <Globe size={16} style={{ color: '#007A87' }} /> SEO Settings & Google SERP Preview
               <span style={{ background: seoScore >= 80 ? '#DCFCE7' : '#FEF3C7', color: seoScore >= 80 ? '#15803D' : '#B45309', padding: '2px 8px', borderRadius: '10px', fontSize: '0.72rem', fontWeight: 900 }}>
                 {seoScore}/100
               </span>
@@ -333,13 +333,13 @@ export const BlogModal: React.FC<BlogModalProps> = ({
           </div>
 
           {/* Form Content Area */}
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
-            <div
-              data-lenis-prevent
-              onWheel={(e) => e.stopPropagation()}
-              className="custom-scrollbar"
-              style={{ padding: '24px', overflowY: 'auto', overscrollBehavior: 'contain', flex: 1, display: 'flex', flexDirection: 'column', gap: '20px' }}
-            >
+          <form
+            data-lenis-prevent
+            onWheel={(e) => e.stopPropagation()}
+            onSubmit={handleSubmit}
+            style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}
+          >
+            <div style={{ padding: '24px', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '20px' }}>
               
               {/* TAB 1: ARTICLE CONTENT & MEDIA */}
               {activeTab === 'content' && (
@@ -347,19 +347,19 @@ export const BlogModal: React.FC<BlogModalProps> = ({
                   {/* Article Title */}
                   <div>
                     <label style={{ fontSize: '0.82rem', fontWeight: 800, color: '#334155', display: 'block', marginBottom: '6px' }}>
-                      Article Title *
+                      Article Headline Title *
                     </label>
                     <input
                       type="text"
                       required
-                      placeholder="e.g. The Science of Indoor Air Quality: Why Deep Cleaning Matters"
+                      placeholder="e.g. The Hidden Science of Indoor Air Quality in Kerala Homes"
                       value={title}
                       onChange={(e) => handleTitleChange(e.target.value)}
-                      style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #CBD5E1', fontSize: '0.9rem', outline: 'none', fontWeight: 700 }}
+                      style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid #CBD5E1', fontSize: '0.95rem', fontWeight: 700, outline: 'none' }}
                     />
                   </div>
 
-                  {/* Category & Slug */}
+                  {/* Category & Slug Row */}
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                     <div>
                       <label style={{ fontSize: '0.82rem', fontWeight: 800, color: '#334155', display: 'block', marginBottom: '6px' }}>
@@ -368,7 +368,7 @@ export const BlogModal: React.FC<BlogModalProps> = ({
                       <select
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
-                        style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #CBD5E1', fontSize: '0.88rem', outline: 'none', background: '#FFF' }}
+                        style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #CBD5E1', fontSize: '0.85rem', outline: 'none', background: '#FFF' }}
                       >
                         <option value="Home Care">Home Care</option>
                         <option value="Auto Detailing">Auto Detailing</option>
@@ -388,15 +388,15 @@ export const BlogModal: React.FC<BlogModalProps> = ({
                         placeholder="science-of-indoor-air-quality"
                         value={slug}
                         onChange={(e) => setSlug(e.target.value)}
-                        style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #CBD5E1', fontSize: '0.85rem', outline: 'none', color: '#1C2677', fontWeight: 600 }}
+                        style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid #CBD5E1', fontSize: '0.85rem', outline: 'none', color: '#007A87', fontWeight: 600 }}
                       />
                     </div>
                   </div>
 
                   {/* FEATURED COVER IMAGE WITH FILE UPLOAD FIELD */}
                   <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '16px', border: '1px solid #E2E8F0' }}>
-                    <label style={{ fontSize: '0.85rem', fontWeight: 800, color: '#1C2677', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
-                      <ImageIcon size={16} style={{ color: '#29C3BE' }} /> Featured Cover Image (Upload File or Enter URL) *
+                    <label style={{ fontSize: '0.85rem', fontWeight: 800, color: '#007A87', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
+                      <ImageIcon size={16} style={{ color: '#007A87' }} /> Featured Cover Image (Upload File or Enter URL) *
                     </label>
 
                     <div style={{ display: 'grid', gridTemplateColumns: '140px 1fr', gap: '16px', alignItems: 'center' }}>
@@ -418,7 +418,7 @@ export const BlogModal: React.FC<BlogModalProps> = ({
                             style={{
                               padding: '8px 16px',
                               borderRadius: '10px',
-                              background: '#1C2677',
+                              background: '#007A87',
                               color: '#FFFFFF',
                               fontWeight: 800,
                               fontSize: '0.82rem',
@@ -463,9 +463,9 @@ export const BlogModal: React.FC<BlogModalProps> = ({
                             style={{
                               padding: '4px 10px',
                               borderRadius: '8px',
-                              border: image === img.url ? '1px solid #1C2677' : '1px solid #CBD5E1',
+                              border: image === img.url ? '1px solid #007A87' : '1px solid #CBD5E1',
                               background: image === img.url ? '#EEF2FF' : '#FFF',
-                              color: image === img.url ? '#1C2677' : '#475569',
+                              color: image === img.url ? '#007A87' : '#475569',
                               fontSize: '0.75rem',
                               fontWeight: 700,
                               cursor: 'pointer'
@@ -513,8 +513,8 @@ export const BlogModal: React.FC<BlogModalProps> = ({
 
                   {/* Author Details with Avatar Upload */}
                   <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '16px', border: '1px solid #E2E8F0' }}>
-                    <label style={{ fontSize: '0.85rem', fontWeight: 800, color: '#1C2677', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
-                      <User size={16} style={{ color: '#29C3BE' }} /> Author Profile & Avatar
+                    <label style={{ fontSize: '0.85rem', fontWeight: 800, color: '#007A87', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
+                      <User size={16} style={{ color: '#007A87' }} /> Author Profile & Avatar
                     </label>
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '12px' }}>
@@ -543,7 +543,7 @@ export const BlogModal: React.FC<BlogModalProps> = ({
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
                       <img src={authorAvatar} alt="Avatar" style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '1px solid #CBD5E1' }} />
-                      <label style={{ padding: '6px 14px', borderRadius: '8px', background: '#FFFFFF', border: '1px solid #CBD5E1', color: '#1C2677', fontWeight: 700, fontSize: '0.78rem', cursor: 'pointer' }}>
+                      <label style={{ padding: '6px 14px', borderRadius: '8px', background: '#FFFFFF', border: '1px solid #CBD5E1', color: '#007A87', fontWeight: 700, fontSize: '0.78rem', cursor: 'pointer' }}>
                         Upload Avatar File
                         <input type="file" accept="image/*" onChange={(e) => handleImageFileUpload(e, 'avatar')} style={{ display: 'none' }} />
                       </label>
@@ -559,7 +559,7 @@ export const BlogModal: React.FC<BlogModalProps> = ({
                           style={{ border: 'none', background: 'transparent', cursor: 'pointer', padding: 0 }}
                           title={a.name}
                         >
-                          <img src={a.avatar} alt={a.name} style={{ width: '28px', height: '28px', borderRadius: '50%', border: authorName === a.name ? '2px solid #29C3BE' : '1px solid #E2E8F0' }} />
+                          <img src={a.avatar} alt={a.name} style={{ width: '28px', height: '28px', borderRadius: '50%', border: authorName === a.name ? '2px solid #007A87' : '1px solid #E2E8F0' }} />
                         </button>
                       ))}
                     </div>
@@ -567,8 +567,8 @@ export const BlogModal: React.FC<BlogModalProps> = ({
 
                   {/* Article Tags Pill Manager */}
                   <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '16px', border: '1px solid #E2E8F0' }}>
-                    <label style={{ fontSize: '0.82rem', fontWeight: 800, color: '#1C2677', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
-                      <Tag size={14} style={{ color: '#29C3BE' }} /> Article Topics & Tags
+                    <label style={{ fontSize: '0.82rem', fontWeight: 800, color: '#007A87', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                      <Tag size={14} style={{ color: '#007A87' }} /> Article Topics & Tags
                     </label>
 
                     <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
@@ -583,7 +583,7 @@ export const BlogModal: React.FC<BlogModalProps> = ({
                       <button
                         type="button"
                         onClick={handleAddTag}
-                        style={{ padding: '8px 14px', borderRadius: '8px', background: '#1C2677', color: '#FFF', fontWeight: 800, fontSize: '0.8rem', border: 'none', cursor: 'pointer' }}
+                        style={{ padding: '8px 14px', borderRadius: '8px', background: '#007A87', color: '#FFF', fontWeight: 800, fontSize: '0.8rem', border: 'none', cursor: 'pointer' }}
                       >
                         Add Tag
                       </button>
@@ -595,7 +595,7 @@ export const BlogModal: React.FC<BlogModalProps> = ({
                           key={idx}
                           style={{
                             background: '#EEF2FF',
-                            color: '#1C2677',
+                            color: '#007A87',
                             border: '1px solid #C7D2FE',
                             padding: '4px 10px',
                             borderRadius: '16px',
@@ -649,9 +649,9 @@ export const BlogModal: React.FC<BlogModalProps> = ({
                         id="featuredPostCheck"
                         checked={featured}
                         onChange={(e) => setFeatured(e.target.checked)}
-                        style={{ width: '18px', height: '18px', cursor: 'pointer', accentColor: '#1C2677' }}
+                        style={{ width: '18px', height: '18px', cursor: 'pointer', accentColor: '#007A87' }}
                       />
-                      <label htmlFor="featuredPostCheck" style={{ fontSize: '0.85rem', fontWeight: 800, color: '#1C2677', cursor: 'pointer' }}>
+                      <label htmlFor="featuredPostCheck" style={{ fontSize: '0.85rem', fontWeight: 800, color: '#03252A', cursor: 'pointer' }}>
                         ⭐ Feature on Homepage
                       </label>
                     </div>
@@ -665,8 +665,8 @@ export const BlogModal: React.FC<BlogModalProps> = ({
                   {/* Google SERP Live Snippet Preview Card */}
                   <div style={{ background: '#FFFFFF', padding: '20px', borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 4px 12px rgba(0,0,0,0.03)' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                      <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#1C2677', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <Search size={14} style={{ color: '#29C3BE' }} /> Live Google Search Snippet Preview
+                      <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#007A87', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <Search size={14} style={{ color: '#007A87' }} /> Live Google Search Snippet Preview
                       </span>
                       <span style={{ fontSize: '0.75rem', fontWeight: 800, color: seoScore >= 80 ? '#15803D' : '#B45309' }}>
                         SEO Health Score: {seoScore}/100
@@ -728,8 +728,8 @@ export const BlogModal: React.FC<BlogModalProps> = ({
 
                   {/* Target Focus Keywords Manager */}
                   <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '14px', border: '1px solid #E2E8F0' }}>
-                    <label style={{ fontSize: '0.82rem', fontWeight: 800, color: '#1C2677', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
-                      <Tag size={14} style={{ color: '#29C3BE' }} /> Target Focus Search Keywords
+                    <label style={{ fontSize: '0.82rem', fontWeight: 800, color: '#007A87', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                      <Tag size={14} style={{ color: '#007A87' }} /> Target Focus Search Keywords
                     </label>
 
                     <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
@@ -744,7 +744,7 @@ export const BlogModal: React.FC<BlogModalProps> = ({
                       <button
                         type="button"
                         onClick={handleAddKeyword}
-                        style={{ padding: '8px 14px', borderRadius: '8px', background: '#1C2677', color: '#FFF', fontWeight: 800, fontSize: '0.8rem', border: 'none', cursor: 'pointer' }}
+                        style={{ padding: '8px 14px', borderRadius: '8px', background: '#007A87', color: '#FFF', fontWeight: 800, fontSize: '0.8rem', border: 'none', cursor: 'pointer' }}
                       >
                         Add Keyword
                       </button>
@@ -807,7 +807,7 @@ export const BlogModal: React.FC<BlogModalProps> = ({
                   <button
                     type="button"
                     onClick={() => setActiveTab('seo')}
-                    style={{ padding: '10px 20px', borderRadius: '10px', border: '1px solid #29C3BE', background: '#F0FDFA', color: '#0D9488', fontWeight: 800, fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
+                    style={{ padding: '10px 20px', borderRadius: '10px', border: '1px solid #007A87', background: '#F0FDFA', color: '#0D9488', fontWeight: 800, fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
                   >
                     Next: Configure SEO <Globe size={14} />
                   </button>
@@ -827,12 +827,12 @@ export const BlogModal: React.FC<BlogModalProps> = ({
                     padding: '10px 24px',
                     borderRadius: '10px',
                     border: 'none',
-                    background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+                    background: 'linear-gradient(135deg, #007A87, #0093A2)',
                     color: '#FFFFFF',
                     fontWeight: 800,
                     fontSize: '0.88rem',
                     cursor: 'pointer',
-                    boxShadow: '0 4px 14px rgba(28, 38, 119, 0.25)',
+                    boxShadow: '0 4px 14px rgba(0, 122, 135, 0.25)',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '6px'

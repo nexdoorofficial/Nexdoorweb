@@ -148,11 +148,11 @@ export const NewVariationModal: React.FC<Props> = ({ type, isOpen, onClose }) =>
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid #F1F5F9' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: type === 'house' ? '#1C2677' : '#2563EB', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: type === 'house' ? '#007A87' : '#007A87', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               {type === 'house' ? <Home size={20} /> : <Car size={20} />}
             </div>
             <div>
-              <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#1E293B', margin: 0 }}>
+              <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#03252A', margin: 0 }}>
                 Add New {type === 'house' ? 'House Category' : 'Vehicle Category'} Variation
               </h2>
               <p style={{ fontSize: '0.85rem', color: '#64748B', margin: 0 }}>
@@ -224,7 +224,7 @@ export const NewVariationModal: React.FC<Props> = ({ type, isOpen, onClose }) =>
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
             <button type="button" onClick={onClose} style={{ padding: '10px 20px', borderRadius: '10px', border: '1px solid #CBD5E1', background: '#FFF' }}>Cancel</button>
-            <button type="submit" style={{ padding: '10px 24px', borderRadius: '10px', border: 'none', background: type === 'house' ? '#1C2677' : '#2563EB', color: '#FFF', fontWeight: 700 }}>
+            <button type="submit" style={{ padding: '10px 24px', borderRadius: '10px', border: 'none', background: '#007A87', color: '#FFF', fontWeight: 700 }}>
               Create Variation
             </button>
           </div>

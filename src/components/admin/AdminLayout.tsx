@@ -16,6 +16,7 @@ import {
   ChevronRight,
   Settings,
   Briefcase,
+  Images,
   LogOut
 } from 'lucide-react';
 import { useAdminData } from '../../context/AdminContext';
@@ -42,7 +43,8 @@ export const AdminLayout: React.FC<Props> = ({ children }) => {
     inquiries,
     blogs,
     siteSettings,
-    jobApplications
+    jobApplications,
+    recentWorks
   } = useAdminData();
 
   if (!isAuthenticated) {
@@ -59,6 +61,7 @@ export const AdminLayout: React.FC<Props> = ({ children }) => {
   const navItems = [
     { label: 'Overview', path: '/admin', icon: LayoutDashboard },
     { label: 'Bookings', path: '/admin/bookings', icon: CalendarCheck, badge: bookings.length },
+    { label: 'Recent Works', path: '/admin/gallery', icon: Images, badge: recentWorks ? recentWorks.length : 0 },
     { label: 'Inquiries', path: '/admin/inquiries', icon: MessageSquare, badge: newInquiriesCount },
     { label: 'Careers & HR', path: '/admin/careers', icon: Briefcase, badge: newApplicationsCount },
     { label: 'Blog Journal', path: '/admin/blogs', icon: BookOpen, badge: blogs ? blogs.length : 0 },
@@ -76,19 +79,19 @@ export const AdminLayout: React.FC<Props> = ({ children }) => {
       <aside
         style={{
           width: '280px',
-          background: '#0F172A',
+          background: '#03252A',
           color: '#F8FAFC',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
           padding: '24px 16px',
           flexShrink: 0,
-          boxShadow: '4px 0 24px rgba(0, 0, 0, 0.1)'
+          boxShadow: '4px 0 24px rgba(0, 0, 0, 0.15)'
         }}
       >
         <div>
           {/* Logo Brand */}
-          <div style={{ padding: '0 12px 28px 12px', borderBottom: '1px solid #1E293B', marginBottom: '24px' }}>
+          <div style={{ padding: '0 12px 28px 12px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', marginBottom: '24px' }}>
             <Link to="/admin" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '12px' }}>
               {siteSettings?.logoUrl ? (
                 <img
@@ -102,14 +105,14 @@ export const AdminLayout: React.FC<Props> = ({ children }) => {
                     width: '40px',
                     height: '40px',
                     borderRadius: '12px',
-                    background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+                    background: 'linear-gradient(135deg, #007A87, #9BC83B)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     fontWeight: 900,
                     fontSize: '1.2rem',
                     color: '#FFFFFF',
-                    boxShadow: '0 4px 16px rgba(41, 195, 190, 0.4)'
+                    boxShadow: '0 4px 16px rgba(0, 122, 135, 0.4)'
                   }}
                 >
                   NX
@@ -119,7 +122,7 @@ export const AdminLayout: React.FC<Props> = ({ children }) => {
                 <span style={{ fontSize: '1.2rem', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.5px' }}>
                   NEXDOOR
                 </span>
-                <span style={{ display: 'block', fontSize: '0.7rem', fontWeight: 700, color: '#29C3BE', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                <span style={{ display: 'block', fontSize: '0.7rem', fontWeight: 700, color: '#9BC83B', textTransform: 'uppercase', letterSpacing: '1px' }}>
                   Control Center
                 </span>
               </div>
@@ -128,7 +131,7 @@ export const AdminLayout: React.FC<Props> = ({ children }) => {
 
           {/* Nav Links */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#64748B', padding: '0 12px 6px 12px', textTransform: 'uppercase', letterSpacing: '0.8px' }}>
+            <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#94A3B8', padding: '0 12px 6px 12px', textTransform: 'uppercase', letterSpacing: '0.8px' }}>
               Management
             </span>
             {navItems.map((item) => {
@@ -147,14 +150,14 @@ export const AdminLayout: React.FC<Props> = ({ children }) => {
                     textDecoration: 'none',
                     fontSize: '0.9rem',
                     fontWeight: 600,
-                    color: isActive ? '#FFFFFF' : '#94A3B8',
-                    background: isActive ? 'linear-gradient(135deg, #1C2677, #29C3BE)' : 'transparent',
-                    boxShadow: isActive ? '0 8px 20px rgba(41, 195, 190, 0.25)' : 'none',
+                    color: isActive ? '#FFFFFF' : '#CBD5E1',
+                    background: isActive ? 'linear-gradient(135deg, #007A87, #0093A2)' : 'transparent',
+                    boxShadow: isActive ? '0 8px 20px rgba(0, 122, 135, 0.3)' : 'none',
                     transition: 'all 0.2s ease'
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <Icon size={18} color={isActive ? '#FFFFFF' : '#64748B'} />
+                    <Icon size={18} color={isActive ? '#9BC83B' : '#94A3B8'} />
                     <span>{item.label}</span>
                   </div>
                   {item.badge !== undefined && (
@@ -164,7 +167,7 @@ export const AdminLayout: React.FC<Props> = ({ children }) => {
                         borderRadius: '10px',
                         fontSize: '0.75rem',
                         fontWeight: 700,
-                        background: isActive ? 'rgba(255,255,255,0.25)' : '#1E293B',
+                        background: isActive ? 'rgba(255,255,255,0.25)' : 'rgba(0, 0, 0, 0.3)',
                         color: '#FFF'
                       }}
                     >
@@ -182,8 +185,8 @@ export const AdminLayout: React.FC<Props> = ({ children }) => {
               marginTop: '28px',
               padding: '16px',
               borderRadius: '16px',
-              background: 'rgba(30, 41, 59, 0.6)',
-              border: '1px solid #1E293B'
+              background: 'rgba(0, 77, 86, 0.4)',
+              border: '1px solid rgba(255, 255, 255, 0.1)'
             }}
           >
             <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#94A3B8', display: 'block', marginBottom: '10px' }}>
@@ -197,8 +200,8 @@ export const AdminLayout: React.FC<Props> = ({ children }) => {
                   padding: '10px 12px',
                   borderRadius: '10px',
                   border: 'none',
-                  background: '#29C3BE',
-                  color: '#0F172A',
+                  background: '#007A87',
+                  color: '#FFFFFF',
                   fontWeight: 700,
                   fontSize: '0.82rem',
                   display: 'flex',
@@ -216,7 +219,7 @@ export const AdminLayout: React.FC<Props> = ({ children }) => {
                   width: '100%',
                   padding: '10px 12px',
                   borderRadius: '10px',
-                  border: '1px solid #334155',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
                   background: 'transparent',
                   color: '#F8FAFC',
                   fontWeight: 600,
@@ -340,7 +343,7 @@ export const AdminLayout: React.FC<Props> = ({ children }) => {
 
             {/* Admin Profile Chip */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '6px 12px', background: '#F8FAFC', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
-              <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#1C2677', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem' }}>
+              <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#007A87', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem' }}>
                 AD
               </div>
               <div style={{ textAlign: 'left' }}>

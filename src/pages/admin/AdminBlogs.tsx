@@ -58,7 +58,7 @@ export const AdminBlogs: React.FC = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#1E293B', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <BookOpen size={22} style={{ color: '#1C2677' }} /> SEO Blog Journal Management
+            <BookOpen size={22} style={{ color: '#007A87' }} /> SEO Blog Journal Management
           </h2>
           <p style={{ fontSize: '0.85rem', color: '#64748B', margin: '2px 0 0 0' }}>
             Manage website articles, configure Google Search SERP metadata, and upload cover images
@@ -70,13 +70,13 @@ export const AdminBlogs: React.FC = () => {
           style={{
             padding: '10px 20px',
             borderRadius: '12px',
-            background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+            background: 'linear-gradient(135deg, #007A87, #0093A2)',
             color: '#FFFFFF',
             fontWeight: 800,
             fontSize: '0.88rem',
             border: 'none',
             cursor: 'pointer',
-            boxShadow: '0 4px 14px rgba(28, 38, 119, 0.25)',
+            boxShadow: '0 4px 14px rgba(0, 122, 135, 0.25)',
             display: 'inline-flex',
             alignItems: 'center',
             gap: '8px'
@@ -104,8 +104,8 @@ export const AdminBlogs: React.FC = () => {
         </div>
 
         <div style={{ background: '#FFFFFF', padding: '20px', borderRadius: '18px', border: '1px solid #E2E8F0' }}>
-          <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#1C2677', textTransform: 'uppercase', marginBottom: '4px' }}>Total Article Views</div>
-          <div style={{ fontSize: '1.6rem', fontWeight: 900, color: '#1C2677' }}>{totalViews.toLocaleString()}</div>
+          <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#007A87', textTransform: 'uppercase', marginBottom: '4px' }}>Total Article Views</div>
+          <div style={{ fontSize: '1.6rem', fontWeight: 900, color: '#007A87' }}>{totalViews.toLocaleString()}</div>
         </div>
       </div>
 
@@ -147,7 +147,7 @@ export const AdminBlogs: React.FC = () => {
                 padding: '8px 14px',
                 borderRadius: '10px',
                 border: filterCategory === c.id ? 'none' : '1px solid #E2E8F0',
-                background: filterCategory === c.id ? '#1C2677' : '#F8FAFC',
+                background: filterCategory === c.id ? '#007A87' : '#F8FAFC',
                 color: filterCategory === c.id ? '#FFFFFF' : '#475569',
                 fontWeight: 700,
                 fontSize: '0.8rem',
@@ -199,13 +199,13 @@ export const AdminBlogs: React.FC = () => {
                       {post.title} {post.featured && <span style={{ color: '#F59E0B' }} title="Featured on Homepage">⭐</span>}
                     </div>
                     <div style={{ fontSize: '0.78rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <Globe size={12} style={{ color: '#29C3BE' }} /> /blog/{post.slug}
+                      <Globe size={12} style={{ color: '#007A87' }} /> /blog/{post.slug}
                     </div>
                   </td>
 
                   {/* Category Badge */}
                   <td style={{ padding: '14px 18px' }}>
-                    <span style={{ background: '#EEF2FF', color: '#1C2677', padding: '4px 10px', borderRadius: '12px', fontSize: '0.78rem', fontWeight: 700 }}>
+                    <span style={{ background: '#EEF2FF', color: '#007A87', padding: '4px 10px', borderRadius: '12px', fontSize: '0.78rem', fontWeight: 700 }}>
                       {post.category}
                     </span>
                   </td>
@@ -224,7 +224,7 @@ export const AdminBlogs: React.FC = () => {
                   {/* Views & Date */}
                   <td style={{ padding: '14px 18px', color: '#64748B', fontSize: '0.8rem' }}>
                     <div style={{ fontWeight: 700, color: '#0F172A', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <Eye size={12} style={{ color: '#29C3BE' }} /> {(post.viewsCount || 0).toLocaleString()} views
+                      <Eye size={12} style={{ color: '#007A87' }} /> {(post.viewsCount || 0).toLocaleString()} views
                     </div>
                     <div style={{ fontSize: '0.75rem', marginTop: '2px' }}>{post.publishedAt}</div>
                   </td>
@@ -268,7 +268,7 @@ export const AdminBlogs: React.FC = () => {
                           padding: '6px 12px',
                           borderRadius: '8px',
                           border: 'none',
-                          background: '#1C2677',
+                          background: '#007A87',
                           color: '#FFFFFF',
                           fontWeight: 800,
                           fontSize: '0.78rem',

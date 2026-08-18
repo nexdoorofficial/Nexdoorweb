@@ -424,7 +424,7 @@ export const BookingWizard: React.FC = () => {
           <CheckCircle2 size={38} />
         </div>
 
-        <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#1C2677', marginBottom: '6px' }}>
+        <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#03252A', marginBottom: '6px' }}>
           Booking Confirmed! 🎉
         </h2>
         <p style={{ fontSize: '0.92rem', color: '#64748B', marginBottom: '20px' }}>
@@ -436,14 +436,14 @@ export const BookingWizard: React.FC = () => {
           display: 'inline-flex',
           alignItems: 'center',
           gap: '8px',
-          background: 'rgba(28, 38, 119, 0.08)',
-          border: '1.5px solid rgba(28, 38, 119, 0.2)',
+          background: 'rgba(0, 122, 135, 0.08)',
+          border: '1.5px solid rgba(0, 122, 135, 0.2)',
           padding: '8px 18px',
           borderRadius: '30px',
           marginBottom: '20px'
         }}>
           <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#64748B' }}>Booking Reference:</span>
-          <span style={{ fontSize: '1.05rem', fontWeight: 800, color: '#1C2677', letterSpacing: '0.5px' }}>{bookingRef}</span>
+          <span style={{ fontSize: '1.05rem', fontWeight: 800, color: '#007A87', letterSpacing: '0.5px' }}>{bookingRef}</span>
         </div>
 
         {/* Detailed Summary Card */}
@@ -457,35 +457,35 @@ export const BookingWizard: React.FC = () => {
         }}>
           <div className="confirmation-detail-grid">
             <div className="confirmation-row">
-              <span className="confirmation-row-label"><User size={15} color="#29C3BE" /> Customer Name:</span>
+              <span className="confirmation-row-label"><User size={15} color="#007A87" /> Customer Name:</span>
               <span className="confirmation-row-value">{fullName || 'Valued Customer'}</span>
             </div>
 
             <div className="confirmation-row">
-              <span className="confirmation-row-label"><Phone size={15} color="#29C3BE" /> Contact Phone:</span>
+              <span className="confirmation-row-label"><Phone size={15} color="#007A87" /> Contact Phone:</span>
               <span className="confirmation-row-value">{phone || '+91 98765 43210'}</span>
             </div>
 
             <div className="confirmation-row">
-              <span className="confirmation-row-label"><Sparkles size={15} color="#29C3BE" /> Service Scheduled:</span>
+              <span className="confirmation-row-label"><Sparkles size={15} color="#007A87" /> Service Scheduled:</span>
               <span className="confirmation-row-value" style={{ textTransform: 'capitalize' }}>
                 {serviceId.replace('-', ' ')} {serviceId === 'house-cleaning' ? `(${houseCategory})` : serviceId === 'car-wash' ? `(${vehicleCategory})` : `(${laundryWeight}kg - ${laundryPackage})`}
               </span>
             </div>
 
             <div className="confirmation-row">
-              <span className="confirmation-row-label"><Calendar size={15} color="#29C3BE" /> Date & Time Slot:</span>
+              <span className="confirmation-row-label"><Calendar size={15} color="#007A87" /> Date & Time Slot:</span>
               <span className="confirmation-row-value">{formattedSelectedDate} at {selectedTimeSlot}</span>
             </div>
 
             <div className="confirmation-row">
-              <span className="confirmation-row-label"><MapPin size={15} color="#29C3BE" /> Service Location:</span>
+              <span className="confirmation-row-label"><MapPin size={15} color="#007A87" /> Service Location:</span>
               <span className="confirmation-row-value">{addressLine ? `${addressLine}, ${area} (${pincode})` : `${area}, Kochi (${pincode})`}</span>
             </div>
 
             {customRequirements && (
-              <div style={{ background: 'rgba(41, 195, 190, 0.1)', padding: '12px 14px', borderRadius: '12px', border: '1px solid rgba(41, 195, 190, 0.2)' }}>
-                <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#1C2677', display: 'block', marginBottom: '2px' }}>
+              <div style={{ background: 'rgba(0, 122, 135, 0.08)', padding: '12px 14px', borderRadius: '12px', border: '1px solid rgba(0, 122, 135, 0.2)' }}>
+                <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#03252A', display: 'block', marginBottom: '2px' }}>
                   Custom Needs & Special Notes:
                 </span>
                 <span style={{ fontSize: '0.88rem', color: '#334155', fontStyle: 'italic' }}>"{customRequirements}"</span>
@@ -494,7 +494,7 @@ export const BookingWizard: React.FC = () => {
 
             {/* Financial Summary Highlight */}
             <div style={{
-              background: 'linear-gradient(135deg, #1C2677, #0F172A)',
+              background: 'linear-gradient(135deg, #03252A, #004D56)',
               color: '#FFFFFF',
               borderRadius: '16px',
               padding: '16px',
@@ -502,15 +502,15 @@ export const BookingWizard: React.FC = () => {
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                 <span style={{ fontSize: '0.85rem', color: '#94A3B8' }}>Estimated Total:</span>
-                <span style={{ fontSize: '1.2rem', fontWeight: 800, color: '#29C3BE' }}>
+                <span style={{ fontSize: '1.2rem', fontWeight: 800, color: '#9BC83B' }}>
                   {isCustomHouse ? 'Quote / Inspection' : `₹${estimatedTotal}`}
                 </span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '8px', borderTop: '1px solid rgba(255, 255, 255, 0.15)' }}>
-                <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#10B981', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#9BC83B', display: 'flex', alignItems: 'center', gap: '4px' }}>
                   ✓ Refundable Deposit Paid:
                 </span>
-                <span style={{ fontSize: '1.1rem', fontWeight: 800, color: '#10B981' }}>₹{DEMO_BOOKING_DEPOSIT}</span>
+                <span style={{ fontSize: '1.1rem', fontWeight: 800, color: '#9BC83B' }}>₹{DEMO_BOOKING_DEPOSIT}</span>
               </div>
             </div>
           </div>
@@ -563,7 +563,7 @@ export const BookingWizard: React.FC = () => {
                 width: '28px',
                 height: '28px',
                 borderRadius: '50%',
-                background: s.num === step ? '#29C3BE' : s.num < step ? '#1C2677' : '#E2E8F0',
+                background: s.num === step ? '#007A87' : s.num < step ? '#03252A' : '#E2E8F0',
                 color: s.num <= step ? '#FFFFFF' : '#64748B',
                 fontWeight: 700,
                 fontSize: '0.8rem',
@@ -586,7 +586,7 @@ export const BookingWizard: React.FC = () => {
             style={{
               width: `${(step / 6) * 100}%`,
               height: '100%',
-              background: 'linear-gradient(90deg, #1C2677 0%, #29C3BE 100%)',
+              background: 'linear-gradient(90deg, #03252A 0%, #007A87 100%)',
               transition: 'width 0.3s ease'
             }}
           />
@@ -614,7 +614,7 @@ export const BookingWizard: React.FC = () => {
             {step === 1 && (
               <div>
                 <div style={{ marginBottom: '24px' }}>
-                  <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#1C2677', marginBottom: '4px' }}>
+                  <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#03252A', marginBottom: '4px' }}>
                     Step 1: Select Primary Service & Serviceable Location
                   </h3>
                   <p style={{ color: '#64748B', fontSize: '0.9rem' }}>
@@ -624,7 +624,7 @@ export const BookingWizard: React.FC = () => {
 
                 {/* 1. Primary Service Selection */}
                 <div style={{ marginBottom: '32px' }}>
-                  <label style={{ fontWeight: 800, fontSize: '0.95rem', color: '#1C2677', display: 'block', marginBottom: '12px' }}>
+                  <label style={{ fontWeight: 800, fontSize: '0.95rem', color: '#03252A', display: 'block', marginBottom: '12px' }}>
                     1. Choose Primary Service Category
                   </label>
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
@@ -633,14 +633,14 @@ export const BookingWizard: React.FC = () => {
                       style={{
                         padding: '20px',
                         borderRadius: '20px',
-                        border: serviceId === 'house-cleaning' ? '2.5px solid #29C3BE' : '1px solid #E2E8F0',
-                        background: serviceId === 'house-cleaning' ? 'rgba(41, 195, 190, 0.08)' : '#F8FAFC',
+                        border: serviceId === 'house-cleaning' ? '2.5px solid #007A87' : '1px solid #E2E8F0',
+                        background: serviceId === 'house-cleaning' ? 'rgba(0, 122, 135, 0.08)' : '#F8FAFC',
                         cursor: 'pointer',
                         transition: 'all 0.2s',
-                        boxShadow: serviceId === 'house-cleaning' ? '0 8px 20px rgba(41, 195, 190, 0.15)' : 'none'
+                        boxShadow: serviceId === 'house-cleaning' ? '0 8px 20px rgba(0, 122, 135, 0.15)' : 'none'
                       }}
                     >
-                      <HomeIcon size={28} style={{ color: '#29C3BE', marginBottom: '10px' }} />
+                      <HomeIcon size={28} style={{ color: '#007A87', marginBottom: '10px' }} />
                       <h4 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#1B2236', marginBottom: '4px' }}>House Cleaning</h4>
                       <p style={{ fontSize: '0.8rem', color: '#64748B', margin: 0 }}>1 BHK to Villas, Standard & Premium deep cleans</p>
                     </div>
@@ -650,14 +650,14 @@ export const BookingWizard: React.FC = () => {
                       style={{
                         padding: '20px',
                         borderRadius: '20px',
-                        border: serviceId === 'car-wash' ? '2.5px solid #29C3BE' : '1px solid #E2E8F0',
-                        background: serviceId === 'car-wash' ? 'rgba(41, 195, 190, 0.08)' : '#F8FAFC',
+                        border: serviceId === 'car-wash' ? '2.5px solid #007A87' : '1px solid #E2E8F0',
+                        background: serviceId === 'car-wash' ? 'rgba(0, 122, 135, 0.08)' : '#F8FAFC',
                         cursor: 'pointer',
                         transition: 'all 0.2s',
-                        boxShadow: serviceId === 'car-wash' ? '0 8px 20px rgba(41, 195, 190, 0.15)' : 'none'
+                        boxShadow: serviceId === 'car-wash' ? '0 8px 20px rgba(0, 122, 135, 0.15)' : 'none'
                       }}
                     >
-                      <Car size={28} style={{ color: '#1C2677', marginBottom: '10px' }} />
+                      <Car size={28} style={{ color: '#03252A', marginBottom: '10px' }} />
                       <h4 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#1B2236', marginBottom: '4px' }}>Car Wash & Detailing</h4>
                       <p style={{ fontSize: '0.8rem', color: '#64748B', margin: 0 }}>Doorstep foam wash, interior spa & polish</p>
                     </div>
@@ -667,11 +667,11 @@ export const BookingWizard: React.FC = () => {
                       style={{
                         padding: '20px',
                         borderRadius: '20px',
-                        border: serviceId === 'laundry' ? '2.5px solid #29C3BE' : '1px solid #E2E8F0',
-                        background: serviceId === 'laundry' ? 'rgba(41, 195, 190, 0.08)' : '#F8FAFC',
+                        border: serviceId === 'laundry' ? '2.5px solid #007A87' : '1px solid #E2E8F0',
+                        background: serviceId === 'laundry' ? 'rgba(0, 122, 135, 0.08)' : '#F8FAFC',
                         cursor: 'pointer',
                         transition: 'all 0.2s',
-                        boxShadow: serviceId === 'laundry' ? '0 8px 20px rgba(41, 195, 190, 0.15)' : 'none'
+                        boxShadow: serviceId === 'laundry' ? '0 8px 20px rgba(0, 122, 135, 0.15)' : 'none'
                       }}
                     >
                       <Shirt size={28} style={{ color: '#F59E0B', marginBottom: '10px' }} />
@@ -684,8 +684,8 @@ export const BookingWizard: React.FC = () => {
                 {/* 2. Serviceable Location Picker */}
                 <div ref={wizardLocationRef}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                    <MapPin size={20} style={{ color: '#29C3BE' }} />
-                    <label style={{ fontWeight: 800, fontSize: '0.95rem', color: '#1C2677' }}>
+                    <MapPin size={20} style={{ color: '#007A87' }} />
+                    <label style={{ fontWeight: 800, fontSize: '0.95rem', color: '#03252A' }}>
                       2. Select Your Service Location (Kochi Dispatch Hubs)
                     </label>
                   </div>
@@ -712,12 +712,12 @@ export const BookingWizard: React.FC = () => {
                             borderRadius: '16px',
                             border: isSelected
                               ? isAvailable
-                                ? '2.5px solid #29C3BE'
+                                ? '2.5px solid #007A87'
                                 : '2.5px solid #EF4444'
                               : '1px solid #E2E8F0',
                             background: isSelected
                               ? isAvailable
-                                ? '#1C2677'
+                                ? '#03252A'
                                 : '#FEF2F2'
                               : isAvailable
                               ? '#F8FAFC'
@@ -737,7 +737,7 @@ export const BookingWizard: React.FC = () => {
                         >
                           <div>
                             <div style={{ fontWeight: 800, fontSize: '1rem', marginBottom: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                              <MapPin size={16} style={{ color: isSelected ? (isAvailable ? '#29C3BE' : '#EF4444') : '#64748B' }} />
+                              <MapPin size={16} style={{ color: isSelected ? (isAvailable ? '#9BC83B' : '#EF4444') : '#64748B' }} />
                               {loc.name}
                             </div>
                             <div style={{ fontSize: '0.75rem', opacity: 0.8, color: isSelected ? (isAvailable ? '#CBD5E1' : '#B91C1C') : '#64748B' }}>
@@ -756,7 +756,7 @@ export const BookingWizard: React.FC = () => {
                                 width: '22px',
                                 height: '22px',
                                 borderRadius: '50%',
-                                background: isAvailable ? '#29C3BE' : '#EF4444',
+                                background: isAvailable ? '#007A87' : '#EF4444',
                                 color: '#FFF',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -794,7 +794,7 @@ export const BookingWizard: React.FC = () => {
             {/* STEP 2: Choose Category */}
             {step === 2 && (
               <div>
-                <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#1C2677', marginBottom: '8px' }}>
+                <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#03252A', marginBottom: '8px' }}>
                   Step 2: Choose Category
                 </h3>
 
@@ -818,12 +818,12 @@ export const BookingWizard: React.FC = () => {
                               borderRadius: '16px',
                               border: houseCategory === cat.id
                                 ? isAvailableInArea
-                                  ? '2px solid #29C3BE'
+                                  ? '2px solid #007A87'
                                   : '2px solid #EF4444'
                                 : '1px solid #E2E8F0',
                               background: houseCategory === cat.id
                                 ? isAvailableInArea
-                                  ? '#1C2677'
+                                  ? '#03252A'
                                   : '#FEF2F2'
                                 : isAvailableInArea
                                 ? '#F8FAFC'
@@ -872,12 +872,12 @@ export const BookingWizard: React.FC = () => {
                             borderRadius: '16px',
                             border: vehicleCategory === veh.id
                               ? isAvailableInArea
-                                ? '2px solid #29C3BE'
+                                ? '2px solid #007A87'
                                 : '2px solid #EF4444'
                               : '1px solid #E2E8F0',
                             background: vehicleCategory === veh.id
                               ? isAvailableInArea
-                                ? '#1C2677'
+                                ? '#03252A'
                                 : '#FEF2F2'
                               : isAvailableInArea
                               ? '#F8FAFC'
@@ -907,10 +907,10 @@ export const BookingWizard: React.FC = () => {
                 {serviceId === 'laundry' && (
                   <div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                      <label style={{ fontWeight: 700, fontSize: '1rem', color: '#1C2677', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <Scale size={18} style={{ color: '#29C3BE' }} /> Select Total Weight (Kg)
+                      <label style={{ fontWeight: 700, fontSize: '1rem', color: '#03252A', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <Scale size={18} style={{ color: '#007A87' }} /> Select Total Weight (Kg)
                       </label>
-                      <span style={{ fontSize: '1.3rem', fontWeight: 800, color: '#29C3BE' }}>
+                      <span style={{ fontSize: '1.3rem', fontWeight: 800, color: '#007A87' }}>
                         {laundryWeight} Kg
                       </span>
                     </div>
@@ -924,7 +924,7 @@ export const BookingWizard: React.FC = () => {
                       onChange={(e) => handleCategorySelect(setLaundryWeight, Number(e.target.value))}
                       style={{
                         width: '100%',
-                        accentColor: '#29C3BE',
+                        accentColor: '#007A87',
                         height: '8px',
                         borderRadius: '4px',
                         cursor: 'pointer',
@@ -946,7 +946,7 @@ export const BookingWizard: React.FC = () => {
                                   padding: '10px 18px',
                                   borderRadius: '14px',
                                   fontWeight: 700,
-                                  background: laundryWeight === w ? '#1C2677' : '#F1F5F9',
+                                  background: laundryWeight === w ? '#007A87' : '#F1F5F9',
                                   color: laundryWeight === w ? '#FFFFFF' : '#1B2236',
                                   border: 'none',
                                   cursor: 'pointer'
@@ -960,14 +960,14 @@ export const BookingWizard: React.FC = () => {
                           <div style={{
                             padding: '14px',
                             borderRadius: '14px',
-                            background: laundryCalcDetails.isPickupFree ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)',
-                            border: `1px solid ${laundryCalcDetails.isPickupFree ? '#10B981' : '#F59E0B'}`,
+                            background: laundryCalcDetails.isPickupFree ? 'rgba(155, 200, 59, 0.15)' : 'rgba(245, 158, 11, 0.1)',
+                            border: `1px solid ${laundryCalcDetails.isPickupFree ? '#9BC83B' : '#F59E0B'}`,
                             display: 'flex',
                             alignItems: 'center',
                             gap: '10px',
                             fontSize: '0.9rem',
                             fontWeight: 600,
-                            color: laundryCalcDetails.isPickupFree ? '#065F46' : '#92400E'
+                            color: laundryCalcDetails.isPickupFree ? '#03252A' : '#92400E'
                           }}>
                             <Truck size={20} />
                             {laundryCalcDetails.isPickupFree ? (
@@ -988,7 +988,7 @@ export const BookingWizard: React.FC = () => {
             {step === 3 && (
               <div>
                 <div style={{ marginBottom: '24px' }}>
-                  <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#1C2677', marginBottom: '4px' }}>
+                  <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#03252A', marginBottom: '4px' }}>
                     Step 3: Choose Package & Review Detailed Specifications
                   </h3>
                   <p style={{ color: '#64748B', fontSize: '0.9rem' }}>
@@ -1029,7 +1029,7 @@ export const BookingWizard: React.FC = () => {
             {step === 4 && (
               <div>
                 <div style={{ marginBottom: '24px' }}>
-                  <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#1C2677', marginBottom: '4px' }}>
+                  <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#03252A', marginBottom: '4px' }}>
                     Schedule Your Service
                   </h3>
                   <p style={{ color: '#64748B', fontSize: '0.9rem' }}>
@@ -1054,17 +1054,17 @@ export const BookingWizard: React.FC = () => {
                           cursor: isPrevMonthDisabled ? 'not-allowed' : 'pointer',
                           padding: '6px',
                           borderRadius: '8px',
-                          color: isPrevMonthDisabled ? '#CBD5E1' : '#1C2677',
+                          color: isPrevMonthDisabled ? '#CBD5E1' : '#03252A',
                           opacity: isPrevMonthDisabled ? 0.4 : 1
                         }}
                         title={isPrevMonthDisabled ? 'Previous month unavailable' : undefined}
                       >
                         <ChevronLeft size={18} />
                       </button>
-                      <span style={{ fontWeight: 800, fontSize: '0.95rem', color: '#1C2677' }}>
+                      <span style={{ fontWeight: 800, fontSize: '0.95rem', color: '#03252A' }}>
                         {monthName} {calYear}
                       </span>
-                      <button onClick={handleNextMonth} style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: '6px', borderRadius: '8px', color: '#1C2677' }}>
+                      <button onClick={handleNextMonth} style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: '6px', borderRadius: '8px', color: '#03252A' }}>
                         <ChevronRight size={18} />
                       </button>
                     </div>
@@ -1109,7 +1109,7 @@ export const BookingWizard: React.FC = () => {
                               aspectRatio: '1',
                               borderRadius: '50%',
                               border: 'none',
-                              background: isSelected ? '#1C2677' : isDisabled ? '#F8FAFC' : 'transparent',
+                              background: isSelected ? '#03252A' : isDisabled ? '#F8FAFC' : 'transparent',
                               color: isSelected ? '#FFFFFF' : isDisabled ? '#CBD5E1' : '#1B2236',
                               fontWeight: isSelected ? 800 : 500,
                               fontSize: '0.85rem',
@@ -1127,7 +1127,7 @@ export const BookingWizard: React.FC = () => {
                             title={isPast ? 'Past date cannot be selected' : isDayBlocked ? 'Date Unavailable (Blocked by Admin)' : undefined}
                           >
                             <span>{dayNum}</span>
-                            {isSelected && <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#29C3BE' }} />}
+                            {isSelected && <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#9BC83B' }} />}
                             {isDayBlocked && !isPast && <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#EF4444' }} />}
                           </button>
                         );
@@ -1138,7 +1138,7 @@ export const BookingWizard: React.FC = () => {
                   {/* Column 2: Available Time Slots */}
                   <div ref={timeSlotsRef} style={{ background: '#F8FAFC', padding: '20px', borderRadius: '20px', border: '1px solid #E2E8F0' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                      <h4 style={{ fontWeight: 800, fontSize: '0.95rem', color: '#1C2677', margin: 0 }}>
+                      <h4 style={{ fontWeight: 800, fontSize: '0.95rem', color: '#03252A', margin: 0 }}>
                         Availability for {selectedDateObj.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                       </h4>
                       <span style={{ fontSize: '0.75rem', color: '#64748B' }}>India Standard Time (IST)</span>
@@ -1178,11 +1178,11 @@ export const BookingWizard: React.FC = () => {
                               borderRadius: '12px',
                               fontWeight: 700,
                               fontSize: '0.8rem',
-                              background: isDisabledSlot ? '#F1F5F9' : isSlotSelected ? '#1C2677' : capacityInfo.isOneTeamLeft ? '#FFF7ED' : '#FFFFFF',
+                              background: isDisabledSlot ? '#F1F5F9' : isSlotSelected ? '#03252A' : capacityInfo.isOneTeamLeft ? '#FFF7ED' : '#FFFFFF',
                               color: isDisabledSlot ? '#94A3B8' : isSlotSelected ? '#FFFFFF' : '#1B2236',
-                              border: `1.5px solid ${isDisabledSlot ? '#E2E8F0' : isSlotSelected ? '#1C2677' : capacityInfo.isOneTeamLeft ? '#F97316' : '#E2E8F0'}`,
+                              border: `1.5px solid ${isDisabledSlot ? '#E2E8F0' : isSlotSelected ? '#03252A' : capacityInfo.isOneTeamLeft ? '#F97316' : '#E2E8F0'}`,
                               cursor: isDisabledSlot ? 'not-allowed' : 'pointer',
-                              boxShadow: isSlotSelected && !isDisabledSlot ? '0 4px 12px rgba(28, 38, 119, 0.2)' : 'none',
+                              boxShadow: isSlotSelected && !isDisabledSlot ? '0 4px 12px rgba(3, 37, 42, 0.2)' : 'none',
                               transition: 'all 0.15s',
                               textAlign: 'center',
                               position: 'relative',
@@ -1220,17 +1220,17 @@ export const BookingWizard: React.FC = () => {
 
                   {/* Column 3: Service Details Sidebar Summary */}
                   <div style={{
-                    background: 'linear-gradient(180deg, #1C2677 0%, #151D5C 100%)',
+                    background: 'linear-gradient(180deg, #03252A 0%, #004D56 100%)',
                     borderRadius: '20px',
                     padding: '20px',
                     color: '#FFFFFF',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                    boxShadow: '0 12px 30px rgba(28, 38, 119, 0.2)'
+                    boxShadow: '0 12px 30px rgba(3, 37, 42, 0.2)'
                   }}>
                     <div>
-                      <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#29C3BE', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '8px' }}>
+                      <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#9BC83B', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '8px' }}>
                         Service Details
                       </div>
 
@@ -1248,7 +1248,7 @@ export const BookingWizard: React.FC = () => {
 
                         <div>
                           <span style={{ fontSize: '0.75rem', color: '#94A3B8', display: 'block' }}>Selected Schedule:</span>
-                          <span style={{ fontWeight: 700, color: '#29C3BE' }}>
+                          <span style={{ fontWeight: 700, color: '#9BC83B' }}>
                             {selectedDateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} at {selectedTimeSlot}
                           </span>
                         </div>
@@ -1263,7 +1263,7 @@ export const BookingWizard: React.FC = () => {
                         <div>
                           <span style={{ fontSize: '0.75rem', color: '#94A3B8', display: 'block' }}>Location:</span>
                           <span style={{ fontWeight: 700, color: '#FFFFFF', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                            <MapPin size={14} style={{ color: '#29C3BE' }} /> {area}, Kochi
+                            <MapPin size={14} style={{ color: '#007A87' }} /> {area}, Kochi
                           </span>
                         </div>
                       </div>
@@ -1272,7 +1272,7 @@ export const BookingWizard: React.FC = () => {
                     <div style={{ paddingTop: '14px', borderTop: '1px solid rgba(255, 255, 255, 0.15)' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                         <span style={{ fontSize: '0.85rem', color: '#94A3B8' }}>Est. Total:</span>
-                        <span style={{ fontSize: '1.4rem', fontWeight: 800, color: '#29C3BE' }}>
+                        <span style={{ fontSize: '1.4rem', fontWeight: 800, color: '#9BC83B' }}>
                           {isCustomHouse ? 'Quote' : `₹${estimatedTotal}`}
                         </span>
                       </div>
@@ -1289,7 +1289,7 @@ export const BookingWizard: React.FC = () => {
             {/* STEP 5: Enter Address & Custom Requirements */}
             {step === 5 && (
               <div>
-                <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#1C2677', marginBottom: '8px' }}>
+                <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#03252A', marginBottom: '8px' }}>
                   Step 5: Address & Customised Service Needs
                 </h3>
                 <p style={{ color: '#64748B', fontSize: '0.9rem', marginBottom: '24px' }}>
@@ -1412,7 +1412,7 @@ export const BookingWizard: React.FC = () => {
                         ).find((l: any) => l.name === newLoc);
                         if (match && match.pincode) setPincode(match.pincode);
                       }}
-                      style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1.5px solid #29C3BE', background: '#FAFCFF', fontWeight: 700, fontSize: '0.9rem', color: '#1C2677' }}
+                      style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1.5px solid #007A87', background: '#FAFCFF', fontWeight: 700, fontSize: '0.9rem', color: '#03252A' }}
                     >
                       {(() => {
                         const activeSubKey = serviceId === 'house-cleaning' ? houseCategory : serviceId === 'car-wash' ? vehicleCategory : undefined;
@@ -1469,8 +1469,8 @@ export const BookingWizard: React.FC = () => {
 
                   {/* CUSTOM REQUIREMENTS TEXT AREA */}
                   <div style={{ gridColumn: 'span 2', marginTop: '8px' }}>
-                    <label style={{ fontSize: '0.9rem', fontWeight: 800, color: '#1C2677', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                      <FileText size={18} style={{ color: '#29C3BE' }} />
+                    <label style={{ fontSize: '0.9rem', fontWeight: 800, color: '#03252A', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                      <FileText size={18} style={{ color: '#007A87' }} />
                       Customised Requirements & Special Instructions
                     </label>
                     <p style={{ fontSize: '0.8rem', color: '#64748B', marginBottom: '8px' }}>
@@ -1485,7 +1485,7 @@ export const BookingWizard: React.FC = () => {
                         width: '100%',
                         padding: '14px',
                         borderRadius: '14px',
-                        border: '1.5px solid #29C3BE',
+                        border: '1.5px solid #007A87',
                         fontFamily: 'inherit',
                         fontSize: '0.9rem',
                         background: '#FAFCFF'
@@ -1499,7 +1499,7 @@ export const BookingWizard: React.FC = () => {
             {/* STEP 6: Review & Demo Deposit */}
             {step === 6 && (
               <div>
-                <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#1C2677', marginBottom: '8px' }}>
+                <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#03252A', marginBottom: '8px' }}>
                   Step 6: Order Summary & Refundable Deposit
                 </h3>
 
@@ -1549,8 +1549,8 @@ export const BookingWizard: React.FC = () => {
                   </div>
 
                   {customRequirements && (
-                    <div style={{ margin: '10px 0', background: 'rgba(41, 195, 190, 0.1)', padding: '12px', borderRadius: '12px' }}>
-                      <span style={{ fontWeight: 700, color: '#1C2677', display: 'block', fontSize: '0.825rem' }}>Your Customised Instructions:</span>
+                    <div style={{ margin: '10px 0', background: 'rgba(0, 122, 135, 0.08)', padding: '12px', borderRadius: '12px' }}>
+                      <span style={{ fontWeight: 700, color: '#03252A', display: 'block', fontSize: '0.825rem' }}>Your Customised Instructions:</span>
                       <span style={{ fontSize: '0.85rem', color: '#334155', fontStyle: 'italic' }}>"{customRequirements}"</span>
                     </div>
                   )}
@@ -1558,8 +1558,8 @@ export const BookingWizard: React.FC = () => {
                   {/* Coupon Code Section */}
                   <div style={{ background: '#FFFFFF', padding: '14px 16px', borderRadius: '16px', border: '1px solid #CBD5E1', marginBottom: '16px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', gap: '8px' }}>
-                      <label style={{ fontSize: '0.85rem', fontWeight: 800, color: '#1C2677', display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                        <Tag size={16} style={{ color: '#29C3BE', flexShrink: 0 }} />
+                      <label style={{ fontSize: '0.85rem', fontWeight: 800, color: '#03252A', display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                        <Tag size={16} style={{ color: '#007A87', flexShrink: 0 }} />
                         <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>Apply Promo Code</span>
                       </label>
 
@@ -1567,9 +1567,9 @@ export const BookingWizard: React.FC = () => {
                         type="button"
                         onClick={() => setIsViewOffersOpen(true)}
                         style={{
-                          background: 'linear-gradient(135deg, rgba(41, 195, 190, 0.15) 0%, rgba(28, 38, 119, 0.1) 100%)',
-                          border: '1px solid #29C3BE',
-                          color: '#1C2677',
+                          background: 'linear-gradient(135deg, rgba(0, 122, 135, 0.12) 0%, rgba(3, 37, 42, 0.08) 100%)',
+                          border: '1px solid #007A87',
+                          color: '#007A87',
                           fontSize: '0.78rem',
                           fontWeight: 800,
                           padding: '6px 12px',
@@ -1580,10 +1580,10 @@ export const BookingWizard: React.FC = () => {
                           gap: '5px',
                           whiteSpace: 'nowrap',
                           flexShrink: 0,
-                          boxShadow: '0 2px 6px rgba(41, 195, 190, 0.15)'
+                          boxShadow: '0 2px 6px rgba(0, 122, 135, 0.15)'
                         }}
                       >
-                        <Tag size={12} style={{ color: '#29C3BE' }} /> View Offers 🏷️
+                        <Tag size={12} style={{ color: '#007A87' }} /> View Offers 🏷️
                       </button>
                     </div>
 
@@ -1606,7 +1606,7 @@ export const BookingWizard: React.FC = () => {
                             border: '1.5px solid #CBD5E1',
                             fontSize: '0.85rem',
                             fontWeight: 800,
-                            color: '#1C2677',
+                            color: '#03252A',
                             letterSpacing: '0.04em',
                             outline: 'none',
                             background: '#F8FAFC'
@@ -1620,14 +1620,14 @@ export const BookingWizard: React.FC = () => {
                             padding: '0 18px',
                             borderRadius: '10px',
                             border: 'none',
-                            background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+                            background: 'linear-gradient(135deg, #007A87, #0093A2)',
                             color: '#FFFFFF',
                             fontWeight: 800,
                             fontSize: '0.85rem',
                             cursor: 'pointer',
                             flexShrink: 0,
                             whiteSpace: 'nowrap',
-                            boxShadow: '0 4px 12px rgba(28, 38, 119, 0.2)'
+                            boxShadow: '0 4px 12px rgba(0, 122, 135, 0.25)'
                           }}
                         >
                           Apply
@@ -1636,7 +1636,7 @@ export const BookingWizard: React.FC = () => {
                     ) : (
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#ECFDF5', border: '1px solid #A7F3D0', padding: '10px 14px', borderRadius: '12px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
-                          <CheckCircle2 size={18} color="#10B981" style={{ flexShrink: 0 }} />
+                          <CheckCircle2 size={18} color="#9BC83B" style={{ flexShrink: 0 }} />
                           <div style={{ minWidth: 0 }}>
                             <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#047857', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                               {appliedCoupon.code} Applied (-₹{couponDiscount})
@@ -1683,32 +1683,32 @@ export const BookingWizard: React.FC = () => {
                   )}
 
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', padding: '10px 0', marginBottom: '14px', borderTop: '1px dashed #CBD5E1' }}>
-                    <span style={{ color: '#1C2677', fontSize: '0.95rem', fontWeight: 800 }}>Net Total Invoice:</span>
-                    <strong style={{ color: '#1C2677', fontSize: '1.4rem', fontWeight: 900 }}>
+                    <span style={{ color: '#03252A', fontSize: '0.95rem', fontWeight: 800 }}>Net Total Invoice:</span>
+                    <strong style={{ color: '#03252A', fontSize: '1.4rem', fontWeight: 900 }}>
                       {isCustomHouse ? 'Quote / Inspection' : `₹${Math.max(0, estimatedTotal - couponDiscount)}`}
                     </strong>
                   </div>
 
                   {/* Highlighted Deposit Card */}
                   <div style={{
-                    background: 'linear-gradient(135deg, rgba(41, 195, 190, 0.12) 0%, rgba(28, 38, 119, 0.06) 100%)',
+                    background: 'linear-gradient(135deg, rgba(0, 122, 135, 0.10) 0%, rgba(3, 37, 42, 0.04) 100%)',
                     padding: '14px 16px',
                     borderRadius: '14px',
-                    border: '1px solid rgba(41, 195, 190, 0.3)',
+                    border: '1px solid rgba(0, 122, 135, 0.3)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     gap: '12px'
                   }}>
                     <div>
-                      <span style={{ fontWeight: 800, color: '#1C2677', fontSize: '0.875rem', display: 'block' }}>
+                      <span style={{ fontWeight: 800, color: '#03252A', fontSize: '0.875rem', display: 'block' }}>
                         Refundable Booking Deposit:
                       </span>
                       <div style={{ fontSize: '0.725rem', color: '#64748B', marginTop: '2px' }}>
                         Fully refundable upon service completion
                       </div>
                     </div>
-                    <span style={{ fontSize: '1.6rem', fontWeight: 800, color: '#29C3BE', flexShrink: 0 }}>
+                    <span style={{ fontSize: '1.6rem', fontWeight: 800, color: '#007A87', flexShrink: 0 }}>
                       ₹{DEMO_BOOKING_DEPOSIT}
                     </span>
                   </div>

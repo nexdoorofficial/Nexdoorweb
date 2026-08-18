@@ -210,7 +210,7 @@ export const NewBookingModal: React.FC<Props> = ({ isOpen, onClose }) => {
             <button type="button" onClick={onClose} style={{ padding: '12px 20px', borderRadius: '12px', border: '1px solid #CBD5E1', background: '#FFF' }}>
               Cancel
             </button>
-            <button type="submit" style={{ padding: '12px 28px', borderRadius: '12px', border: 'none', background: 'linear-gradient(135deg, #1C2677, #29C3BE)', color: '#FFF', fontWeight: 700 }}>
+            <button type="submit" style={{ padding: '12px 28px', borderRadius: '12px', border: 'none', background: 'linear-gradient(135deg, #007A87, #0093A2)', color: '#FFF', fontWeight: 700 }}>
               Save Booking
             </button>
           </div>

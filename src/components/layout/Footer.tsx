@@ -24,11 +24,11 @@ export const Footer: React.FC = () => {
   const comingSoonLocations = locationsList.filter((l) => l.status === 'coming_soon' || l.status !== 'active');
   const activeLocationNames = activeLocations.map((l) => l.name);
   return (
-    <footer style={{ background: '#1C2677', color: '#FFFFFF', paddingTop: '80px', paddingBottom: '32px' }}>
+    <footer style={{ background: '#03252A', color: '#FFFFFF', paddingTop: '80px', paddingBottom: '32px' }}>
       <div className="container">
         {/* Top Guarantee Strip */}
         <div style={{
-          background: 'rgba(255, 255, 255, 0.08)',
+          background: 'rgba(255, 255, 255, 0.06)',
           borderRadius: '20px',
           padding: '24px 32px',
           display: 'flex',
@@ -37,19 +37,19 @@ export const Footer: React.FC = () => {
           justifyContent: 'space-between',
           gap: '20px',
           marginBottom: '64px',
-          border: '1px solid rgba(255, 255, 255, 0.15)'
+          border: '1px solid rgba(255, 255, 255, 0.12)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <div style={{
               width: '48px',
               height: '48px',
               borderRadius: '14px',
-              background: '#29C3BE',
+              background: 'linear-gradient(135deg, #007A87, #0093A2)',
               color: '#FFFFFF',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 4px 14px rgba(41, 195, 190, 0.4)'
+              boxShadow: '0 4px 14px rgba(0, 122, 135, 0.4)'
             }}>
               <ShieldCheck size={26} />
             </div>
@@ -81,10 +81,11 @@ export const Footer: React.FC = () => {
                 width: '38px',
                 height: '38px',
                 borderRadius: '12px',
-                background: '#29C3BE',
+                background: 'linear-gradient(135deg, #007A87 0%, #9BC83B 100%)',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                boxShadow: '0 4px 12px rgba(0, 122, 135, 0.3)'
               }}>
                 <Sparkles size={22} style={{ color: '#FFFFFF' }} />
               </div>
@@ -92,8 +93,8 @@ export const Footer: React.FC = () => {
                 <span style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', fontWeight: 800, color: '#FFFFFF' }}>
                   NEXDOOR
                 </span>
-                <div style={{ fontSize: '0.6rem', color: '#29C3BE', fontWeight: 700, letterSpacing: '0.1em' }}>
-                  CLEANING SOLUTIONS
+                <div style={{ fontSize: '0.6rem', color: '#9BC83B', fontWeight: 800, letterSpacing: '0.15em' }}>
+                  INSTA SERVICES
                 </div>
               </div>
             </div>
@@ -104,13 +105,13 @@ export const Footer: React.FC = () => {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.875rem', color: '#CBD5E1' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <Phone size={16} style={{ color: '#29C3BE' }} /> {adminData?.siteSettings?.supportPhone || '+91 98765 43210'}
+                <Phone size={16} style={{ color: '#9BC83B' }} /> {adminData?.siteSettings?.supportPhone || '+91 98765 43210'}
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <Mail size={16} style={{ color: '#29C3BE' }} /> {adminData?.siteSettings?.supportEmail || 'support@nexdoorclean.com'}
+                <Mail size={16} style={{ color: '#9BC83B' }} /> {adminData?.siteSettings?.supportEmail || 'support@nexdoorclean.com'}
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <MapPin size={16} style={{ color: '#29C3BE' }} />{' '}
+                <MapPin size={16} style={{ color: '#9BC83B' }} />{' '}
                 {activeLocationNames.length > 0
                   ? activeLocationNames.join(', ') + ', Kochi'
                   : 'Kakkanad, Edappally & Kalamassery, Kochi'}
@@ -154,7 +155,7 @@ export const Footer: React.FC = () => {
                 </>
               )}
               <li>
-                <Link to="/pricing" style={{ transition: 'color 0.2s', fontWeight: 700, color: '#29C3BE' }} className="footer-link">
+                <Link to="/pricing" style={{ transition: 'color 0.2s', fontWeight: 700, color: '#9BC83B' }} className="footer-link">
                   Interactive Pricing Calculator →
                 </Link>
               </li>
@@ -170,15 +171,15 @@ export const Footer: React.FC = () => {
               {activeLocations.length > 0 ? (
                 activeLocations.map((loc) => (
                   <li key={loc.id}>
-                    <span style={{ color: '#29C3BE', fontWeight: 600 }}>● {loc.name}</span>{' '}
+                    <span style={{ color: '#9BC83B', fontWeight: 600 }}>● {loc.name}</span>{' '}
                     <span style={{ fontSize: '0.8rem', color: '#94A3B8' }}>({loc.zone || loc.description || `Pincode: ${loc.pincode}`})</span>
                   </li>
                 ))
               ) : (
                 <>
-                  <li><span style={{ color: '#29C3BE', fontWeight: 600 }}>● Kakkanad</span> (SmartCity & Infopark)</li>
-                  <li><span style={{ color: '#29C3BE', fontWeight: 600 }}>● Edappally</span> (Lulu Mall & Bypass)</li>
-                  <li><span style={{ color: '#29C3BE', fontWeight: 600 }}>● Kalamassery</span> (CUSAT & KINFRA)</li>
+                  <li><span style={{ color: '#9BC83B', fontWeight: 600 }}>● Kakkanad</span> (SmartCity & Infopark)</li>
+                  <li><span style={{ color: '#9BC83B', fontWeight: 600 }}>● Edappally</span> (Lulu Mall & Bypass)</li>
+                  <li><span style={{ color: '#9BC83B', fontWeight: 600 }}>● Kalamassery</span> (CUSAT & KINFRA)</li>
                 </>
               )}
 
@@ -204,7 +205,7 @@ export const Footer: React.FC = () => {
                     background: 'transparent',
                     border: 'none',
                     padding: 0,
-                    color: '#29C3BE',
+                    color: '#9BC83B',
                     fontWeight: 700,
                     fontSize: '0.875rem',
                     cursor: 'pointer',
@@ -225,7 +226,7 @@ export const Footer: React.FC = () => {
               <li><Link to="/terms-and-conditions" className="footer-link">Terms & Conditions</Link></li>
               <li><Link to="/refund-policy" className="footer-link">Refund Policy</Link></li>
               <li><Link to="/cancellation-policy" className="footer-link">Cancellation Policy</Link></li>
-              <li style={{ marginTop: '4px' }}><Link to="/admin" className="footer-link" style={{ color: '#29C3BE', fontWeight: 700 }}>⚡ Admin Dashboard</Link></li>
+              <li style={{ marginTop: '4px' }}><Link to="/admin" className="footer-link" style={{ color: '#9BC83B', fontWeight: 700 }}>⚡ Admin Dashboard</Link></li>
             </ul>
           </div>
         </div>
@@ -243,17 +244,17 @@ export const Footer: React.FC = () => {
           color: '#94A3B8'
         }}>
           <div>
-            © {new Date().getFullYear()} NEXDOOR Cleaning Solutions. All rights reserved. Built with modern technology.
+            © {new Date().getFullYear()} NEXDOOR Insta Services. All rights reserved.
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            Made with <Heart size={14} style={{ color: '#29C3BE', fill: '#29C3BE' }} /> for Pristine Homes & Cars.
+            Made with <Heart size={14} style={{ color: '#9BC83B', fill: '#9BC83B' }} /> for Pristine Homes & Cars.
           </div>
         </div>
       </div>
 
       <style>{`
         .footer-link:hover {
-          color: #29C3BE !important;
+          color: #9BC83B !important;
           text-decoration: underline;
         }
       `}</style>

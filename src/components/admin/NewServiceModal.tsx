@@ -200,11 +200,11 @@ export const NewServiceModal: React.FC<Props> = ({ isOpen, onClose }) => {
         {/* Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid #F1F5F9' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ width: '44px', height: '44px', borderRadius: '14px', background: 'linear-gradient(135deg, #1C2677, #29C3BE)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFF' }}>
+            <div style={{ width: '44px', height: '44px', borderRadius: '14px', background: 'linear-gradient(135deg, #007A87, #0093A2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFF' }}>
               <Sparkles size={22} />
             </div>
             <div>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#1E293B', margin: 0 }}>Create New Service Offering</h2>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#03252A', margin: 0 }}>Create New Service Offering</h2>
               <p style={{ fontSize: '0.85rem', color: '#64748B', margin: 0 }}>Configure service info, Standard/Premium plan pricing, and customized tiers</p>
             </div>
           </div>
@@ -231,8 +231,8 @@ export const NewServiceModal: React.FC<Props> = ({ isOpen, onClose }) => {
         <form onSubmit={handleSubmit}>
           {/* Section 1: Basic Service Information */}
           <div style={{ background: '#F8FAFC', padding: '20px', borderRadius: '18px', marginBottom: '24px', border: '1px solid #E2E8F0' }}>
-            <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#1E293B', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Layers size={18} color="#1C2677" /> 1. General Service Details
+            <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#03252A', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Layers size={18} color="#007A87" /> 1. General Service Details
             </h3>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '16px' }}>
@@ -286,7 +286,7 @@ export const NewServiceModal: React.FC<Props> = ({ isOpen, onClose }) => {
               <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>Key Highlights / Features</label>
               <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
                 <input type="text" placeholder="Add feature point..." value={featureInput} onChange={(e) => setFeatureInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddFeature())} style={{ flex: 1, padding: '10px 14px', borderRadius: '10px', border: '1px solid #CBD5E1', fontSize: '0.85rem' }} />
-                <button type="button" onClick={handleAddFeature} style={{ background: '#1C2677', color: '#FFF', border: 'none', padding: '0 16px', borderRadius: '10px', fontWeight: 700, cursor: 'pointer' }}>+ Add</button>
+                <button type="button" onClick={handleAddFeature} style={{ background: '#007A87', color: '#FFF', border: 'none', padding: '0 16px', borderRadius: '10px', fontWeight: 700, cursor: 'pointer' }}>+ Add</button>
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                 {features.map((f, i) => (
@@ -300,8 +300,8 @@ export const NewServiceModal: React.FC<Props> = ({ isOpen, onClose }) => {
             {/* Service Location Availability Selector */}
             <div style={{ marginTop: '16px', background: '#F8FAFC', padding: '16px', borderRadius: '14px', border: '1px solid #CBD5E1' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                <label style={{ fontSize: '0.85rem', fontWeight: 800, color: '#1C2677', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <MapPin size={16} style={{ color: '#29C3BE' }} /> Service Location Availability (Areas where active) *
+                <label style={{ fontSize: '0.85rem', fontWeight: 800, color: '#007A87', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <MapPin size={16} style={{ color: '#007A87' }} /> Service Location Availability (Areas where active) *
                 </label>
 
                 <div style={{ display: 'flex', gap: '8px' }}>
@@ -340,7 +340,7 @@ export const NewServiceModal: React.FC<Props> = ({ isOpen, onClose }) => {
                         cursor: 'pointer',
                         fontSize: '0.82rem',
                         fontWeight: isChecked ? 800 : 500,
-                        color: isChecked ? '#1C2677' : '#475569'
+                        color: isChecked ? '#007A87' : '#475569'
                       }}
                     >
                       <input
@@ -353,7 +353,7 @@ export const NewServiceModal: React.FC<Props> = ({ isOpen, onClose }) => {
                             setSelectedLocations(selectedLocations.filter((l) => l !== locName));
                           }
                         }}
-                        style={{ accentColor: '#1C2677' }}
+                        style={{ accentColor: '#007A87' }}
                       />
                       {locName}
                     </label>
@@ -364,16 +364,16 @@ export const NewServiceModal: React.FC<Props> = ({ isOpen, onClose }) => {
           </div>
 
           {/* Section 2: Plan Pricing Tiers (Standard Plan & Premium Plan) */}
-          <div style={{ background: '#FFFFFF', padding: '20px', borderRadius: '18px', marginBottom: '24px', border: '2px solid #1C2677' }}>
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#1C2677', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <ShieldCheck size={20} color="#1C2677" /> 2. Standard & Premium Plan Pricing Configuration
+          <div style={{ background: '#FFFFFF', padding: '20px', borderRadius: '18px', marginBottom: '24px', border: '2px solid #007A87' }}>
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#03252A', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <ShieldCheck size={20} color="#007A87" /> 2. Standard & Premium Plan Pricing Configuration
             </h3>
 
             {/* Standard Plan Pricing Box */}
             <div style={{ background: '#F8FAFC', padding: '18px', borderRadius: '16px', border: '1px solid #CBD5E1', marginBottom: '20px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                 <span style={{ fontSize: '0.9rem', fontWeight: 800, color: '#1E293B' }}>Standard Plan Tier</span>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 700, color: '#1C2677' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 700, color: '#007A87' }}>
                   <input type="checkbox" checked={enableStandardPlan} onChange={(e) => setEnableStandardPlan(e.target.checked)} /> Enable Standard Plan
                 </label>
               </div>
@@ -387,7 +387,7 @@ export const NewServiceModal: React.FC<Props> = ({ isOpen, onClose }) => {
                     </div>
                     <div>
                       <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#475569', marginBottom: '4px' }}>Price Numeric (₹)</label>
-                      <input type="number" value={stdPriceNumeric} onChange={(e) => { setStdPriceNumeric(Number(e.target.value)); setStdPriceDisplay(`₹${e.target.value}`); }} style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontWeight: 800, color: '#1C2677' }} />
+                      <input type="number" value={stdPriceNumeric} onChange={(e) => { setStdPriceNumeric(Number(e.target.value)); setStdPriceDisplay(`₹${e.target.value}`); }} style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontWeight: 800, color: '#007A87' }} />
                     </div>
                     <div>
                       <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#475569', marginBottom: '4px' }}>Duration</label>
@@ -435,7 +435,7 @@ export const NewServiceModal: React.FC<Props> = ({ isOpen, onClose }) => {
             </div>
 
             {/* Premium Plan Pricing Box */}
-            <div style={{ background: '#F0FDF4', padding: '18px', borderRadius: '16px', border: '2px solid #29C3BE' }}>
+            <div style={{ background: '#F0FDF4', padding: '18px', borderRadius: '16px', border: '2px solid #007A87' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                 <span style={{ fontSize: '0.9rem', fontWeight: 800, color: '#0D9488', display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <Star size={16} color="#0D9488" /> Premium Plan Tier (Recommended)
@@ -590,7 +590,7 @@ export const NewServiceModal: React.FC<Props> = ({ isOpen, onClose }) => {
             <button type="button" onClick={onClose} style={{ padding: '12px 24px', borderRadius: '12px', border: '1px solid #CBD5E1', background: '#FFF', color: '#475569', fontWeight: 700, cursor: 'pointer' }}>
               Cancel
             </button>
-            <button type="submit" style={{ padding: '12px 28px', borderRadius: '12px', border: 'none', background: 'linear-gradient(135deg, #1C2677, #29C3BE)', color: '#FFFFFF', fontWeight: 700, boxShadow: '0 8px 20px rgba(41, 195, 190, 0.3)', cursor: 'pointer' }}>
+            <button type="submit" style={{ padding: '12px 28px', borderRadius: '12px', border: 'none', background: 'linear-gradient(135deg, #007A87, #0093A2)', color: '#FFFFFF', fontWeight: 700, boxShadow: '0 8px 20px rgba(0, 122, 135, 0.3)', cursor: 'pointer' }}>
               Publish Service with Tiers
             </button>
           </div>

@@ -15,6 +15,7 @@ import { AdminInquiries } from './pages/admin/AdminInquiries';
 import { AdminBlogs } from './pages/admin/AdminBlogs';
 import { AdminSettings } from './pages/admin/AdminSettings';
 import { AdminCareers } from './pages/admin/AdminCareers';
+import { AdminGallery } from './pages/admin/AdminGallery';
 
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
@@ -69,6 +70,7 @@ const MainAppLayout: React.FC = () => {
         <Routes>
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/bookings" element={<AdminBookings />} />
+          <Route path="/admin/gallery" element={<AdminGallery />} />
           <Route path="/admin/inquiries" element={<AdminInquiries />} />
           <Route path="/admin/blogs" element={<AdminBlogs />} />
           <Route path="/admin/services" element={<AdminServices />} />

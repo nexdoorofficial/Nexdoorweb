@@ -125,7 +125,7 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
       isRecommended: false,
       tagLabel: 'STANDARD PLAN',
       tagSub: 'Everyday General Clean',
-      priceColor: '#1C2677',
+      priceColor: '#03252A',
       borderColor: '#E2E8F0'
     });
   }
@@ -137,8 +137,8 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
       isRecommended: true,
       tagLabel: 'PREMIUM ULTRA',
       tagSub: 'Deep Restoration',
-      priceColor: '#0D9488',
-      borderColor: '#29C3BE'
+      priceColor: '#007A87',
+      borderColor: '#007A87'
     });
   }
 
@@ -186,14 +186,14 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
                   borderRadius: '12px',
                   fontWeight: 700,
                   fontSize: '0.875rem',
-                  background: selectedCategory === cat.id ? '#1C2677' : 'transparent',
+                  background: selectedCategory === cat.id ? '#007A87' : 'transparent',
                   color: selectedCategory === cat.id ? '#FFFFFF' : '#475569',
                   border: 'none',
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
                   whiteSpace: 'nowrap',
                   flexShrink: 0,
-                  boxShadow: selectedCategory === cat.id ? '0 4px 12px rgba(28, 38, 119, 0.25)' : 'none'
+                  boxShadow: selectedCategory === cat.id ? '0 4px 12px rgba(0, 122, 135, 0.25)' : 'none'
                 }}
               >
                 {cat.label}
@@ -217,7 +217,7 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'nowrap', flexShrink: 0 }}>
-              <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#1C2677', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#03252A', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 📍 Service Area:
               </span>
               <span style={{ fontSize: '0.725rem', fontWeight: 800, color: '#059669', background: '#D1FAE5', border: '1px solid #6EE7B7', padding: '3px 9px', borderRadius: '10px', whiteSpace: 'nowrap', flexShrink: 0 }}>
@@ -231,16 +231,16 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
               style={{
                 padding: '8px 14px',
                 borderRadius: '12px',
-                border: '1.5px solid #29C3BE',
+                border: '1.5px solid #007A87',
                 background: '#FFFFFF',
                 fontWeight: 800,
                 fontSize: '0.85rem',
-                color: '#1C2677',
+                color: '#03252A',
                 cursor: 'pointer',
                 outline: 'none',
                 flex: '1 1 200px',
                 maxWidth: '100%',
-                boxShadow: '0 2px 8px rgba(41, 195, 190, 0.12)'
+                boxShadow: '0 2px 8px rgba(0, 122, 135, 0.12)'
               }}
             >
               {availableLocationsList.map((loc) => (
@@ -253,7 +253,7 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
 
           {/* Selected Category Title */}
           <div style={{ textAlign: 'center', margin: '0' }}>
-            <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#1C2677', margin: 0 }}>
+            <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#03252A', margin: 0 }}>
               {activeCategoryData?.label} House Cleaning Plans
             </h3>
             <p style={{ color: '#64748B', fontSize: '0.85rem', margin: '4px 0 0 0' }}>
@@ -336,10 +336,10 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
               style={{
                 cursor: 'pointer',
                 border: isSelected
-                  ? '3px solid #29C3BE'
+                  ? '3px solid #007A87'
                   : '1px solid #CBD5E1',
                 boxShadow: isSelected
-                  ? '0 10px 30px rgba(41, 195, 190, 0.35)'
+                  ? '0 10px 30px rgba(0, 122, 135, 0.25)'
                   : '0 4px 12px rgba(0,0,0,0.03)',
                 background: isSelected ? '#FAFDFD' : '#FFFFFF',
                 position: 'relative'
@@ -353,14 +353,14 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
                       position: 'absolute',
                       top: '-14px',
                       right: '18px',
-                      background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+                      background: 'linear-gradient(135deg, #007A87, #9BC83B)',
                       color: '#FFFFFF',
                       fontSize: '0.72rem',
                       fontWeight: 800,
                       padding: '4px 14px',
                       borderRadius: '20px',
                       letterSpacing: '0.05em',
-                      boxShadow: '0 4px 10px rgba(41,195,190,0.4)',
+                      boxShadow: '0 4px 10px rgba(0, 122, 135, 0.3)',
                       zIndex: 2
                     }}
                   >
@@ -372,14 +372,14 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
                       position: 'absolute',
                       top: '-14px',
                       right: '18px',
-                      background: '#1C2677',
+                      background: '#03252A',
                       color: '#FFFFFF',
                       fontSize: '0.72rem',
                       fontWeight: 800,
                       padding: '4px 14px',
                       borderRadius: '20px',
                       letterSpacing: '0.05em',
-                      boxShadow: '0 4px 10px rgba(28,38,119,0.3)',
+                      boxShadow: '0 4px 10px rgba(3, 37, 42, 0.25)',
                       zIndex: 2
                     }}
                   >
@@ -390,7 +390,7 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
                 {/* Plan Badge Row */}
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    {plan.isRecommended && <Sparkles size={14} style={{ color: '#0D9488' }} />}
+                    {plan.isRecommended && <Sparkles size={14} style={{ color: '#007A87' }} />}
                     <span
                       style={{
                         padding: '4px 10px',
@@ -404,7 +404,7 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
                       {plan.tagLabel}
                     </span>
                   </div>
-                  <span style={{ fontSize: '0.78rem', color: isSelected ? '#0D9488' : plan.isRecommended ? '#0D9488' : '#64748B', fontWeight: 600 }}>
+                  <span style={{ fontSize: '0.78rem', color: isSelected ? '#007A87' : plan.isRecommended ? '#007A87' : '#64748B', fontWeight: 600 }}>
                     {plan.tagSub}
                   </span>
                 </div>
@@ -444,11 +444,11 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Clock size={15} style={{ color: '#29C3BE', flexShrink: 0 }} />
+                    <Clock size={15} style={{ color: '#007A87', flexShrink: 0 }} />
                     <span>{plan.duration}</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Users size={15} style={{ color: '#29C3BE', flexShrink: 0 }} />
+                    <Users size={15} style={{ color: '#007A87', flexShrink: 0 }} />
                     <span>{plan.professionals} Pros</span>
                   </div>
                 </div>
@@ -462,7 +462,7 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
                     <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
                       {plan.included.map((inc, i) => (
                         <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.85rem', color: '#334155' }}>
-                          <CheckCircle2 size={15} style={{ color: '#10B981', flexShrink: 0, marginTop: '2px' }} />
+                          <CheckCircle2 size={15} style={{ color: '#9BC83B', flexShrink: 0, marginTop: '2px' }} />
                           <span>{inc}</span>
                         </li>
                       ))}
@@ -500,16 +500,16 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
                   background: isSelected
-                    ? 'linear-gradient(135deg, #1C2677, #29C3BE)'
+                    ? 'linear-gradient(135deg, #007A87, #0093A2)'
                     : plan.isRecommended
-                    ? 'linear-gradient(135deg, #0F172A, #1C2677)'
+                    ? 'linear-gradient(135deg, #03252A, #007A87)'
                     : '#FFFFFF',
-                  color: isSelected || plan.isRecommended ? '#FFFFFF' : '#1C2677',
+                  color: isSelected || plan.isRecommended ? '#FFFFFF' : '#03252A',
                   border: isSelected || plan.isRecommended ? 'none' : '1px solid #CBD5E1',
                   boxShadow: isSelected
-                    ? '0 4px 14px rgba(41, 195, 190, 0.4)'
+                    ? '0 4px 14px rgba(0, 122, 135, 0.3)'
                     : plan.isRecommended
-                    ? '0 4px 14px rgba(28, 38, 119, 0.3)'
+                    ? '0 4px 14px rgba(3, 37, 42, 0.25)'
                     : 'none'
                 }}
               >
@@ -539,10 +539,10 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
               style={{
                 cursor: 'pointer',
                 border: isSelected
-                  ? '3px solid #29C3BE'
+                  ? '3px solid #007A87'
                   : '1px solid #CBD5E1',
                 boxShadow: isSelected
-                  ? '0 6px 20px rgba(41, 195, 190, 0.25)'
+                  ? '0 6px 20px rgba(0, 122, 135, 0.25)'
                   : '0 2px 8px rgba(0,0,0,0.03)',
                 background: isSelected ? '#FAFDFD' : '#FFFFFF',
                 position: 'relative'
@@ -556,14 +556,14 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
                       position: 'absolute',
                       top: '-10px',
                       right: '10px',
-                      background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+                      background: 'linear-gradient(135deg, #007A87, #9BC83B)',
                       color: '#FFFFFF',
                       fontSize: '0.58rem',
                       fontWeight: 800,
                       padding: '2px 8px',
                       borderRadius: '16px',
                       letterSpacing: '0.05em',
-                      boxShadow: '0 3px 8px rgba(41,195,190,0.4)',
+                      boxShadow: '0 3px 8px rgba(0, 122, 135, 0.3)',
                       zIndex: 2
                     }}
                   >
@@ -575,14 +575,14 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
                       position: 'absolute',
                       top: '-10px',
                       right: '10px',
-                      background: '#1C2677',
+                      background: '#03252A',
                       color: '#FFFFFF',
                       fontSize: '0.58rem',
                       fontWeight: 800,
                       padding: '2px 8px',
                       borderRadius: '16px',
                       letterSpacing: '0.05em',
-                      boxShadow: '0 3px 8px rgba(28,38,119,0.3)',
+                      boxShadow: '0 3px 8px rgba(3, 37, 42, 0.25)',
                       zIndex: 2
                     }}
                   >
@@ -641,11 +641,11 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <Clock size={12} style={{ color: '#29C3BE', flexShrink: 0 }} />
+                    <Clock size={12} style={{ color: '#007A87', flexShrink: 0 }} />
                     <span>{plan.duration}</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <Users size={12} style={{ color: '#29C3BE', flexShrink: 0 }} />
+                    <Users size={12} style={{ color: '#007A87', flexShrink: 0 }} />
                     <span>{plan.professionals} Pros</span>
                   </div>
                 </div>
@@ -692,7 +692,7 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
                         <ul style={{ listStyle: 'none', margin: '4px 0 8px 0', padding: 0, display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '0.68rem' }}>
                           {plan.included.map((inc, i) => (
                             <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '4px', color: '#334155' }}>
-                              <CheckCircle2 size={11} style={{ color: '#10B981', flexShrink: 0, marginTop: '1px' }} />
+                              <CheckCircle2 size={11} style={{ color: '#9BC83B', flexShrink: 0, marginTop: '1px' }} />
                               <span>{inc}</span>
                             </li>
                           ))}
@@ -770,13 +770,13 @@ export const HousePricingCalculator: React.FC<HousePricingCalculatorProps> = ({
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
                   background: isSelected
-                    ? 'linear-gradient(135deg, #1C2677, #29C3BE)'
+                    ? 'linear-gradient(135deg, #007A87, #0093A2)'
                     : plan.isRecommended
-                    ? 'linear-gradient(135deg, #0F172A, #1C2677)'
+                    ? 'linear-gradient(135deg, #03252A, #007A87)'
                     : '#FFFFFF',
-                  color: isSelected || plan.isRecommended ? '#FFFFFF' : '#1C2677',
+                  color: isSelected || plan.isRecommended ? '#FFFFFF' : '#03252A',
                   border: isSelected || plan.isRecommended ? 'none' : '1px solid #CBD5E1',
-                  boxShadow: isSelected ? '0 3px 10px rgba(41, 195, 190, 0.3)' : 'none'
+                  boxShadow: isSelected ? '0 3px 10px rgba(0, 122, 135, 0.25)' : 'none'
                 }}
               >
                 {isSelected ? '✓ Selected' : 'Select'}

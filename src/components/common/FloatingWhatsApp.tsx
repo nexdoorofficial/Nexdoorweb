@@ -31,14 +31,14 @@ export const FloatingWhatsApp: React.FC = () => {
         transition={{ duration: 0.2 }}
         style={{
           pointerEvents: 'none',
-          background: '#1C2677',
+          background: '#03252A',
           color: '#FFFFFF',
           padding: '8px 14px',
           borderRadius: '12px',
           fontSize: '0.85rem',
           fontWeight: 700,
-          boxShadow: '0 8px 24px rgba(28, 38, 119, 0.25)',
-          border: '1px solid rgba(41, 195, 190, 0.3)',
+          boxShadow: '0 8px 24px rgba(3, 37, 42, 0.25)',
+          border: '1px solid rgba(0, 122, 135, 0.35)',
           whiteSpace: 'nowrap'
         }}
         className="whatsapp-tooltip-desktop"

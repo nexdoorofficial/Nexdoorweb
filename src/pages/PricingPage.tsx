@@ -18,11 +18,11 @@ export const PricingPage: React.FC = () => {
   return (
     <div>
       {/* Hero Header */}
-      <section style={{ padding: '48px 0 32px 0', background: 'linear-gradient(180deg, rgba(41, 195, 190, 0.1) 0%, rgba(248, 250, 252, 0) 100%)' }}>
+      <section style={{ padding: '48px 0 32px 0', background: 'linear-gradient(180deg, rgba(0, 122, 135, 0.1) 0%, rgba(248, 250, 252, 0) 100%)' }}>
         <div className="container" style={{ padding: '0 16px' }}>
           <div style={{ maxWidth: '750px', margin: '0 auto', textAlign: 'center' }}>
             <span className="badge-tag">TRANSPARENT SAAS-STYLE PRICING</span>
-            <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800, color: '#1C2677', marginTop: '12px', marginBottom: '14px', lineHeight: 1.2 }}>
+            <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800, color: '#03252A', marginTop: '12px', marginBottom: '14px', lineHeight: 1.2 }}>
               Interactive Pricing & Estimator Matrix
             </h1>
             <p style={{ fontSize: '1rem', color: '#64748B', lineHeight: 1.5, marginBottom: '20px' }}>
@@ -49,11 +49,11 @@ export const PricingPage: React.FC = () => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                background: activeTab === 'house' ? '#1C2677' : '#F8FAFC',
+                background: activeTab === 'house' ? '#007A87' : '#F8FAFC',
                 color: activeTab === 'house' ? '#FFFFFF' : '#475569',
                 border: '1px solid #E2E8F0',
                 cursor: 'pointer',
-                boxShadow: activeTab === 'house' ? '0 6px 20px rgba(28, 38, 119, 0.25)' : 'none'
+                boxShadow: activeTab === 'house' ? '0 6px 20px rgba(0, 122, 135, 0.25)' : 'none'
               }}
             >
               <Home size={18} /> House Cleaning Pricing
@@ -69,11 +69,11 @@ export const PricingPage: React.FC = () => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                background: activeTab === 'car' ? '#1C2677' : '#F8FAFC',
+                background: activeTab === 'car' ? '#007A87' : '#F8FAFC',
                 color: activeTab === 'car' ? '#FFFFFF' : '#475569',
                 border: '1px solid #E2E8F0',
                 cursor: 'pointer',
-                boxShadow: activeTab === 'car' ? '0 6px 20px rgba(28, 38, 119, 0.25)' : 'none'
+                boxShadow: activeTab === 'car' ? '0 6px 20px rgba(0, 122, 135, 0.25)' : 'none'
               }}
             >
               <Car size={18} /> Car Wash Pricing
@@ -89,11 +89,11 @@ export const PricingPage: React.FC = () => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                background: activeTab === 'laundry' ? '#1C2677' : '#F8FAFC',
+                background: activeTab === 'laundry' ? '#007A87' : '#F8FAFC',
                 color: activeTab === 'laundry' ? '#FFFFFF' : '#475569',
                 border: '1px solid #E2E8F0',
                 cursor: 'pointer',
-                boxShadow: activeTab === 'laundry' ? '0 6px 20px rgba(28, 38, 119, 0.25)' : 'none'
+                boxShadow: activeTab === 'laundry' ? '0 6px 20px rgba(0, 122, 135, 0.25)' : 'none'
               }}
             >
               <Shirt size={18} /> Laundry Pricing
@@ -119,7 +119,7 @@ export const PricingPage: React.FC = () => {
                   borderRadius: '12px',
                   border: 'none',
                   background: activeTab === 'house' ? '#FFFFFF' : 'transparent',
-                  color: activeTab === 'house' ? '#1C2677' : '#64748B',
+                  color: activeTab === 'house' ? '#03252A' : '#64748B',
                   fontWeight: activeTab === 'house' ? 800 : 600,
                   fontSize: '0.8rem',
                   cursor: 'pointer',
@@ -132,7 +132,7 @@ export const PricingPage: React.FC = () => {
                   whiteSpace: 'nowrap'
                 }}
               >
-                <Home size={14} style={{ color: activeTab === 'house' ? '#29C3BE' : '#64748B', flexShrink: 0 }} />
+                <Home size={14} style={{ color: activeTab === 'house' ? '#007A87' : '#64748B', flexShrink: 0 }} />
                 <span>House</span>
               </button>
 
@@ -144,7 +144,7 @@ export const PricingPage: React.FC = () => {
                   borderRadius: '12px',
                   border: 'none',
                   background: activeTab === 'car' ? '#FFFFFF' : 'transparent',
-                  color: activeTab === 'car' ? '#1C2677' : '#64748B',
+                  color: activeTab === 'car' ? '#03252A' : '#64748B',
                   fontWeight: activeTab === 'car' ? 800 : 600,
                   fontSize: '0.8rem',
                   cursor: 'pointer',
@@ -157,7 +157,7 @@ export const PricingPage: React.FC = () => {
                   whiteSpace: 'nowrap'
                 }}
               >
-                <Car size={14} style={{ color: activeTab === 'car' ? '#1C2677' : '#64748B', flexShrink: 0 }} />
+                <Car size={14} style={{ color: activeTab === 'car' ? '#03252A' : '#64748B', flexShrink: 0 }} />
                 <span>Car Wash</span>
               </button>
 
@@ -169,7 +169,7 @@ export const PricingPage: React.FC = () => {
                   borderRadius: '12px',
                   border: 'none',
                   background: activeTab === 'laundry' ? '#FFFFFF' : 'transparent',
-                  color: activeTab === 'laundry' ? '#1C2677' : '#64748B',
+                  color: activeTab === 'laundry' ? '#03252A' : '#64748B',
                   fontWeight: activeTab === 'laundry' ? 800 : 600,
                   fontSize: '0.8rem',
                   cursor: 'pointer',
@@ -203,7 +203,7 @@ export const PricingPage: React.FC = () => {
         <div className="container" style={{ padding: '0 16px' }}>
           <div style={{ textAlign: 'center', maxWidth: '650px', margin: '0 auto 32px auto' }}>
             <span className="badge-secondary">DETAILED COMPARISON</span>
-            <h2 style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2rem)', fontWeight: 800, color: '#1C2677', marginTop: '8px' }}>
+            <h2 style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2rem)', fontWeight: 800, color: '#03252A', marginTop: '8px' }}>
               Standard vs Premium Protocol Matrix
             </h2>
           </div>
@@ -211,10 +211,10 @@ export const PricingPage: React.FC = () => {
           <div className="glass-card" style={{ padding: '20px', overflowX: 'auto', borderRadius: '20px' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.875rem', minWidth: '550px' }}>
               <thead>
-                <tr style={{ borderBottom: '2px solid #CBD5E1', color: '#1C2677' }}>
+                <tr style={{ borderBottom: '2px solid #CBD5E1', color: '#03252A' }}>
                   <th style={{ padding: '12px', fontSize: '0.95rem' }}>Service Feature</th>
                   <th style={{ padding: '12px', fontSize: '0.95rem', color: '#475569' }}>Standard Plan</th>
-                  <th style={{ padding: '12px', fontSize: '0.95rem', color: '#29C3BE' }}>Premium Plan</th>
+                  <th style={{ padding: '12px', fontSize: '0.95rem', color: '#007A87' }}>Premium Plan</th>
                 </tr>
               </thead>
               <tbody>
@@ -223,12 +223,12 @@ export const PricingPage: React.FC = () => {
                     <td style={{ padding: '12px', fontWeight: 600, color: '#1B2236' }}>{row.feature}</td>
                     <td style={{ padding: '12px', color: '#475569' }}>
                       {typeof row.standard === 'boolean' ? (
-                        row.standard ? <CheckCircle2 size={16} style={{ color: '#10B981' }} /> : <XCircle size={16} style={{ color: '#CBD5E1' }} />
+                        row.standard ? <CheckCircle2 size={16} style={{ color: '#9BC83B' }} /> : <XCircle size={16} style={{ color: '#CBD5E1' }} />
                       ) : row.standard}
                     </td>
-                    <td style={{ padding: '12px', fontWeight: 700, color: '#1C2677' }}>
+                    <td style={{ padding: '12px', fontWeight: 700, color: '#03252A' }}>
                       {typeof row.premium === 'boolean' ? (
-                        row.premium ? <CheckCircle2 size={16} style={{ color: '#29C3BE' }} /> : <XCircle size={16} style={{ color: '#CBD5E1' }} />
+                        row.premium ? <CheckCircle2 size={16} style={{ color: '#007A87' }} /> : <XCircle size={16} style={{ color: '#CBD5E1' }} />
                       ) : row.premium}
                     </td>
                   </tr>

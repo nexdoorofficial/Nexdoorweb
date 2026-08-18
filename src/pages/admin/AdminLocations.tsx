@@ -31,14 +31,14 @@ export const AdminLocations: React.FC = () => {
             padding: '10px 18px',
             borderRadius: '12px',
             border: 'none',
-            background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+            background: 'linear-gradient(135deg, #007A87, #0093A2)',
             color: '#FFFFFF',
             fontWeight: 700,
             fontSize: '0.85rem',
             display: 'flex',
             alignItems: 'center',
             gap: '6px',
-            boxShadow: '0 8px 20px rgba(41, 195, 190, 0.3)',
+            boxShadow: '0 8px 20px rgba(0, 122, 135, 0.3)',
             cursor: 'pointer'
           }}
         >
@@ -67,7 +67,7 @@ export const AdminLocations: React.FC = () => {
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <div style={{ width: '38px', height: '38px', borderRadius: '12px', background: 'rgba(41, 195, 190, 0.15)', color: '#1C2677', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{ width: '38px', height: '38px', borderRadius: '12px', background: 'rgba(0, 122, 135, 0.12)', color: '#007A87', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <MapPin size={20} />
                     </div>
                     <div>
@@ -130,7 +130,7 @@ export const AdminLocations: React.FC = () => {
               <div>
                 <div style={{ background: '#F8FAFC', padding: '10px 14px', borderRadius: '12px', border: '1px solid #E2E8F0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                   <span style={{ fontSize: '0.78rem', color: '#64748B', fontWeight: 600 }}>Active Jobs in Zone:</span>
-                  <span style={{ fontSize: '0.9rem', fontWeight: 800, color: '#1C2677' }}>{activeBookings} Bookings</span>
+                  <span style={{ fontSize: '0.9rem', fontWeight: 800, color: '#007A87' }}>{activeBookings} Bookings</span>
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '10px', borderTop: '1px solid #F1F5F9' }}>

@@ -514,7 +514,7 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 cursor: 'pointer',
-                boxShadow: isLocDropdownOpen ? '0 0 0 2px rgba(41, 195, 190, 0.3)' : 'none'
+                boxShadow: isLocDropdownOpen ? '0 0 0 2px rgba(0, 122, 135, 0.3)' : 'none'
               }}
             >
               <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -529,7 +529,7 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
                 style={{
                   marginTop: '6px',
                   background: '#FFFFFF',
-                  border: '1.5px solid #29C3BE',
+                  border: '1.5px solid #007A87',
                   borderRadius: '14px',
                   padding: '12px',
                   boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
@@ -537,7 +537,7 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', paddingBottom: '8px', borderBottom: '1px solid #F1F5F9' }}>
-                  <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#1C2677' }}>
+                  <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#007A87' }}>
                     Select Locations ({selectedLocations.includes('all') ? 'All Active' : `${selectedLocations.length} Active`})
                   </span>
                   <div style={{ display: 'flex', gap: '8px' }}>
@@ -576,14 +576,14 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
                       cursor: 'pointer',
                       fontSize: '0.85rem',
                       fontWeight: 700,
-                      color: selectedLocations.includes('all') ? '#1C2677' : '#334155'
+                      color: selectedLocations.includes('all') ? '#007A87' : '#334155'
                     }}
                   >
                     <input
                       type="checkbox"
                       checked={selectedLocations.includes('all')}
                       onChange={() => handleLocationToggle('all')}
-                      style={{ accentColor: '#1C2677', width: '16px', height: '16px', cursor: 'pointer' }}
+                      style={{ accentColor: '#007A87', width: '16px', height: '16px', cursor: 'pointer' }}
                     />
                     <span>📍 All Locations (Global System Block)</span>
                   </label>
@@ -603,14 +603,14 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
                           cursor: 'pointer',
                           fontSize: '0.85rem',
                           fontWeight: 600,
-                          color: isChecked ? '#1C2677' : '#334155'
+                          color: isChecked ? '#007A87' : '#334155'
                         }}
                       >
                         <input
                           type="checkbox"
                           checked={isChecked}
                           onChange={() => handleLocationToggle(loc.name)}
-                          style={{ accentColor: '#1C2677', width: '16px', height: '16px', cursor: 'pointer' }}
+                          style={{ accentColor: '#007A87', width: '16px', height: '16px', cursor: 'pointer' }}
                         />
                         <div>
                           <span>📍 {loc.name}</span>
@@ -681,21 +681,21 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
                       border: isPastSlot
                         ? '1px solid #E2E8F0'
                         : isSelected
-                        ? '2px solid #EF4444'
+                        ? '2px solid #007A87'
                         : isAlreadyBlocked
                         ? '1.5px dashed #F87171'
                         : '1px solid #E2E8F0',
                       background: isPastSlot
                         ? '#F1F5F9'
                         : isSelected
-                        ? '#FEF2F2'
+                        ? '#F0FDFA'
                         : isAlreadyBlocked
                         ? '#FFF1F2'
                         : '#F8FAFC',
                       color: isPastSlot
                         ? '#94A3B8'
                         : isSelected
-                        ? '#DC2626'
+                        ? '#007A87'
                         : isAlreadyBlocked
                         ? '#BE123C'
                         : '#334155',
@@ -724,9 +724,9 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
                   fontSize: '0.78rem',
                   fontWeight: 700,
                   cursor: 'pointer',
-                  border: selectedTimeSlots.includes('Custom') ? '2px solid #EF4444' : '1px solid #E2E8F0',
-                  background: selectedTimeSlots.includes('Custom') ? '#FEF2F2' : '#F8FAFC',
-                  color: selectedTimeSlots.includes('Custom') ? '#DC2626' : '#334155'
+                  border: selectedTimeSlots.includes('Custom') ? '2px solid #007A87' : '1px solid #E2E8F0',
+                  background: selectedTimeSlots.includes('Custom') ? '#F0FDFA' : '#F8FAFC',
+                  color: selectedTimeSlots.includes('Custom') ? '#007A87' : '#334155'
                 }}
               >
                 Custom Time
@@ -766,10 +766,10 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
                     cursor: 'pointer',
                     border: maxTeams === num ? '1px solid transparent' : '1px solid #CBD5E1',
                     background: maxTeams === num
-                      ? (num === 0 ? '#DC2626' : 'linear-gradient(135deg, #1C2677, #29C3BE)')
+                      ? (num === 0 ? '#DC2626' : 'linear-gradient(135deg, #007A87, #0093A2)')
                       : '#FFFFFF',
                     color: maxTeams === num ? '#FFFFFF' : '#334155',
-                    boxShadow: maxTeams === num ? '0 4px 12px rgba(41, 195, 190, 0.25)' : 'none'
+                    boxShadow: maxTeams === num ? '0 4px 12px rgba(0, 122, 135, 0.25)' : 'none'
                   }}
                 >
                   {num === 0 ? '🔒 Full Block (0 Teams)' : `${num} ${num === 1 ? 'Team' : 'Teams'}`}
@@ -807,10 +807,10 @@ export const BlockSlotModal: React.FC<BlockSlotModalProps> = ({
                 padding: '10px 24px',
                 borderRadius: '12px',
                 border: 'none',
-                background: maxTeams === 0 ? 'linear-gradient(135deg, #EF4444, #DC2626)' : 'linear-gradient(135deg, #1C2677, #29C3BE)',
+                background: maxTeams === 0 ? 'linear-gradient(135deg, #EF4444, #DC2626)' : 'linear-gradient(135deg, #007A87, #0093A2)',
                 color: '#FFF',
                 fontWeight: 700,
-                boxShadow: maxTeams === 0 ? '0 4px 12px rgba(239, 68, 68, 0.3)' : '0 4px 12px rgba(41, 195, 190, 0.3)',
+                boxShadow: maxTeams === 0 ? '0 4px 12px rgba(239, 68, 68, 0.3)' : '0 4px 12px rgba(0, 122, 135, 0.3)',
                 cursor: 'pointer'
               }}
             >

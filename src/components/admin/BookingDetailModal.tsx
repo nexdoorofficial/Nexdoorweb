@@ -138,7 +138,7 @@ export const BookingDetailModal: React.FC<Props> = ({ booking, isOpen, onClose }
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid #F1F5F9' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '4px' }}>
-              <span style={{ fontSize: '1.4rem', fontWeight: 800, color: '#1C2677' }}>{booking.referenceId}</span>
+              <span style={{ fontSize: '1.4rem', fontWeight: 800, color: '#007A87' }}>{booking.referenceId}</span>
               <span style={{ padding: '4px 12px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 700, background: badge.bg, color: badge.color }}>
                 {badge.label}
               </span>
@@ -258,8 +258,8 @@ export const BookingDetailModal: React.FC<Props> = ({ booking, isOpen, onClose }
                   borderRadius: '10px',
                   fontSize: '0.8rem',
                   fontWeight: 700,
-                  border: currentStatus === st ? '2px solid #1C2677' : '1px solid #CBD5E1',
-                  background: currentStatus === st ? '#1C2677' : '#FFFFFF',
+                  border: currentStatus === st ? '2px solid #007A87' : '1px solid #CBD5E1',
+                  background: currentStatus === st ? '#007A87' : '#FFFFFF',
                   color: currentStatus === st ? '#FFFFFF' : '#475569',
                   cursor: 'pointer',
                   textTransform: 'capitalize'
@@ -276,7 +276,7 @@ export const BookingDetailModal: React.FC<Props> = ({ booking, isOpen, onClose }
           {/* Customer Info */}
           <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '18px', padding: '20px' }}>
             <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#1E293B', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <User size={18} color="#1C2677" /> Customer Information
+              <User size={18} color="#007A87" /> Customer Information
             </h4>
             <div style={{ fontSize: '0.9rem', color: '#334155', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <div>
@@ -303,7 +303,7 @@ export const BookingDetailModal: React.FC<Props> = ({ booking, isOpen, onClose }
           {/* Service & Staff Info */}
           <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '18px', padding: '20px' }}>
             <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#1E293B', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Calendar size={18} color="#29C3BE" /> Service & Staffing
+              <Calendar size={18} color="#007A87" /> Service & Staffing
             </h4>
             <div style={{ fontSize: '0.9rem', color: '#334155', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <div>
@@ -328,13 +328,13 @@ export const BookingDetailModal: React.FC<Props> = ({ booking, isOpen, onClose }
                               borderRadius: '8px',
                               fontSize: '0.825rem',
                               fontWeight: 700,
-                              color: '#1C2677',
+                              color: '#007A87',
                               display: 'flex',
                               alignItems: 'center',
                               gap: '6px'
                             }}
                           >
-                            <span style={{ color: '#29C3BE', fontWeight: 900 }}>✓</span> {p}
+                            <span style={{ color: '#9BC83B', fontWeight: 900 }}>✓</span> {p}
                           </div>
                         ))}
                       </div>
@@ -378,8 +378,8 @@ export const BookingDetailModal: React.FC<Props> = ({ booking, isOpen, onClose }
             <span style={{ fontWeight: 700, color: '#10B981' }}>₹{booking.depositPaid}</span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '10px', borderTop: '1px solid #CBD5E1', fontSize: '0.95rem' }}>
-            <span style={{ fontWeight: 800, color: '#1C2677' }}>Balance Due on Completion:</span>
-            <span style={{ fontWeight: 800, color: '#1C2677' }}>₹{Math.max(0, booking.estimatedTotal - booking.depositPaid)}</span>
+            <span style={{ fontWeight: 800, color: '#03252A' }}>Balance Due on Completion:</span>
+            <span style={{ fontWeight: 800, color: '#03252A' }}>₹{Math.max(0, booking.estimatedTotal - booking.depositPaid)}</span>
           </div>
         </div>
 
@@ -398,7 +398,7 @@ export const BookingDetailModal: React.FC<Props> = ({ booking, isOpen, onClose }
             />
             <button
               onClick={handleSaveNotes}
-              style={{ background: '#1C2677', color: '#FFF', border: 'none', padding: '0 16px', borderRadius: '10px', fontWeight: 700, cursor: 'pointer' }}
+              style={{ background: '#007A87', color: '#FFF', border: 'none', padding: '0 16px', borderRadius: '10px', fontWeight: 700, cursor: 'pointer' }}
             >
               Save Notes
             </button>

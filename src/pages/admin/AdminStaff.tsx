@@ -104,7 +104,7 @@ export const AdminStaff: React.FC = () => {
     return name.split(' ').map((p) => p[0]).join('').toUpperCase().slice(0, 2);
   };
 
-  const avatarColors = ['#1C2677', '#0D9488', '#7C3AED', '#DC2626', '#EA580C', '#0284C7', '#4F46E5', '#059669'];
+  const avatarColors = ['#007A87', '#0D9488', '#7C3AED', '#DC2626', '#EA580C', '#0284C7', '#4F46E5', '#059669'];
   const getAvatarColor = (name: string) => {
     let hash = 0;
     for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
@@ -136,7 +136,7 @@ export const AdminStaff: React.FC = () => {
               gap: '10px'
             }}
           >
-            <Users size={28} style={{ color: '#29C3BE' }} />
+            <Users size={28} style={{ color: '#007A87' }} />
             Assigned Staff
           </h1>
           <p style={{ color: '#64748B', fontSize: '0.9rem', margin: '4px 0 0 0' }}>
@@ -151,13 +151,13 @@ export const AdminStaff: React.FC = () => {
             gap: '8px',
             padding: '12px 24px',
             borderRadius: '14px',
-            background: 'linear-gradient(135deg, #1C2677, #29C3BE)',
+            background: 'linear-gradient(135deg, #007A87, #0093A2)',
             color: '#FFFFFF',
             fontWeight: 700,
             fontSize: '0.9rem',
             border: 'none',
             cursor: 'pointer',
-            boxShadow: '0 4px 14px rgba(41, 195, 190, 0.3)',
+            boxShadow: '0 4px 14px rgba(0, 122, 135, 0.3)',
             transition: 'all 0.2s ease'
           }}
         >
@@ -176,7 +176,7 @@ export const AdminStaff: React.FC = () => {
         }}
       >
         {[
-          { label: 'Total Staff', value: stats.total, icon: Users, color: '#1C2677', bg: '#EFF6FF' },
+          { label: 'Total Staff', value: stats.total, icon: Users, color: '#007A87', bg: '#EFF6FF' },
           { label: 'Available', value: stats.available, icon: ToggleRight, color: '#059669', bg: '#DCFCE7' },
           { label: 'Assigned', value: stats.assigned, icon: Briefcase, color: '#D97706', bg: '#FEF3C7' },
           { label: 'Off Duty', value: stats.off, icon: ToggleLeft, color: '#64748B', bg: '#F1F5F9' },
@@ -397,12 +397,12 @@ export const AdminStaff: React.FC = () => {
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                    <Phone size={13} style={{ color: '#29C3BE', flexShrink: 0 }} />
+                    <Phone size={13} style={{ color: '#007A87', flexShrink: 0 }} />
                     <span>{staff.phone}</span>
                   </div>
                   {staff.email && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                      <Mail size={13} style={{ color: '#29C3BE', flexShrink: 0 }} />
+                      <Mail size={13} style={{ color: '#007A87', flexShrink: 0 }} />
                       <span>{staff.email}</span>
                     </div>
                   )}
