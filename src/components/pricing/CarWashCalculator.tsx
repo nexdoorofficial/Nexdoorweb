@@ -59,22 +59,43 @@ export const CarWashCalculator: React.FC<CarWashCalculatorProps> = ({
 
   const activeVehicle = vehicleCategoriesList.find((v) => v.id === selectedVehicle) || vehicleCategoriesList[0] || vehicleCategoriesList[1];
 
-  // Dynamic location list filtered by active system locations & vehicle category-specific availability
+  // Dynamic location list filtered strictly by active system locations & car-wash availability
   const availableLocationsList = React.useMemo(() => {
-    const activeLocs = rawLocationsList.filter((l: any) => !l.status || l.status === 'active');
-    const baseLocs = activeLocs.length > 0 ? activeLocs : rawLocationsList;
+    // 1. Filter system locations that are active and support 'car-wash'
+    const activeLocs = rawLocationsList.filter((l: any) => {
+      if (l.status && l.status !== 'active') return false;
+      if (l.availableServices && Array.isArray(l.availableServices) && l.availableServices.length > 0) {
+        return l.availableServices.some((s: string) => s.toLowerCase().trim() === 'car-wash');
+      }
+      return true;
+    });
 
+    // 2. Check if active vehicle category has specific availableLocations configured in Admin Panel
+    let filteredLocs = activeLocs;
     if (activeVehicle?.availableLocations && activeVehicle.availableLocations.length > 0) {
       const avail = activeVehicle.availableLocations;
-      const filtered = baseLocs.filter((l: any) =>
+      const explicit = activeLocs.filter((l: any) =>
         avail.some(
           (locName: string) => locName.toLowerCase().trim() === l.name.toLowerCase().trim()
         )
       );
-      return filtered.length > 0 ? filtered : baseLocs;
+      if (explicit.length > 0) {
+        filteredLocs = explicit;
+      }
     }
 
-    return baseLocs;
+    // 3. Deduplicate locations by lowercase name
+    const seen = new Set<string>();
+    const deduplicated: any[] = [];
+    filteredLocs.forEach((loc: any) => {
+      const cleanName = (loc.name || '').toLowerCase().trim();
+      if (cleanName && !seen.has(cleanName)) {
+        seen.add(cleanName);
+        deduplicated.push(loc);
+      }
+    });
+
+    return deduplicated;
   }, [rawLocationsList, activeVehicle]);
 
   // Automatically sync selected location if current location is no longer valid for this vehicle category

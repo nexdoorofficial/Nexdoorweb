@@ -547,22 +547,54 @@ export const Home: React.FC = () => {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px', marginBottom: '48px' }}>
             {adminData?.locations && adminData.locations.filter(l => l.status === 'active').length > 0 ? (
               adminData.locations.filter(l => l.status === 'active').map((area) => (
-                <div key={area.id} className="glass-card" style={{ padding: '28px', borderRadius: '20px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                    <span style={{ fontSize: '0.75rem', fontWeight: 700, background: 'rgba(155, 200, 59, 0.15)', color: '#3F6212', padding: '4px 12px', borderRadius: '20px' }}>
-                      ACTIVE HUB ●
-                    </span>
-                    <span style={{ fontSize: '0.8rem', color: '#64748B' }}>{area.pincode}</span>
+                <div key={area.id} className="glass-card" style={{ padding: '28px', borderRadius: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 700, background: 'rgba(155, 200, 59, 0.15)', color: '#3F6212', padding: '4px 12px', borderRadius: '20px' }}>
+                        ACTIVE HUB ●
+                      </span>
+                      <span style={{ fontSize: '0.8rem', color: '#64748B' }}>{area.pincode}</span>
+                    </div>
+
+                    <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#03252A', marginBottom: '8px' }}>
+                      {area.name} HQ Hub
+                    </h3>
+                    <p style={{ fontSize: '0.875rem', color: '#475569', lineHeight: 1.5, marginBottom: '16px' }}>
+                      {area.description || `Doorstep service coverage across ${area.zone} belt with certified mobile equipment & eco products.`}
+                    </p>
+
+                    {/* Service Capabilities Badges */}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' }}>
+                      {(area.availableServices && area.availableServices.length > 0
+                        ? area.availableServices
+                        : ['house-cleaning', 'car-wash', 'laundry', 'specialized']
+                      ).map((srv) => (
+                        <span
+                          key={srv}
+                          style={{
+                            fontSize: '0.72rem',
+                            fontWeight: 700,
+                            padding: '3px 8px',
+                            borderRadius: '8px',
+                            background: srv === 'laundry' ? '#FEF3C7' : srv === 'house-cleaning' ? '#E0F2F1' : srv === 'car-wash' ? '#EBF5FF' : '#F1F5F9',
+                            color: srv === 'laundry' ? '#92400E' : srv === 'house-cleaning' ? '#007A87' : srv === 'car-wash' ? '#1E40AF' : '#475569'
+                          }}
+                        >
+                          {srv === 'house-cleaning'
+                            ? '🏠 House'
+                            : srv === 'car-wash'
+                            ? '🚗 Car Wash'
+                            : srv === 'laundry'
+                            ? '🧺 Laundry'
+                            : srv === 'specialized'
+                            ? '🧹 Specialized'
+                            : srv}
+                        </span>
+                      ))}
+                    </div>
                   </div>
 
-                  <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#03252A', marginBottom: '8px' }}>
-                    {area.name} HQ Hub
-                  </h3>
-                  <p style={{ fontSize: '0.875rem', color: '#475569', lineHeight: 1.5, marginBottom: '16px' }}>
-                    {area.description || `Full doorstep coverage across ${area.zone} belt with single-disc floor scrubbers & steam detailing.`}
-                  </p>
-
-                  <div style={{ fontSize: '0.8rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <div style={{ fontSize: '0.8rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '6px', paddingTop: '12px', borderTop: '1px solid #F1F5F9' }}>
                     <Clock size={14} style={{ color: '#007A87' }} /> 15-30 Mins Express Dispatch
                   </div>
                 </div>

@@ -52,21 +52,42 @@ export const LaundryCalculator: React.FC<LaundryCalculatorProps> = ({
   const [quality, setQuality] = useState<LaundryQualityKey>('premium');
   const [location, setLocation] = useState<string>('Kakkanad');
 
-  // Dynamic location list filtered by active system locations & laundry-specific availability
+  // Dynamic location list filtered strictly by active system locations & laundry-specific availability
   const availableLocationsList = React.useMemo(() => {
-    const activeLocs = rawLocationsList.filter((l: any) => !l.status || l.status === 'active');
-    const baseLocs = activeLocs.length > 0 ? activeLocs : rawLocationsList;
+    // 1. Filter system locations that are active and have 'laundry' in availableServices
+    const activeLocs = rawLocationsList.filter((l: any) => {
+      if (l.status && l.status !== 'active') return false;
+      if (l.availableServices && Array.isArray(l.availableServices) && l.availableServices.length > 0) {
+        return l.availableServices.some((s: string) => s.toLowerCase().trim() === 'laundry');
+      }
+      return true;
+    });
 
+    // 2. Further filter if laundryConfig has explicit availableLocations list configured
+    let filteredLocs = activeLocs;
     if (laundryConfig?.availableLocations && laundryConfig.availableLocations.length > 0) {
-      const filtered = baseLocs.filter((l: any) =>
+      const explicit = activeLocs.filter((l: any) =>
         laundryConfig.availableLocations.some(
           (locName: string) => locName.toLowerCase().trim() === l.name.toLowerCase().trim()
         )
       );
-      return filtered.length > 0 ? filtered : baseLocs;
+      if (explicit.length > 0) {
+        filteredLocs = explicit;
+      }
     }
 
-    return baseLocs;
+    // 3. Deduplicate locations by lowercase name
+    const seen = new Set<string>();
+    const deduplicated: any[] = [];
+    filteredLocs.forEach((loc: any) => {
+      const cleanName = (loc.name || '').toLowerCase().trim();
+      if (cleanName && !seen.has(cleanName)) {
+        seen.add(cleanName);
+        deduplicated.push(loc);
+      }
+    });
+
+    return deduplicated;
   }, [rawLocationsList, laundryConfig]);
 
   // Automatically sync selected location if current location is no longer valid for laundry
