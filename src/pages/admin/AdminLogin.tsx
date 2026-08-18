@@ -5,9 +5,9 @@ import { useAdminData } from '../../context/AdminContext';
 export const AdminLogin: React.FC = () => {
   const { loginAdmin, siteSettings } = useAdminData();
 
-  const [email, setEmail] = useState('nexdoorofficial@gmail.com');
-  const [password, setPassword] = useState('nexdoorofficial@gmail.com');
-  const [rememberMe, setRememberMe] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -132,9 +132,10 @@ export const AdminLogin: React.FC = () => {
                 <input
                   type="email"
                   required
+                  autoComplete="username"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@example.com"
+                  placeholder="admin@nexdoorclean.com"
                   style={{
                     width: '100%',
                     padding: '12px 14px 12px 42px',
@@ -163,9 +164,10 @@ export const AdminLogin: React.FC = () => {
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
+                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••••••"
+                  placeholder="Enter password"
                   style={{
                     width: '100%',
                     padding: '12px 42px 12px 42px',

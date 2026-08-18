@@ -134,7 +134,7 @@ const SEED_JOB_APPLICATIONS: JobApplication[] = [
 ];
 
 const DEFAULT_SITE_SETTINGS: SiteSettings = {
-  logoUrl: '',
+  logoUrl: '/Assets/nexdoor%20Logo%20-%20Png.png',
   faviconUrl: '',
   supportPhone: '+91 98765 43210',
   supportEmail: 'support@nexdoorclean.com',
@@ -661,9 +661,18 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     showToast('Gallery reset to default projects & timing', 'info');
   };
 
-  // Admin Session State (Kept in Local Browser Storage as requested)
+  // Cryptographically secure salted SHA-256 hash utility for local fallback authentication
+  const hashAdminPassword = async (password: string): Promise<string> => {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(`nexdoor_secure_salt_v2_${password}`);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+  };
+
+  // Admin Session State (Kept in Browser Storage)
   const [adminEmail, setAdminEmail] = useState<string>(() => {
-    return localStorage.getItem('nexdoor_admin_email') || 'nexdoorofficial@gmail.com';
+    return localStorage.getItem('nexdoor_admin_email') || sessionStorage.getItem('nexdoor_admin_email') || '';
   });
 
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
@@ -672,55 +681,76 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return localAuth === 'true' || sessionAuth === 'true';
   });
 
-  const loginAdmin = async (emailInput: string, passwordInput: string, rememberMe: boolean = true) => {
+  const loginAdmin = async (emailInput: string, passwordInput: string, rememberMe: boolean = false) => {
+    const cleanEmail = (emailInput || '').trim();
+    if (!cleanEmail || !passwordInput) {
+      return { success: false, error: 'Please enter both username/email and password.' };
+    }
+
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email: emailInput.trim(),
+      // 1. Authenticate with Supabase Auth (which securely validates salted bcrypt/argon2 hashes on server)
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: cleanEmail,
         password: passwordInput
       });
 
-      if (error) {
-        if (
-          emailInput.trim().toLowerCase() === adminEmail.toLowerCase() &&
-          passwordInput === 'nexdoorofficial@gmail.com'
-        ) {
+      if (data?.user && !error) {
+        setIsAuthenticated(true);
+        setAdminEmail(cleanEmail);
+
+        // Store hashed credentials only if rememberMe is explicitly selected
+        const pwdHash = await hashAdminPassword(passwordInput);
+        if (rememberMe) {
+          localStorage.setItem('nexdoor_admin_authenticated', 'true');
+          localStorage.setItem('nexdoor_admin_email', cleanEmail);
+          localStorage.setItem('nexdoor_admin_hash', pwdHash);
+        } else {
+          sessionStorage.setItem('nexdoor_admin_authenticated', 'true');
+          sessionStorage.setItem('nexdoor_admin_email', cleanEmail);
+        }
+
+        showToast('Welcome back, Admin!', 'success');
+        return { success: true };
+      }
+
+      // 2. Offline / local fallback validation using salted SHA-256 hash comparison
+      const storedHash = localStorage.getItem('nexdoor_admin_hash');
+      const storedEmail = localStorage.getItem('nexdoor_admin_email');
+      if (storedHash && storedEmail && cleanEmail.toLowerCase() === storedEmail.toLowerCase()) {
+        const inputHash = await hashAdminPassword(passwordInput);
+        if (inputHash === storedHash) {
           setIsAuthenticated(true);
-          setAdminEmail(emailInput.trim());
+          setAdminEmail(cleanEmail);
           if (rememberMe) {
             localStorage.setItem('nexdoor_admin_authenticated', 'true');
-            localStorage.setItem('nexdoor_admin_email', emailInput.trim());
           } else {
             sessionStorage.setItem('nexdoor_admin_authenticated', 'true');
           }
           showToast('Welcome back, Admin!', 'success');
           return { success: true };
         }
-        return { success: false, error: error.message };
       }
 
-      setIsAuthenticated(true);
-      setAdminEmail(emailInput.trim());
-
-      if (rememberMe) {
-        localStorage.setItem('nexdoor_admin_authenticated', 'true');
-        localStorage.setItem('nexdoor_admin_email', emailInput.trim());
-      } else {
-        sessionStorage.setItem('nexdoor_admin_authenticated', 'true');
-      }
-
-      showToast('Welcome back, Admin!', 'success');
-      return { success: true };
+      return { success: false, error: error?.message || 'Invalid username or password.' };
     } catch (err: any) {
-      if (
-        emailInput.trim().toLowerCase() === adminEmail.toLowerCase() &&
-        passwordInput === 'nexdoorofficial@gmail.com'
-      ) {
-        setIsAuthenticated(true);
-        if (rememberMe) localStorage.setItem('nexdoor_admin_authenticated', 'true');
-        else sessionStorage.setItem('nexdoor_admin_authenticated', 'true');
-        return { success: true };
+      // Offline fallback using salted SHA-256 hash comparison
+      const storedHash = localStorage.getItem('nexdoor_admin_hash');
+      const storedEmail = localStorage.getItem('nexdoor_admin_email');
+      if (storedHash && storedEmail && cleanEmail.toLowerCase() === storedEmail.toLowerCase()) {
+        const inputHash = await hashAdminPassword(passwordInput);
+        if (inputHash === storedHash) {
+          setIsAuthenticated(true);
+          setAdminEmail(cleanEmail);
+          if (rememberMe) {
+            localStorage.setItem('nexdoor_admin_authenticated', 'true');
+          } else {
+            sessionStorage.setItem('nexdoor_admin_authenticated', 'true');
+          }
+          showToast('Welcome back, Admin!', 'success');
+          return { success: true };
+        }
       }
-      return { success: false, error: err.message || 'Login failed' };
+      return { success: false, error: err.message || 'Authentication error. Please check your credentials.' };
     }
   };
 
@@ -736,8 +766,9 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const updateAdminCredentials = async (newEmail: string, newPass: string) => {
     try {
-      let updatePayload: { email?: string; password?: string } = {};
-      if (newEmail && newEmail.trim()) updatePayload.email = newEmail.trim();
+      const updatePayload: { email?: string; password?: string } = {};
+      const cleanEmail = (newEmail || '').trim();
+      if (cleanEmail) updatePayload.email = cleanEmail;
       if (newPass && newPass.trim()) updatePayload.password = newPass.trim();
 
       const { error } = await supabase.auth.updateUser(updatePayload);
@@ -746,9 +777,14 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         console.warn('Supabase auth update note:', error.message);
       }
 
-      if (newEmail && newEmail.trim()) {
-        setAdminEmail(newEmail.trim());
-        localStorage.setItem('nexdoor_admin_email', newEmail.trim());
+      if (cleanEmail) {
+        setAdminEmail(cleanEmail);
+        localStorage.setItem('nexdoor_admin_email', cleanEmail);
+      }
+
+      if (newPass && newPass.trim()) {
+        const newHash = await hashAdminPassword(newPass.trim());
+        localStorage.setItem('nexdoor_admin_hash', newHash);
       }
 
       showToast('Admin credentials updated successfully in Supabase Auth!', 'success');

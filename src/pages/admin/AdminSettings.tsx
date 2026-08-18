@@ -22,7 +22,7 @@ export const AdminSettings: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'branding' | 'menu' | 'helpline' | 'stats' | 'security'>('branding');
 
   // Security Form State
-  const [newAdminEmail, setNewAdminEmail] = useState(adminEmail || 'nexdoorofficial@gmail.com');
+  const [newAdminEmail, setNewAdminEmail] = useState(adminEmail || '');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPass, setShowPass] = useState(false);

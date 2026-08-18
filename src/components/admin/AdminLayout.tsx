@@ -93,39 +93,11 @@ export const AdminLayout: React.FC<Props> = ({ children }) => {
           {/* Logo Brand */}
           <div style={{ padding: '0 12px 28px 12px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', marginBottom: '24px' }}>
             <Link to="/admin" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              {siteSettings?.logoUrl ? (
-                <img
-                  src={siteSettings.logoUrl}
-                  alt="NEXDOOR Control Center"
-                  style={{ maxHeight: '38px', maxWidth: '140px', objectFit: 'contain' }}
-                />
-              ) : (
-                <div
-                  style={{
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '12px',
-                    background: 'linear-gradient(135deg, #007A87, #9BC83B)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontWeight: 900,
-                    fontSize: '1.2rem',
-                    color: '#FFFFFF',
-                    boxShadow: '0 4px 16px rgba(0, 122, 135, 0.4)'
-                  }}
-                >
-                  NX
-                </div>
-              )}
-              <div>
-                <span style={{ fontSize: '1.2rem', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.5px' }}>
-                  NEXDOOR
-                </span>
-                <span style={{ display: 'block', fontSize: '0.7rem', fontWeight: 700, color: '#9BC83B', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                  Control Center
-                </span>
-              </div>
+              <img
+                src={siteSettings?.logoUrl || "/Assets/nexdoor%20Logo%20-%20Png.png"}
+                alt="NEXDOOR Control Center"
+                style={{ maxHeight: '38px', maxWidth: '160px', objectFit: 'contain' }}
+              />
             </Link>
           </div>
 

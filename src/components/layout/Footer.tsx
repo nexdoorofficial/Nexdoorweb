@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Sparkles,
   Phone,
   Mail,
   MapPin,
@@ -76,28 +75,21 @@ export const Footer: React.FC = () => {
         }}>
           {/* Column 1: Brand & Contact Info */}
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
-              <div style={{
-                width: '38px',
-                height: '38px',
-                borderRadius: '12px',
-                background: 'linear-gradient(135deg, #007A87 0%, #9BC83B 100%)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 4px 12px rgba(0, 122, 135, 0.3)'
-              }}>
-                <Sparkles size={22} style={{ color: '#FFFFFF' }} />
-              </div>
-              <div>
-                <span style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', fontWeight: 800, color: '#FFFFFF' }}>
-                  NEXDOOR
-                </span>
-                <div style={{ fontSize: '0.6rem', color: '#9BC83B', fontWeight: 800, letterSpacing: '0.15em' }}>
-                  INSTA SERVICES
-                </div>
-              </div>
-            </div>
+            <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none', marginBottom: '18px' }}>
+              <img
+                src="/Assets/white%20logo.png"
+                alt="NEXDOOR"
+                className="footer-brand-logo"
+                style={{
+                  height: '42px',
+                  width: 'auto',
+                  maxHeight: '46px',
+                  maxWidth: '185px',
+                  objectFit: 'contain',
+                  display: 'block'
+                }}
+              />
+            </Link>
 
             <p style={{ fontSize: '0.9rem', color: '#94A3B8', lineHeight: 1.6, marginBottom: '20px' }}>
               Enterprise-grade doorstep home cleaning, mobile car wash detailing, and weight-based laundry solutions engineered with SaaS precision.
@@ -253,9 +245,24 @@ export const Footer: React.FC = () => {
       </div>
 
       <style>{`
+        .footer-brand-logo {
+          height: 42px;
+          max-height: 46px;
+          max-width: 185px;
+          width: auto;
+          object-fit: contain;
+          display: block;
+        }
         .footer-link:hover {
           color: #9BC83B !important;
           text-decoration: underline;
+        }
+        @media (max-width: 480px) {
+          .footer-brand-logo {
+            height: 34px !important;
+            max-height: 36px !important;
+            max-width: 145px !important;
+          }
         }
       `}</style>
       <TrackBookingModal

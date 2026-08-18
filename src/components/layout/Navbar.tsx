@@ -67,45 +67,20 @@ export const Navbar: React.FC = () => {
     >
       <div className="container navbar-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '76px' }}>
         {/* Brand Logo */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-          {adminData?.siteSettings?.logoUrl ? (
-            <img
-              src={adminData.siteSettings.logoUrl}
-              alt="NEXDOOR Logo"
-              style={{ maxHeight: '42px', maxWidth: '160px', objectFit: 'contain' }}
-            />
-          ) : (
-            <>
-              <div style={{
-                width: '38px',
-                height: '38px',
-                borderRadius: '12px',
-                background: 'linear-gradient(135deg, #007A87 0%, #9BC83B 100%)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 4px 12px rgba(0, 122, 135, 0.25)',
-                flexShrink: 0
-              }}>
-                <Sparkles size={20} style={{ color: '#FFFFFF' }} />
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span style={{
-                  fontFamily: 'var(--font-heading)',
-                  fontSize: '1.25rem',
-                  fontWeight: 800,
-                  letterSpacing: '-0.03em',
-                  color: '#03252A',
-                  lineHeight: 1
-                }}>
-                  NEXDOOR
-                </span>
-                <span className="logo-subtext" style={{ fontSize: '0.6rem', fontWeight: 800, color: '#007A87', letterSpacing: '0.15em', marginTop: '2px' }}>
-                  INSTA SERVICES
-                </span>
-              </div>
-            </>
-          )}
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+          <img
+            src={adminData?.siteSettings?.logoUrl || "/Assets/nexdoor%20Logo%20-%20Png.png"}
+            alt="NEXDOOR"
+            className="navbar-brand-logo"
+            style={{
+              height: '42px',
+              width: 'auto',
+              maxHeight: '44px',
+              maxWidth: '180px',
+              objectFit: 'contain',
+              display: 'block'
+            }}
+          />
         </Link>
 
         {/* Desktop Navigation Links (Dynamic from siteSettings.headerMenu) */}
@@ -450,6 +425,15 @@ export const Navbar: React.FC = () => {
       />
 
       <style>{`
+        .navbar-brand-logo {
+          height: 42px;
+          max-height: 44px;
+          max-width: 175px;
+          width: auto;
+          object-fit: contain;
+          display: block;
+          transition: all 0.2s ease;
+        }
         .desktop-nav {
           display: flex;
         }
@@ -483,7 +467,23 @@ export const Navbar: React.FC = () => {
             display: none !important;
           }
           .navbar-container {
-            height: 62px !important;
+            height: 64px !important;
+          }
+          .navbar-brand-logo {
+            height: 36px !important;
+            max-height: 38px !important;
+            max-width: 145px !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .navbar-container {
+            height: 60px !important;
+          }
+          .navbar-brand-logo {
+            height: 32px !important;
+            max-height: 34px !important;
+            max-width: 130px !important;
           }
         }
       `}</style>
